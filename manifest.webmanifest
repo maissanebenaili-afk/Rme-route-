@@ -1,0 +1,9 @@
+{
+  "name": "MRE Route",
+  "short_name": "MRE Route",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8fafc",
+  "theme_color": "#065F46",
+  "lang": "fr"
+}
