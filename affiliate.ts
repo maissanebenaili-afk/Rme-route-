@@ -18,8 +18,8 @@ export function buildFlightAffiliateUrl(params: {
   const datePart = date || "";
   const target =
     `https://www.skyscanner.fr/transport/vols/` +
-    `${encodeURIComponent(origin.toLowerCase())}/` +
-    `${encodeURIComponent(destination.toLowerCase())}/` +
+    `${origin.toLowerCase()}/` +
+    `${destination.toLowerCase()}/` +
     `${encodeURIComponent(datePart)}/`;
 
   return `https://tp.media/r?marker=${encodeURIComponent(marker)}&p=4116&u=${encodeURIComponent(target)}`;

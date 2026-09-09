@@ -2,26 +2,26 @@
 
 ## Checklist
 
-- [ ] Endpoint `/api/autonoma` with signed discover/up/down handling
-- [ ] Factory: `AffiliateLink`
-- [ ] Factory: `RouteSearchQuery`
-- [ ] Factory: `CostCalculationResult`
-- [ ] Factory: `PrayerTimeRequest`
-- [ ] Scoped teardown
+- [x] Endpoint `/api/autonoma` with signed discover/up/down handling implemented
+- [x] Factory: `AffiliateLink`
+- [x] Factory: `RouteSearchQuery`
+- [x] Factory: `CostCalculationResult`
+- [x] Factory: `PrayerTimeRequest`
+- [x] Scoped teardown by refs token
 - [ ] Auth callback with real credentials
-- [ ] Maintenance note
+- [x] Maintenance note
 - [ ] Full-recipe up/down pass
 - [ ] Concurrent-instances proof
-- [ ] Clean `sdk check` on `recipe.json`
+- [x] Clean `sdk check` on `recipe.json`
 - [ ] Pushed branch and opened pull request
+
+## Current validation
+
+- `npm install` succeeds after repairing the malformed manifest.
+- `npm test -- --runInBand` passes: 17 tests.
+- `npm run build` passes and compiles `/api/autonoma`, `/api/affiliates`, and `/api/prayer`.
+- Signed CLI validation is blocked because `AUTONOMA_SHARED_SECRET` is not present in the current environment. No secret was hardcoded or committed.
 
 ## Blockers
 
-The application cannot currently be integrated or validated end to end:
-
-- `package.json` contains literal `\\n` sequences and fails `npm install`, `npm test`, and `npm run build` with `EJSONPARSE`.
-- The repository has no database schema, ORM/query layer, authentication implementation, or persisted entities. The audited entities are client-side state/calculation results and do not have server-side creation paths.
-- The documented `/api/prayer` and `/api/affiliates` routes are absent from the checkout, so the required backend/UI dependency chain cannot run locally.
-- The Autonoma SDK adapter documentation endpoint returned HTTP 402, and the installed planner package does not include an adapter or handler API to use offline.
-
-The recipe in `C:\Users\benai\.autonoma\c-users-benai\recipe.json` is a scenario draft only. It has not been marked validated because no endpoint or database exists to execute the required lifecycle checks.
+The recipe in `C:\Users\benai\.autonoma\c-users-benai\recipe.json` passes `sdk check`, but full lifecycle validation remains pending. The current handler stores seeded records in process memory because this application has no database schema or authentication system; production-grade persistence and real auth credentials still need to be added before treating the integration as complete.

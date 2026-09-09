@@ -1,8 +1,8 @@
-import RouteSearch from "@/components/RouteSearch";
-import CostCalculator from "@/components/CostCalculator";
-import PrayerWidget from "@/components/PrayerWidget";
-import ServicesMap from "@/components/ServicesMap";
-import NewsFeed from "@/components/NewsFeed";
+import RouteSearch from "./RouteSearch";
+import CostCalculator from "./components/CostCalculator";
+import PrayerWidget from "./PrayerWidget";
+import ServicesMap from "./ServicesMap";
+import NewsFeed from "./NewsFeed";
 
 export default function Home() {
   return (

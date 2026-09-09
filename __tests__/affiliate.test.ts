@@ -1,1 +1,152 @@
-import { buildFlightAffiliateUrl, buildFerryAffiliateUrl } from '@/affiliate'\n\ndescribe('Affiliate URL Builders', () => {\n  describe('buildFlightAffiliateUrl', () => {\n    beforeEach(() => {\n      // Save original env\n      this.originalEnv = process.env.TRAVELPAYOUTS_PARTNER_ID\n    })\n\n    afterEach(() => {\n      // Restore env\n      process.env.TRAVELPAYOUTS_PARTNER_ID = this.originalEnv\n    })\n\n    it('should return null when TRAVELPAYOUTS_PARTNER_ID is not set', () => {\n      delete process.env.TRAVELPAYOUTS_PARTNER_ID\n      const url = buildFlightAffiliateUrl({\n        origin: 'Paris',\n        destination: 'Tanger',\n      })\n      expect(url).toBeNull()\n    })\n\n    it('should return null when TRAVELPAYOUTS_PARTNER_ID is empty', () => {\n      process.env.TRAVELPAYOUTS_PARTNER_ID = ''\n      const url = buildFlightAffiliateUrl({\n        origin: 'Paris',\n        destination: 'Tanger',\n      })\n      expect(url).toBeNull()\n    })\n\n    it('should build valid URL when TRAVELPAYOUTS_PARTNER_ID is set', () => {\n      process.env.TRAVELPAYOUTS_PARTNER_ID = 'test-marker-123'\n      const url = buildFlightAffiliateUrl({\n        origin: 'Paris',\n        destination: 'Tanger',\n        date: '2026-09-15',\n      })\n      expect(url).toBeTruthy()\n      expect(url).toContain('tp.media')\n      expect(url).toContain('marker=test-marker-123')\n      expect(url).toContain('skyscanner')\n    })\n\n    it('should URL-encode origin and destination', () => {\n      process.env.TRAVELPAYOUTS_PARTNER_ID = 'test-marker'\n      const url = buildFlightAffiliateUrl({\n        origin: 'New York',\n        destination: 'Los Angeles',\n      })\n      expect(url).toContain('new%20york')\n      expect(url).toContain('los%20angeles')\n    })\n\n    it('should handle optional date parameter', () => {\n      process.env.TRAVELPAYOUTS_PARTNER_ID = 'test-marker'\n      const urlWithDate = buildFlightAffiliateUrl({\n        origin: 'Paris',\n        destination: 'Tanger',\n        date: '2026-09-20',\n      })\n      const urlWithoutDate = buildFlightAffiliateUrl({\n        origin: 'Paris',\n        destination: 'Tanger',\n      })\n      expect(urlWithDate).toBeTruthy()\n      expect(urlWithoutDate).toBeTruthy()\n      expect(urlWithDate).not.toEqual(urlWithoutDate)\n    })\n  })\n\n  describe('buildFerryAffiliateUrl', () => {\n    beforeEach(() => {\n      this.originalPartnerId = process.env.DIRECT_FERRIES_PARTNER_ID\n      this.originalBaseUrl = process.env.DIRECT_FERRIES_BASE_URL\n    })\n\n    afterEach(() => {\n      process.env.DIRECT_FERRIES_PARTNER_ID = this.originalPartnerId\n      process.env.DIRECT_FERRIES_BASE_URL = this.originalBaseUrl\n    })\n\n    it('should return null when DIRECT_FERRIES_PARTNER_ID is not set', () => {\n      delete process.env.DIRECT_FERRIES_PARTNER_ID\n      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com'\n      const url = buildFerryAffiliateUrl({\n        origin: 'Spain',\n        destination: 'Morocco',\n      })\n      expect(url).toBeNull()\n    })\n\n    it('should return null when DIRECT_FERRIES_BASE_URL is not set', () => {\n      process.env.DIRECT_FERRIES_PARTNER_ID = 'test-partner'\n      delete process.env.DIRECT_FERRIES_BASE_URL\n      const url = buildFerryAffiliateUrl({\n        origin: 'Spain',\n        destination: 'Morocco',\n      })\n      expect(url).toBeNull()\n    })\n\n    it('should build valid URL when both env vars are set', () => {\n      process.env.DIRECT_FERRIES_PARTNER_ID = 'partner-456'\n      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com/search'\n      const url = buildFerryAffiliateUrl({\n        origin: 'Spain',\n        destination: 'Morocco',\n        date: '2026-09-15',\n      })\n      expect(url).toBeTruthy()\n      expect(url).toContain('partner=partner-456')\n      expect(url).toContain('origin=Spain')\n      expect(url).toContain('destination=Morocco')\n      expect(url).toContain('date=2026-09-15')\n    })\n\n    it('should handle optional date parameter', () => {\n      process.env.DIRECT_FERRIES_PARTNER_ID = 'partner-456'\n      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com'\n      const urlWithDate = buildFerryAffiliateUrl({\n        origin: 'Spain',\n        destination: 'Morocco',\n        date: '2026-09-20',\n      })\n      const urlWithoutDate = buildFerryAffiliateUrl({\n        origin: 'Spain',\n        destination: 'Morocco',\n      })\n      expect(urlWithDate).toContain('date=2026-09-20')\n      expect(urlWithoutDate).not.toContain('date=')\n    })\n\n    it('should not expose partner ID in plain text externally', () => {\n      process.env.DIRECT_FERRIES_PARTNER_ID = 'secret-partner-id'\n      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com'\n      const url = buildFerryAffiliateUrl({\n        origin: 'Spain',\n        destination: 'Morocco',\n      })\n      // Should contain partner ID in URL params (expected)\n      expect(url).toContain('partner=secret-partner-id')\n      // But this function should only be called server-side\n      // Never expose the result directly to client\n    })\n  })\n})\n"
+import { buildFlightAffiliateUrl, buildFerryAffiliateUrl } from '../affiliate'
+
+describe('Affiliate URL Builders', () => {
+  let originalEnv: string | undefined
+  let originalPartnerId: string | undefined
+  let originalBaseUrl: string | undefined
+
+  describe('buildFlightAffiliateUrl', () => {
+    beforeEach(() => {
+      // Save original env
+      originalEnv = process.env.TRAVELPAYOUTS_PARTNER_ID
+    })
+
+    afterEach(() => {
+      // Restore env
+      process.env.TRAVELPAYOUTS_PARTNER_ID = originalEnv
+    })
+
+    it('should return null when TRAVELPAYOUTS_PARTNER_ID is not set', () => {
+      delete process.env.TRAVELPAYOUTS_PARTNER_ID
+      const url = buildFlightAffiliateUrl({
+        origin: 'Paris',
+        destination: 'Tanger',
+      })
+      expect(url).toBeNull()
+    })
+
+    it('should return null when TRAVELPAYOUTS_PARTNER_ID is empty', () => {
+      process.env.TRAVELPAYOUTS_PARTNER_ID = ''
+      const url = buildFlightAffiliateUrl({
+        origin: 'Paris',
+        destination: 'Tanger',
+      })
+      expect(url).toBeNull()
+    })
+
+    it('should build valid URL when TRAVELPAYOUTS_PARTNER_ID is set', () => {
+      process.env.TRAVELPAYOUTS_PARTNER_ID = 'test-marker-123'
+      const url = buildFlightAffiliateUrl({
+        origin: 'Paris',
+        destination: 'Tanger',
+        date: '2026-09-15',
+      })
+      expect(url).toBeTruthy()
+      expect(url).toContain('tp.media')
+      expect(url).toContain('marker=test-marker-123')
+      expect(url).toContain('skyscanner')
+    })
+
+    it('should URL-encode origin and destination', () => {
+      process.env.TRAVELPAYOUTS_PARTNER_ID = 'test-marker'
+      const url = buildFlightAffiliateUrl({
+        origin: 'New York',
+        destination: 'Los Angeles',
+      })
+      expect(url).toContain('new%20york')
+      expect(url).toContain('los%20angeles')
+    })
+
+    it('should handle optional date parameter', () => {
+      process.env.TRAVELPAYOUTS_PARTNER_ID = 'test-marker'
+      const urlWithDate = buildFlightAffiliateUrl({
+        origin: 'Paris',
+        destination: 'Tanger',
+        date: '2026-09-20',
+      })
+      const urlWithoutDate = buildFlightAffiliateUrl({
+        origin: 'Paris',
+        destination: 'Tanger',
+      })
+      expect(urlWithDate).toBeTruthy()
+      expect(urlWithoutDate).toBeTruthy()
+      expect(urlWithDate).not.toEqual(urlWithoutDate)
+    })
+  })
+
+  describe('buildFerryAffiliateUrl', () => {
+    beforeEach(() => {
+      originalPartnerId = process.env.DIRECT_FERRIES_PARTNER_ID
+      originalBaseUrl = process.env.DIRECT_FERRIES_BASE_URL
+    })
+
+    afterEach(() => {
+      process.env.DIRECT_FERRIES_PARTNER_ID = originalPartnerId
+      process.env.DIRECT_FERRIES_BASE_URL = originalBaseUrl
+    })
+
+    it('should return null when DIRECT_FERRIES_PARTNER_ID is not set', () => {
+      delete process.env.DIRECT_FERRIES_PARTNER_ID
+      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com'
+      const url = buildFerryAffiliateUrl({
+        origin: 'Spain',
+        destination: 'Morocco',
+      })
+      expect(url).toBeNull()
+    })
+
+    it('should return null when DIRECT_FERRIES_BASE_URL is not set', () => {
+      process.env.DIRECT_FERRIES_PARTNER_ID = 'test-partner'
+      delete process.env.DIRECT_FERRIES_BASE_URL
+      const url = buildFerryAffiliateUrl({
+        origin: 'Spain',
+        destination: 'Morocco',
+      })
+      expect(url).toBeNull()
+    })
+
+    it('should build valid URL when both env vars are set', () => {
+      process.env.DIRECT_FERRIES_PARTNER_ID = 'partner-456'
+      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com/search'
+      const url = buildFerryAffiliateUrl({
+        origin: 'Spain',
+        destination: 'Morocco',
+        date: '2026-09-15',
+      })
+      expect(url).toBeTruthy()
+      expect(url).toContain('partner=partner-456')
+      expect(url).toContain('origin=Spain')
+      expect(url).toContain('destination=Morocco')
+      expect(url).toContain('date=2026-09-15')
+    })
+
+    it('should handle optional date parameter', () => {
+      process.env.DIRECT_FERRIES_PARTNER_ID = 'partner-456'
+      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com'
+      const urlWithDate = buildFerryAffiliateUrl({
+        origin: 'Spain',
+        destination: 'Morocco',
+        date: '2026-09-20',
+      })
+      const urlWithoutDate = buildFerryAffiliateUrl({
+        origin: 'Spain',
+        destination: 'Morocco',
+      })
+      expect(urlWithDate).toContain('date=2026-09-20')
+      expect(urlWithoutDate).not.toContain('date=')
+    })
+
+    it('should not expose partner ID in plain text externally', () => {
+      process.env.DIRECT_FERRIES_PARTNER_ID = 'secret-partner-id'
+      process.env.DIRECT_FERRIES_BASE_URL = 'https://api.directferries.com'
+      const url = buildFerryAffiliateUrl({
+        origin: 'Spain',
+        destination: 'Morocco',
+      })
+      // Should contain partner ID in URL params (expected)
+      expect(url).toContain('partner=secret-partner-id')
+      // But this function should only be called server-side
+      // Never expose the result directly to client
+    })
+  })
+})
