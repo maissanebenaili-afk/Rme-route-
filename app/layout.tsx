@@ -1,10 +1,11 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { SpeedInsights } from '@vercel/speed-insights/next';
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata: Metadata = {
-  title: "MRE Route – Europe ↔ Maroc",
-  description: "Comparez voiture, ferry et avion et préparez votre voyage vers le Maroc."
+  title: "RME Route – Mobilité diaspora Maroc",
+  description:
+    "RME Route accompagne les Ressortissants Marocains à l'Étranger avec un assistant de préparation de trajet, budget, traversée et services utiles autour du Maroc.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
