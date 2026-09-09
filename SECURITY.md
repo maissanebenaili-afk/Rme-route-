@@ -2,20 +2,23 @@
 
 ## Supported Versions
 
-Use this section to tell people about which versions of your project are
-currently being supported with security updates.
+Le dépôt ne maintient actuellement qu'une seule ligne active : la branche principale et les pull
+requests de préparation à la release.
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 5.1.x   | :white_check_mark: |
-| 5.0.x   | :x:                |
-| 4.0.x   | :white_check_mark: |
-| < 4.0   | :x:                |
+| main    | :white_check_mark: |
+| older branches   | :x:                |
 
 ## Reporting a Vulnerability
 
-Use this section to tell people how to report a vulnerability.
+N'exposez jamais de secret, token ou donnée personnelle dans un ticket public.
 
-Tell them where to go, how often they can expect to get an update on a
-reported vulnerability, what to expect if the vulnerability is accepted or
-declined, etc.
+Pour signaler une vulnérabilité :
+
+1. ouvrez un ticket GitHub avec le minimum d'informations exploitables publiquement ;
+2. demandez explicitement un canal privé pour partager les détails sensibles ;
+3. précisez l'impact, les étapes de reproduction et la version concernée.
+
+Le correctif visé est d'abord la branche `main`, puis les branches de release encore actives si
+elles existent.

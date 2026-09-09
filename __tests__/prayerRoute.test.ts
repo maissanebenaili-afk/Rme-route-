@@ -52,4 +52,15 @@ describe("GET /api/prayer", () => {
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({ error: "Invalid latitude" });
   });
+
+  it("returns 502 when the upstream request fails", async () => {
+    global.fetch = jest.fn().mockRejectedValue(new Error("network")) as typeof fetch;
+
+    const response = await GET(
+      new Request("http://localhost/api/prayer?latitude=48.8566&longitude=2.3522&method=3"),
+    );
+
+    expect(response.status).toBe(502);
+    await expect(response.json()).resolves.toEqual({ error: "Prayer upstream unavailable" });
+  });
 });

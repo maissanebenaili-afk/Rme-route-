@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import RouteSearch from "@/components/RouteSearch";
 import CostCalculator from "@/components/CostCalculator";
 import PrayerWidget from "@/components/PrayerWidget";
@@ -17,7 +19,14 @@ export default function Home() {
         <PrayerWidget />
         <ServicesMap />
         <NewsFeed />
-        <footer className="pb-8 text-center text-xs text-slate-400">MRE Route — MVP. Les données temps réel nécessitent des sources partenaires vérifiées.</footer>
+        <footer className="space-y-2 pb-8 text-center text-xs text-slate-400">
+          <p>MRE Route — MVP. Les données temps réel nécessitent des sources partenaires vérifiées.</p>
+          <div className="flex items-center justify-center gap-3">
+            <Link href="/privacy" className="text-emerald-700 underline underline-offset-2">
+              Confidentialité
+            </Link>
+          </div>
+        </footer>
       </div>
     </main>
   );

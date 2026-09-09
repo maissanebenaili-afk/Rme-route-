@@ -10,26 +10,33 @@ type Props = {
 
 export default function BookingCards({ origin, destination, date }: Props) {
   const [loading, setLoading] = useState<"flight"|"ferry"|null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   async function go(type: "flight"|"ferry") {
     setLoading(type);
+    setStatusMessage(null);
     try {
       const q = new URLSearchParams({
         type, origin, destination,
         ...(date ? { date } : {})
       });
       const res = await fetch(`/api/affiliates?${q.toString()}`);
+      if (!res.ok) {
+        throw new Error("Affiliate service error");
+      }
       const data = await res.json();
 
       if (data.configured && data.affiliateUrl) {
         window.location.assign(data.affiliateUrl);
       } else {
-        alert(
+        setStatusMessage(
           type === "ferry"
-            ? "Le partenaire ferry n'est pas encore configuré."
-            : "Le partenaire vols n'est pas encore configuré."
+            ? "Le partenaire ferry n'est pas encore configuré. Vérifiez les traversées directement auprès d'un opérateur officiel en attendant."
+            : "Le partenaire vols n'est pas encore configuré. Vérifiez les billets directement auprès d'une compagnie ou d'un comparateur officiel en attendant."
         );
       }
+    } catch {
+      setStatusMessage("Le service de réservation est momentanément indisponible. Réessayez dans quelques instants.");
     } finally {
       setLoading(null);
     }
@@ -40,8 +47,13 @@ export default function BookingCards({ origin, destination, date }: Props) {
       <h2 className="text-xl font-bold">Réserver au meilleur prix</h2>
       <p className="mt-1 text-sm text-slate-500">
         Comparez puis réservez auprès de nos partenaires. Les liens affiliés
-        sont utilisés uniquement lorsqu'un compte partenaire est configuré.
+        sont utilisés uniquement lorsqu&apos;un compte partenaire est configuré.
       </p>
+      {statusMessage ? (
+        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900" role="status">
+          {statusMessage}
+        </div>
+      ) : null}
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <button

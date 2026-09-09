@@ -34,17 +34,27 @@ export async function GET(request: Request) {
   upstreamUrl.searchParams.set("longitude", longitude.toString());
   upstreamUrl.searchParams.set("method", method.toString());
 
-  const response = await fetch(upstreamUrl, {
-    headers: {
-      accept: "application/json",
-    },
-    next: { revalidate: 3600 },
-  });
+  let response: Response;
+
+  try {
+    response = await fetch(upstreamUrl, {
+      headers: {
+        accept: "application/json",
+      },
+      next: { revalidate: 3600 },
+    });
+  } catch {
+    return Response.json({ error: "Prayer upstream unavailable" }, { status: 502 });
+  }
 
   if (!response.ok) {
     return Response.json({ error: "Prayer API error" }, { status: response.status });
   }
 
-  const data = await response.json();
-  return Response.json(data);
+  try {
+    const data = await response.json();
+    return Response.json(data);
+  } catch {
+    return Response.json({ error: "Prayer upstream unavailable" }, { status: 502 });
+  }
 }
