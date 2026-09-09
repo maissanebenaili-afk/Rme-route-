@@ -1,4 +1,4 @@
-import { calculateTravelCost, TravelCostInput } from '@/costCalculator'
+import { calculateTravelCost, TravelCostInput } from '@/lib/costCalculator'
 
 describe('calculateTravelCost', () => {
   describe('Basic calculations', () => {
