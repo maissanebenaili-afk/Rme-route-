@@ -1,4 +1,4 @@
-import { buildFlightAffiliateUrl, buildFerryAffiliateUrl } from '@/affiliate'
+import { buildFlightAffiliateUrl, buildFerryAffiliateUrl } from '@/lib/affiliate'
 
 describe('Affiliate URL Builders', () => {
   describe('buildFlightAffiliateUrl', () => {
