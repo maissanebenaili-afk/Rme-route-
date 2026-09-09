@@ -1,1 +1,2 @@
-// jest.setup.js\nimport '@testing-library/jest-dom'\n"
+// jest.setup.js
+import '@testing-library/jest-dom'

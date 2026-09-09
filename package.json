@@ -1,1 +1,45 @@
-{\n  "name": "mre-route",\n  "version": "1.0.0",\n  "private": true,\n  "scripts": {\n    "dev": "next dev",\n    "build": "next build",\n    "start": "next start",\n    "lint": "next lint",\n    "test": "jest",\n    "test:watch": "jest --watch",\n    "test:coverage": "jest --coverage",\n    "cap:build": "next build && npx cap sync",\n    "format": "prettier --write .",\n    "format:check": "prettier --check ."\n  },\n  "dependencies": {\n    "@capacitor/core": "^7.0.0",\n    "@capacitor/geolocation": "^7.0.0",\n    "@capacitor/splash-screen": "^7.0.0",\n    "@supabase/supabase-js": "^2.0.0",\n    "lucide-react": "^0.468.0",\n    "next": "^15.0.0",\n    "react": "^18.3.0",\n    "react-dom": "^18.3.0"\n  },\n  "devDependencies": {\n    "@capacitor/cli": "^7.0.0",\n    "@testing-library/jest-dom": "^6.1.5",\n    "@testing-library/react": "^14.1.2",\n    "@types/jest": "^29.5.11",\n    "@types/node": "^22.0.0",\n    "@types/react": "^18.2.0",\n    "@types/react-dom": "^18.2.0",\n    "autoprefixer": "^10.4.20",\n    "jest": "^29.7.0",\n    "jest-environment-jsdom": "^29.7.0",\n    "postcss": "^8.4.49",\n    "prettier": "^3.1.1",\n    "tailwindcss": "^3.4.17",\n    "ts-jest": "^29.1.1",\n    "typescript": "^5.7.2"\n  }\n}\n
+{
+  "name": "mre-route",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "cap:build": "next build && npx cap sync",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/geolocation": "^7.0.0",
+    "@capacitor/splash-screen": "^7.0.0",
+    "@supabase/supabase-js": "^2.0.0",
+    "@vercel/analytics": "^2.0.1",
+    "lucide-react": "^0.468.0",
+    "next": "^15.0.0",
+    "react": "^18.3.0",
+    "react-dom": "^18.3.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^7.0.0",
+    "@testing-library/jest-dom": "^6.1.5",
+    "@testing-library/react": "^14.1.2",
+    "@types/jest": "^29.5.11",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.20",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "postcss": "^8.4.49",
+    "prettier": "^3.1.1",
+    "tailwindcss": "^3.4.17",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.7.2"
+  }
+}
