@@ -2,14 +2,18 @@ import { buildFlightAffiliateUrl, buildFerryAffiliateUrl } from '@/lib/affiliate
 
 describe('Affiliate URL Builders', () => {
   describe('buildFlightAffiliateUrl', () => {
+    let originalTravelpayoutsPartnerId: string | undefined
+
     beforeEach(() => {
-      // Save original env
-      this.originalEnv = process.env.TRAVELPAYOUTS_PARTNER_ID
+      originalTravelpayoutsPartnerId = process.env.TRAVELPAYOUTS_PARTNER_ID
     })
 
     afterEach(() => {
-      // Restore env
-      process.env.TRAVELPAYOUTS_PARTNER_ID = this.originalEnv
+      if (originalTravelpayoutsPartnerId === undefined) {
+        delete process.env.TRAVELPAYOUTS_PARTNER_ID
+      } else {
+        process.env.TRAVELPAYOUTS_PARTNER_ID = originalTravelpayoutsPartnerId
+      }
     })
 
     it('should return null when TRAVELPAYOUTS_PARTNER_ID is not set', () => {
@@ -49,8 +53,9 @@ describe('Affiliate URL Builders', () => {
         origin: 'New York',
         destination: 'Los Angeles',
       })
-      expect(url).toContain('new%20york')
-      expect(url).toContain('los%20angeles')
+      const target = new URL(url as string).searchParams.get('u')
+      expect(target).toContain('new%20york')
+      expect(target).toContain('los%20angeles')
     })
 
     it('should handle optional date parameter', () => {
@@ -71,14 +76,26 @@ describe('Affiliate URL Builders', () => {
   })
 
   describe('buildFerryAffiliateUrl', () => {
+    let originalDirectFerriesPartnerId: string | undefined
+    let originalDirectFerriesBaseUrl: string | undefined
+
     beforeEach(() => {
-      this.originalPartnerId = process.env.DIRECT_FERRIES_PARTNER_ID
-      this.originalBaseUrl = process.env.DIRECT_FERRIES_BASE_URL
+      originalDirectFerriesPartnerId = process.env.DIRECT_FERRIES_PARTNER_ID
+      originalDirectFerriesBaseUrl = process.env.DIRECT_FERRIES_BASE_URL
     })
 
     afterEach(() => {
-      process.env.DIRECT_FERRIES_PARTNER_ID = this.originalPartnerId
-      process.env.DIRECT_FERRIES_BASE_URL = this.originalBaseUrl
+      if (originalDirectFerriesPartnerId === undefined) {
+        delete process.env.DIRECT_FERRIES_PARTNER_ID
+      } else {
+        process.env.DIRECT_FERRIES_PARTNER_ID = originalDirectFerriesPartnerId
+      }
+
+      if (originalDirectFerriesBaseUrl === undefined) {
+        delete process.env.DIRECT_FERRIES_BASE_URL
+      } else {
+        process.env.DIRECT_FERRIES_BASE_URL = originalDirectFerriesBaseUrl
+      }
     })
 
     it('should return null when DIRECT_FERRIES_PARTNER_ID is not set', () => {

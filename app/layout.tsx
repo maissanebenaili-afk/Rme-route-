@@ -4,8 +4,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 
 export const metadata: Metadata = {
   title: "MRE Route – Europe ↔ Maroc",
-  description: "Comparez voiture, ferry et avion et préparez votre voyage vers le Maroc.",
-  manifest: "/manifest.webmanifest"
+  description: "Comparez voiture, ferry et avion et préparez votre voyage vers le Maroc."
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
