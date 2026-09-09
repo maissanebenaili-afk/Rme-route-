@@ -1,36 +1,50 @@
-# MRE Route — base GitHub consolidée
+# MRE Route — produit voyage diaspora
 
-MVP mobile-first pour les voyages Europe ↔ Maroc.
+MRE Route évolue d'un MVP route/travel générique vers une application communautaire de préparation de trajets diaspora entre l'Europe et le pays d'origine.
 
-## État
-Cette version consolide la base commerciale et la base MVP corrigée disponibles au 8 septembre 2026. Elle n’affirme pas que les fournisseurs ferry/vol, péages ou trafic sont déjà connectés.
+## Ce que montre cette version
+
+- une page d'accueil orientée communautés diaspora
+- un scaffold léger pour plusieurs couloirs (`Maroc`, `Algérie`, `Portugal`, `Roumanie`, `Turquie`, `diasporas africaines`)
+- des sections originales pour budget, arrêts utiles, conseils communauté, aides famille et informations pratiques
+- une présentation honnête : les ports, frontières, ferries, alertes et recommandations vérifiées ne sont pas présentés comme des flux temps réel tant qu'ils ne sont pas réellement connectés
 
 ## Lancer
+
 ```bash
 npm install
 npm run dev
 ```
 
 Build :
+
 ```bash
 npm run build
 ```
 
+Tests :
+
+```bash
+npm test
+```
+
 ## Architecture
+
 - Next.js App Router + TypeScript + Tailwind
-- API server-side pour les secrets d’affiliation et AlAdhan
+- API server-side pour les secrets d'affiliation et AlAdhan
+- configuration simple de communautés dans `lib/config.ts`
 - Capacitor préparé pour une future app mobile
-- Les données temps réel doivent provenir de fournisseurs contractuels/validés
 
-## Règles
-- Aucun secret dans le client.
-- Aucun prix ou horaire fictif présenté comme temps réel.
-- Ne pas utiliser `output: export` tant que les routes API server-side font partie du produit web.
-- Le dépôt GitHub devient la source de vérité du code.
+## Principes produit
 
-## Prochaine étape
-1. Installer et lancer le build.
-2. Corriger les erreurs éventuelles.
-3. Brancher géocodage + routing réel.
-4. Brancher les partenaires d’affiliation réellement validés.
-5. Ajouter tests, sécurité, analytics et CI.
+- pas de copie de marque, contenu ou parcours d'un concurrent
+- pas de secret dans le client
+- pas de prix, horaires ou alertes fictifs présentés comme du temps réel
+- une seule base produit, extensible par communauté, langue et couloir
+
+## Suites recommandées
+
+1. brancher de vraies sources validées pour cartes, ferries, ports et frontières
+2. localiser le contenu par langue et communauté prioritaire
+3. ajouter des tests UI supplémentaires autour du sélecteur de communauté et des sections informatives
+4. poursuivre la préparation mobile/Play Store quand les données et parcours seront réellement prêts
