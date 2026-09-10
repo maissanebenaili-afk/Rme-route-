@@ -12,6 +12,10 @@ export default function RouteSearch() {
     <>
       <section className="rounded-2xl border bg-white p-5 shadow-sm">
         <h1 className="text-xl font-bold">Votre voyage Europe → Maroc</h1>
+        <h2 className="text-xl font-bold">Planifiez votre trajet Europe → Maroc</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          RME Voyage centralise les informations essentielles pour préparer un départ serein.
+        </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <input value={origin} onChange={e=>setOrigin(e.target.value)}
             className="rounded-xl border p-3" aria-label="Départ"/>

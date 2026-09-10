@@ -1,9 +1,11 @@
-# MRE Route — base GitHub consolidée
+# RME Voyage — base GitHub consolidée
 
 MVP mobile-first pour les voyages Europe ↔ Maroc.
 
 ## État
-Cette version consolide la base commerciale et la base MVP corrigée disponibles au 8 septembre 2026. Elle n’affirme pas que les fournisseurs ferry/vol, péages ou trafic sont déjà connectés.
+Cette version consolide la base commerciale et la base MVP corrigée disponibles au 8 septembre 2026. RME Voyage n’affirme pas que les fournisseurs ferry/vol, péages ou trafic sont déjà connectés.
+
+Promesse produit : aider les Ressortissants Marocains à l’Étranger à préparer, organiser et simplifier leurs voyages entre l’Europe et le Maroc.
 
 ## Lancer
 ```bash

@@ -39,6 +39,14 @@ export function buildFerryAffiliateUrl(params: {
   if (!base) return null;
 
   const url = new URL(base);
+  let url: URL;
+
+  try {
+    url = new URL(base);
+  } catch {
+    return null;
+  }
+
   url.searchParams.set("partner", marker);
   url.searchParams.set("origin", params.origin);
   url.searchParams.set("destination", params.destination);

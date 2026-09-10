@@ -8,6 +8,7 @@ export default function NewsFeed() {
       </p>
       <div className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
         Conseil : vérifiez les conditions de ferry et les formalités avant le départ.
+        Promesse RME Voyage : vous aider à préparer, organiser et simplifier chaque trajet Europe ↔ Maroc.
       </div>
     </section>
   );
