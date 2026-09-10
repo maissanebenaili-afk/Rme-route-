@@ -2,5 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+:root { color-scheme: light; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: #f8fafc; color: #0f172a; }
+body { margin: 0; background: #fbf7ef; color: #163b37; }
+* { box-sizing: border-box; }
+::selection { background: #d9824b; color: white; }
+
+input { background: #fffdf8; border-color: #ded5c5; }
+input:focus { border-color: #0d6255; }
