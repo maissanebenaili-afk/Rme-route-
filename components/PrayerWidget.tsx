@@ -37,7 +37,7 @@ export default function PrayerWidget() {
     async function fetchPrayers(lat: number, lon: number) {
       try {
         const res = await fetch(
-          `/api/prayer?latitude=${lat}&longitude=${lon}&method=3`,
+          `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=3`,
           { signal: controller.signal }
         );
         if (!res.ok) throw new Error("Prayer API error");

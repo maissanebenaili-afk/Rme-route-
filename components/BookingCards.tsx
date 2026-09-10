@@ -13,26 +13,15 @@ export default function BookingCards({ origin, destination, date }: Props) {
 
   async function go(type: "flight"|"ferry") {
     setLoading(type);
-    try {
-      const q = new URLSearchParams({
-        type, origin, destination,
-        ...(date ? { date } : {})
-      });
-      const res = await fetch(`/api/affiliates?${q.toString()}`);
-      const data = await res.json();
-
-      if (data.configured && data.affiliateUrl) {
-        window.location.assign(data.affiliateUrl);
-      } else {
-        alert(
-          type === "ferry"
-            ? "Le partenaire ferry n'est pas encore configuré."
-            : "Le partenaire vols n'est pas encore configuré."
-        );
-      }
-    } finally {
+    // Affiliate links not yet configured - show informational message
+    setTimeout(() => {
+      alert(
+        type === "ferry"
+          ? "Le partenaire ferry n'est pas encore configuré. Utilisez DirectFerries ou AFerry pour réserver votre traversée."
+          : "Le partenaire vols n'est pas encore configuré. Utilisez Skyscanner ou Kayak pour comparer les vols."
+      );
       setLoading(null);
-    }
+    }, 500);
   }
 
   return (
