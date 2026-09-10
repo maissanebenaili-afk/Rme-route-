@@ -1,39 +1,32 @@
-import Link from "next/link";
-import {
-  ArrowRight,
-  CalendarCheck,
-  CircleDollarSign,
-  MapPinned,
-  ShipWheel,
-} from "lucide-react";
+import Link from 'next/link';
+import { ArrowRight, CalendarCheck, CircleDollarSign, MapPinned, ShipWheel } from 'lucide-react';
 
 const features = [
   {
     icon: MapPinned,
-    title: "Préparez votre trajet",
-    text: "Organisez votre voyage entre l’Europe et le Maroc en un seul endroit.",
+    title: 'Préparez votre trajet',
+    text: 'Organisez votre voyage entre l’Europe et le Maroc en un seul endroit.',
   },
   {
     icon: CircleDollarSign,
-    title: "Estimez votre budget",
-    text: "Comparez les options de transport et anticipez les principaux coûts.",
+    title: 'Estimez votre budget',
+    text: 'Comparez les options de transport et anticipez les principaux coûts.',
   },
   {
     icon: ShipWheel,
-    title: "Ferry, avion et route",
-    text: "Retrouvez les informations utiles pour choisir la solution adaptée à votre voyage.",
+    title: 'Ferry, avion et route',
+    text: 'Retrouvez les informations utiles pour choisir la solution adaptée à votre voyage.',
   },
   {
     icon: CalendarCheck,
-    title: "Voyagez sereinement",
-    text: "Accédez aux services, horaires de prière et informations pratiques pendant votre trajet.",
+    title: 'Voyagez sereinement',
+    text: 'Accédez aux services, horaires de prière et informations pratiques pendant votre trajet.',
   },
 ];
 
 export const metadata = {
-  title: "Découvrir MRE Route",
-  description:
-    "La plateforme pour préparer vos trajets entre l’Europe et le Maroc.",
+  title: 'Découvrir MRE Route',
+  description: 'La plateforme pour préparer vos trajets entre l’Europe et le Maroc.',
 };
 
 export default function DiscoverPage() {
@@ -60,9 +53,8 @@ export default function DiscoverPage() {
             Votre voyage vers le Maroc, mieux préparé.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            MRE Route rassemble les outils essentiels pour planifier votre
-            itinéraire, estimer votre budget et retrouver les services utiles
-            sur la route.
+            MRE Route rassemble les outils essentiels pour planifier votre itinéraire, estimer votre
+            budget et retrouver les services utiles sur la route.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link
@@ -81,9 +73,7 @@ export default function DiscoverPage() {
         </div>
 
         <div className="rounded-[2rem] border border-white/10 bg-gradient-to-br from-emerald-500/25 to-slate-900 p-7 shadow-2xl shadow-emerald-950/40 sm:p-9">
-          <p className="text-sm font-bold text-emerald-200">
-            Un seul point de départ
-          </p>
+          <p className="text-sm font-bold text-emerald-200">Un seul point de départ</p>
           <div className="mt-7 space-y-5">
             <div className="rounded-2xl bg-white/10 p-5">
               <p className="text-sm text-slate-300">Itinéraire</p>
@@ -113,10 +103,7 @@ export default function DiscoverPage() {
           </h2>
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {features.map(({ icon: Icon, title, text }) => (
-              <article
-                key={title}
-                className="rounded-3xl border border-slate-200 p-7"
-              >
+              <article key={title} className="rounded-3xl border border-slate-200 p-7">
                 <Icon className="text-emerald-700" size={28} />
                 <h3 className="mt-5 text-xl font-extrabold">{title}</h3>
                 <p className="mt-3 leading-7 text-slate-600">{text}</p>
@@ -144,8 +131,8 @@ export default function DiscoverPage() {
       </section>
 
       <footer className="border-t border-white/10 px-5 py-8 text-center text-sm text-slate-400">
-        MRE Route — Informations indicatives. Vérifiez les conditions des
-        transporteurs avant le départ.
+        MRE Route — Informations indicatives. Vérifiez les conditions des transporteurs avant le
+        départ.
       </footer>
     </main>
   );

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 import {
   ArrowRight,
   BadgeEuro,
@@ -7,30 +7,29 @@ import {
   Route,
   ShieldCheck,
   Ticket,
-} from "lucide-react";
+} from 'lucide-react';
 
 const pillars = [
   {
     icon: Route,
-    title: "Organiser",
-    text: "Itinéraire, budget et étapes utiles avant le départ.",
+    title: 'Organiser',
+    text: 'Itinéraire, budget et étapes utiles avant le départ.',
   },
   {
     icon: Ticket,
-    title: "Comparer",
-    text: "Ferry et vols via des partenaires affichés en toute transparence.",
+    title: 'Comparer',
+    text: 'Ferry et vols via des partenaires affichés en toute transparence.',
   },
   {
     icon: BellRing,
-    title: "Rester informé",
-    text: "Un espace dédié aux alertes voyage, publié uniquement à partir de sources vérifiées.",
+    title: 'Rester informé',
+    text: 'Un espace dédié aux alertes voyage, publié uniquement à partir de sources vérifiées.',
   },
 ];
 
 export const metadata = {
-  title: "MRE Route | Préparer son voyage vers le Maroc",
-  description:
-    "Comparez, planifiez et voyagez plus sereinement entre l’Europe et le Maroc.",
+  title: 'MRE Route | Préparer son voyage vers le Maroc',
+  description: 'Comparez, planifiez et voyagez plus sereinement entre l’Europe et le Maroc.',
 };
 
 export default function GuidePage() {
@@ -59,8 +58,8 @@ export default function GuidePage() {
               Partir au Maroc, sans laisser votre budget au hasard.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-emerald-50">
-              MRE Route vous aide à organiser le trajet, comparer vos options et
-              garder les informations pratiques au même endroit.
+              MRE Route vous aide à organiser le trajet, comparer vos options et garder les
+              informations pratiques au même endroit.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
@@ -77,27 +76,23 @@ export default function GuidePage() {
               </a>
             </div>
             <p className="mt-5 text-sm text-emerald-100">
-              Gratuit à utiliser. Certaines redirections peuvent être des liens
-              affiliés, signalés avant toute réservation.
+              Gratuit à utiliser. Certaines redirections peuvent être des liens affiliés, signalés
+              avant toute réservation.
             </p>
           </div>
           <div className="rounded-[2rem] bg-[#0e5148] p-6 shadow-2xl shadow-black/30 sm:p-8">
-            <p className="font-bold text-amber-200">
-              Votre départ, en 3 minutes
-            </p>
+            <p className="font-bold text-amber-200">Votre départ, en 3 minutes</p>
             <ol className="mt-6 space-y-5">
               {[
-                "Indiquez votre départ et votre arrivée",
-                "Estimez carburant, péages et ferry",
-                "Comparez les options puis réservez chez le partenaire",
+                'Indiquez votre départ et votre arrivée',
+                'Estimez carburant, péages et ferry',
+                'Comparez les options puis réservez chez le partenaire',
               ].map((item, index) => (
                 <li className="flex gap-4" key={item}>
                   <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-300 font-black text-emerald-950">
                     {index + 1}
                   </span>
-                  <span className="pt-1 font-medium text-emerald-50">
-                    {item}
-                  </span>
+                  <span className="pt-1 font-medium text-emerald-50">{item}</span>
                 </li>
               ))}
             </ol>
@@ -135,27 +130,22 @@ export default function GuidePage() {
                 Votre budget devient une décision, pas une surprise.
               </h2>
               <p className="mt-5 max-w-xl leading-7 text-slate-600">
-                Utilisez le calculateur puis comparez les traversées et vols
-                disponibles. Les prix, disponibilités et conditions finales sont
-                toujours ceux du partenaire.
+                Utilisez le calculateur puis comparez les traversées et vols disponibles. Les prix,
+                disponibilités et conditions finales sont toujours ceux du partenaire.
               </p>
               <Link
                 href="/"
                 className="mt-7 inline-flex items-center gap-2 rounded-full bg-emerald-700 px-6 py-3 font-bold text-white hover:bg-emerald-800"
               >
-                <BadgeEuro size={18} /> Calculer mon trajet{" "}
-                <ArrowRight size={18} />
+                <BadgeEuro size={18} /> Calculer mon trajet <ArrowRight size={18} />
               </Link>
             </div>
             <div className="rounded-3xl bg-amber-50 p-7">
               <ShieldCheck className="text-emerald-700" size={34} />
-              <h3 className="mt-5 text-xl font-black">
-                Monétisation transparente
-              </h3>
+              <h3 className="mt-5 text-xl font-black">Monétisation transparente</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                MRE Route peut recevoir une commission lorsqu’une réservation
-                est réalisée auprès d’un partenaire. Cela ne modifie pas le prix
-                indiqué par ce partenaire.
+                MRE Route peut recevoir une commission lorsqu’une réservation est réalisée auprès
+                d’un partenaire. Cela ne modifie pas le prix indiqué par ce partenaire.
               </p>
             </div>
           </div>
@@ -171,20 +161,17 @@ export default function GuidePage() {
               Ce qui compte avant de prendre la route.
             </h2>
             <p className="mt-5 leading-7 text-slate-300">
-              Formalités, conditions des transporteurs, circulation et conseils
-              de voyage : cette rubrique sera alimentée par des sources
-              officielles vérifiées.
+              Formalités, conditions des transporteurs, circulation et conseils de voyage : cette
+              rubrique sera alimentée par des sources officielles vérifiées.
             </p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-7">
             <BellRing className="text-amber-300" size={30} />
-            <h3 className="mt-5 text-xl font-black">
-              Aucune actualité inventée
-            </h3>
+            <h3 className="mt-5 text-xl font-black">Aucune actualité inventée</h3>
             <p className="mt-3 text-sm leading-6 text-slate-300">
-              Les sujets politiques ou d’actualité ne seront affichés qu’avec
-              une source, une date et un lien de référence. Activez cette partie
-              après connexion de flux éditoriaux vérifiés.
+              Les sujets politiques ou d’actualité ne seront affichés qu’avec une source, une date
+              et un lien de référence. Activez cette partie après connexion de flux éditoriaux
+              vérifiés.
             </p>
           </div>
         </div>
