@@ -1,6 +1,9 @@
 import { render, screen } from "@testing-library/react";
 
+import DiscoverPage, { metadata as discoverMetadata } from "../app/decouvrir/page";
+import GuidePage, { metadata as guideMetadata } from "../app/guide/page";
 import Home from "../app/page";
+import { metadata as layoutMetadata } from "../app/layout";
 
 jest.mock("@/components/RouteSearch", () => () => <div>RouteSearch</div>);
 jest.mock("@/components/CostCalculator", () => () => <div>CostCalculator</div>);
@@ -8,6 +11,7 @@ jest.mock("@/components/PrayerWidget", () => () => <div>PrayerWidget</div>);
 jest.mock("@/components/ServicesMap", () => () => <div>ServicesMap</div>);
 jest.mock("@/components/NewsFeed", () => () => <div>NewsFeed</div>);
 jest.mock("@/components/RmeGuides", () => () => <div>RmeGuides</div>);
+jest.mock("@vercel/speed-insights/next", () => ({ SpeedInsights: () => null }));
 
 describe("Homepage branding", () => {
   it("shows RME Route Morocco-first positioning", () => {
@@ -20,6 +24,20 @@ describe("Homepage branding", () => {
     expect(
       screen.getByText(/Assistant de mobilité et d'assistance/i),
     ).toBeInTheDocument();
+    expect(screen.queryByText(/MRE Route/i)).toBeNull();
+  });
+
+  it("keeps metadata and secondary pages aligned to RME Route", () => {
+    expect(layoutMetadata.title).toBe("RME Route – Mobilité diaspora Maroc");
+    expect(layoutMetadata.manifest).toBe("/manifest.webmanifest");
+    expect(discoverMetadata.title).toBe("Découvrir RME Route");
+    expect(guideMetadata.title).toBe("RME Route | Préparer son voyage vers le Maroc");
+
+    render(<DiscoverPage />);
+    expect(screen.getAllByText("RME Route").length).toBeGreaterThan(0);
+
+    render(<GuidePage />);
+    expect(screen.getAllByText("RME Route").length).toBeGreaterThan(0);
     expect(screen.queryByText(/MRE Route/i)).toBeNull();
   });
 });
