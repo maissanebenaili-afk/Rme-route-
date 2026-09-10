@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import {
   ArrowRight,
@@ -24,6 +26,9 @@ import NewsFeed from '@/components/NewsFeed';
 import QiblaCompass from '@/components/QiblaCompass';
 import TravelChecklist from '@/components/TravelChecklist';
 import CurrencyConverter from '@/components/CurrencyConverter';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
+import AIAssistant from '@/components/AIAssistant';
+import { LanguageProvider } from '@/lib/LanguageContext';
 import InteractiveMapWrapper from '@/components/InteractiveMapWrapper';
 
 const benefits = [
@@ -45,11 +50,12 @@ const features = [
   { icon: Ship, title: 'Ferry & vol', text: 'Comparez les traversées et vols avec nos partenaires.' },
   { icon: Moon, title: 'Horaires de prière', text: 'Prières et Qibla adaptés à votre position GPS.' },
   { icon: CheckCircle2, title: 'Checklist voyage', text: 'Ne oubliez rien : documents, véhicule, santé, logistique.' },
-  { icon: Compass, title: 'Qibla & services', text: 'Direction de la Kaaba, mosquées, halal et consulats sur votre route.' },
+  { icon: Sparkles, title: 'Assistant IA Darija', text: 'Posez vos questions en darija, français, arabe, anglais ou espagnol.' },
 ];
 
 export default function Home() {
   return (
+    <LanguageProvider>
     <main className="min-h-screen overflow-hidden bg-[#f8f7f2] text-[#173a36]">
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-[#0d3f38] text-white">
@@ -65,6 +71,7 @@ export default function Home() {
             RME <span className="font-medium text-[#f5cd93]">Voyage</span>
           </Link>
           <div className="flex items-center gap-3">
+            <LanguageSwitcher />
             <Link href="/guide" className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline">Le guide</Link>
             <Link href="/decouvrir" className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline">Découvrir</Link>
             <a href="#planifier" className="rounded-full bg-white px-4 py-2 text-sm font-extrabold text-[#0d3f38] transition hover:bg-[#f5cd93]">Planifier</a>
@@ -293,6 +300,8 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <AIAssistant />
     </main>
+    </LanguageProvider>
   );
 }
