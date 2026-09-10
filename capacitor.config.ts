@@ -2,7 +2,7 @@ import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
   appId: "com.mreroute.app",
-  appName: "RME Voyage",
+  appName: "RME Route",
   webDir: "out",
   plugins: {
     SplashScreen: {

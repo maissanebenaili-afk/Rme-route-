@@ -1,6 +1,6 @@
 {
-  "name": "RME Voyage",
-  "short_name": "RME Voyage",
+  "name": "RME Route",
+  "short_name": "RME Route",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",
