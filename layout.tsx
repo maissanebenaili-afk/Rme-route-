@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   description:
     "Préparez des voyages diaspora Europe ↔ pays d'origine avec budget, repères utiles et conseils communautaires.",
   manifest: '/manifest.webmanifest',
+  title: "RME Voyage – Europe ↔ Maroc",
+  description: "RME Voyage aide les Ressortissants Marocains à l’Étranger à préparer, organiser et simplifier leurs voyages entre l’Europe et le Maroc.",
+  manifest: "/manifest.webmanifest"
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -32,6 +32,11 @@ export default function RouteSearch({ community }: { community: CommunityProfile
             {community.flag} {community.label}
           </span>
         </div>
+      <section className="rounded-2xl border bg-white p-5 shadow-sm">
+        <h2 className="text-xl font-bold">Planifiez votre trajet Europe → Maroc</h2>
+        <p className="mt-1 text-sm text-slate-500">
+          RME Voyage centralise les informations essentielles pour préparer un départ serein.
+        </p>
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
           <input
             value={origin}

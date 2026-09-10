@@ -1,6 +1,8 @@
 {
   "name": "MRE Route Diaspora",
   "short_name": "MRE Route",
+  "name": "RME Voyage",
+  "short_name": "RME Voyage",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",

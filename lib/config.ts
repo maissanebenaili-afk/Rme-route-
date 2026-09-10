@@ -142,3 +142,17 @@ export const COMMUNITY_PROFILES: CommunityProfile[] = [
 ];
 
 export const DEFAULT_COMMUNITY_ID = COMMUNITY_PROFILES[0].id;
+export const MARKETS = {
+  MA: {
+    name: "RME Voyage Maroc",
+    flag: "🇲🇦",
+    defaultOrigin: "Paris, France",
+    defaultDestination: "Tanger, Maroc"
+  },
+  DZ: {
+    name: "DZ Route Algérie",
+    flag: "🇩🇿",
+    defaultOrigin: "Paris, France",
+    defaultDestination: "Alger, Algérie"
+  }
+} as const;

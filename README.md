@@ -1,4 +1,5 @@
 # MRE Route — produit voyage diaspora
+# RME Voyage — base GitHub consolidée
 
 MRE Route évolue d'un MVP route/travel générique vers une application communautaire de préparation de trajets diaspora entre l'Europe et le pays d'origine.
 
@@ -8,6 +9,10 @@ MRE Route évolue d'un MVP route/travel générique vers une application communa
 - un scaffold léger pour plusieurs couloirs (`Maroc`, `Algérie`, `Portugal`, `Roumanie`, `Turquie`, `diasporas africaines`)
 - des sections originales pour budget, arrêts utiles, conseils communauté, aides famille et informations pratiques
 - une présentation honnête : les ports, frontières, ferries, alertes et recommandations vérifiées ne sont pas présentés comme des flux temps réel tant qu'ils ne sont pas réellement connectés
+## État
+Cette version consolide la base commerciale et la base MVP corrigée disponibles au 8 septembre 2026. RME Voyage n’affirme pas que les fournisseurs ferry/vol, péages ou trafic sont déjà connectés.
+
+Promesse produit : aider les Ressortissants Marocains à l’Étranger à préparer, organiser et simplifier leurs voyages entre l’Europe et le Maroc.
 
 ## Lancer
 
@@ -37,7 +42,7 @@ npm test
 
 ## Principes produit
 
-- pas de copie de marque, contenu ou parcours d'un concurrent
+
 - pas de secret dans le client
 - pas de prix, horaires ou alertes fictifs présentés comme du temps réel
 - une seule base produit, extensible par communauté, langue et couloir
