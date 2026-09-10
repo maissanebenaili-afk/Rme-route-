@@ -19,7 +19,8 @@ textarea:focus { border-color: #0d6255; }
 input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
-button:focus-visible {
+button:focus-visible,
+a:focus-visible {
   outline: 2px solid #0d6255;
   outline-offset: 2px;
 }
