@@ -1,9 +1,7 @@
-import RouteSearch from "@/components/RouteSearch";
-import CostCalculator from "@/components/CostCalculator";
-import PrayerWidget from "@/components/PrayerWidget";
-import ServicesMap from "@/components/ServicesMap";
-import NewsFeed from "@/components/NewsFeed";
+import HomePage from '@/components/HomePage';
 
+export default function Page() {
+  return <HomePage />;
 export default function Home() {
   return (
     <main className="min-h-screen px-4 py-6 sm:px-6">

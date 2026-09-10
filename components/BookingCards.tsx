@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState } from "react";
+import { useState } from 'react';
 
 type Props = {
   origin: string;
@@ -9,14 +9,16 @@ type Props = {
 };
 
 export default function BookingCards({ origin, destination, date }: Props) {
-  const [loading, setLoading] = useState<"flight"|"ferry"|null>(null);
+  const [loading, setLoading] = useState<'flight' | 'ferry' | null>(null);
 
-  async function go(type: "flight"|"ferry") {
+  async function go(type: 'flight' | 'ferry') {
     setLoading(type);
     try {
       const q = new URLSearchParams({
-        type, origin, destination,
-        ...(date ? { date } : {})
+        type,
+        origin,
+        destination,
+        ...(date ? { date } : {}),
       });
       const res = await fetch(`/api/affiliates?${q.toString()}`);
       const data = await res.json();
@@ -25,7 +27,7 @@ export default function BookingCards({ origin, destination, date }: Props) {
         window.location.assign(data.affiliateUrl);
       } else {
         alert(
-          type === "ferry"
+          type === 'ferry'
             ? "Le partenaire ferry n'est pas encore configuré."
             : "Le partenaire vols n'est pas encore configuré."
         );
@@ -37,32 +39,36 @@ export default function BookingCards({ origin, destination, date }: Props) {
 
   return (
     <section className="rounded-2xl border bg-white p-5 shadow-sm">
-      <h2 className="text-xl font-bold">Réserver au meilleur prix</h2>
+      <h2 className="text-xl font-bold">Comparer des options de départ</h2>
       <p className="mt-1 text-sm text-slate-500">
-        Comparez puis réservez auprès de nos partenaires. Les liens affiliés
-        sont utilisés uniquement lorsqu'un compte partenaire est configuré.
+        Comparez puis réservez auprès de partenaires validés. Les liens affiliés ne sont utilisés
+        que lorsqu&apos;un compte partenaire est effectivement configuré.
       </p>
+
+      <div className="mt-3 rounded-2xl bg-slate-50 p-4 text-sm text-slate-600">
+        Couloir sélectionné : <strong>{origin}</strong> → <strong>{destination}</strong>
+      </div>
 
       <div className="mt-4 grid gap-3 sm:grid-cols-2">
         <button
-          onClick={() => go("ferry")}
+          onClick={() => go('ferry')}
           disabled={loading !== null}
           className="rounded-xl bg-emerald-700 p-4 text-left font-bold text-white disabled:opacity-60"
         >
-          ⛴️ {loading === "ferry" ? "Recherche…" : "Comparer les ferries"}
+          ⛴️ {loading === 'ferry' ? 'Recherche…' : 'Comparer les ferries'}
           <span className="mt-1 block text-xs font-normal opacity-90">
-            Espagne / France ↔ Maroc
+            Traversées et liaisons utiles
           </span>
         </button>
 
         <button
-          onClick={() => go("flight")}
+          onClick={() => go('flight')}
           disabled={loading !== null}
           className="rounded-xl bg-slate-900 p-4 text-left font-bold text-white disabled:opacity-60"
         >
-          ✈️ {loading === "flight" ? "Recherche…" : "Comparer les vols"}
+          ✈️ {loading === 'flight' ? 'Recherche…' : 'Comparer les vols'}
           <span className="mt-1 block text-xs font-normal opacity-90">
-            Europe ↔ Maroc
+            Retour rapide ou aller simple
           </span>
         </button>
       </div>
