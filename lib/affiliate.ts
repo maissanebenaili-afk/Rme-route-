@@ -1,7 +1,7 @@
-export type AffiliateProvider = "travelpayouts" | "directferries";
+export type AffiliateProvider = 'travelpayouts' | 'directferries';
 
 function clean(value: string | undefined) {
-  return (value || "").trim();
+  return (value || '').trim();
 }
 
 export function buildFlightAffiliateUrl(params: {
@@ -15,7 +15,7 @@ export function buildFlightAffiliateUrl(params: {
   // Never invent a partner marker. Return null until the account is configured.
   if (!marker) return null;
 
-  const datePart = date || "";
+  const datePart = date || '';
   const target =
     `https://www.skyscanner.fr/transport/vols/` +
     `${encodeURIComponent(origin.toLowerCase())}/` +
@@ -38,7 +38,6 @@ export function buildFerryAffiliateUrl(params: {
   const base = clean(process.env.DIRECT_FERRIES_BASE_URL);
   if (!base) return null;
 
-  const url = new URL(base);
   let url: URL;
 
   try {
@@ -47,9 +46,9 @@ export function buildFerryAffiliateUrl(params: {
     return null;
   }
 
-  url.searchParams.set("partner", marker);
-  url.searchParams.set("origin", params.origin);
-  url.searchParams.set("destination", params.destination);
-  if (params.date) url.searchParams.set("date", params.date);
+  url.searchParams.set('partner', marker);
+  url.searchParams.set('origin', params.origin);
+  url.searchParams.set('destination', params.destination);
+  if (params.date) url.searchParams.set('date', params.date);
   return url.toString();
 }
