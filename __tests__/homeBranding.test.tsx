@@ -1,9 +1,14 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { render, screen } from "@testing-library/react";
 
 import DiscoverPage, { metadata as discoverMetadata } from "../app/decouvrir/page";
 import GuidePage, { metadata as guideMetadata } from "../app/guide/page";
-import Home from "../app/page";
 import { metadata as layoutMetadata } from "../app/layout";
+import Home from "../app/page";
+import capacitorConfig from "../capacitor.config";
+import { MARKETS } from "../lib/config";
 
 jest.mock("@/components/RouteSearch", () => () => <div>RouteSearch</div>);
 jest.mock("@/components/CostCalculator", () => () => <div>CostCalculator</div>);
@@ -12,6 +17,10 @@ jest.mock("@/components/ServicesMap", () => () => <div>ServicesMap</div>);
 jest.mock("@/components/NewsFeed", () => () => <div>NewsFeed</div>);
 jest.mock("@/components/RmeGuides", () => () => <div>RmeGuides</div>);
 jest.mock("@vercel/speed-insights/next", () => ({ SpeedInsights: () => null }));
+
+const manifest = JSON.parse(
+  readFileSync(join(process.cwd(), "manifest.webmanifest"), "utf8"),
+) as { name: string; short_name: string };
 
 describe("Homepage branding", () => {
   it("shows RME Route Morocco-first positioning", () => {
@@ -32,6 +41,10 @@ describe("Homepage branding", () => {
     expect(layoutMetadata.manifest).toBe("/manifest.webmanifest");
     expect(discoverMetadata.title).toBe("Découvrir RME Route");
     expect(guideMetadata.title).toBe("RME Route | Préparer son voyage vers le Maroc");
+    expect(manifest.name).toBe("RME Route");
+    expect(manifest.short_name).toBe("RME Route");
+    expect(capacitorConfig.appName).toBe("RME Route");
+    expect(MARKETS.MA.name).toBe("RME Route Maroc");
 
     render(<DiscoverPage />);
     expect(screen.getAllByText("RME Route").length).toBeGreaterThan(0);
