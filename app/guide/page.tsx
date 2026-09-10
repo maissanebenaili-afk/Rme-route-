@@ -41,7 +41,7 @@ export default function GuidePage() {
             MRE Route
           </Link>
           <Link
-            href="/"
+            href="/telecharger"
             className="rounded-full bg-white px-4 py-2 text-sm font-bold text-emerald-950 hover:bg-emerald-100"
           >
             Utiliser l&apos;app
@@ -63,7 +63,7 @@ export default function GuidePage() {
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <Link
-                href="/"
+                href="/telecharger"
                 className="inline-flex items-center gap-2 rounded-full bg-amber-300 px-6 py-3 font-extrabold text-emerald-950 hover:bg-amber-200"
               >
                 <Download size={18} /> Ouvrir l&apos;application
@@ -185,7 +185,7 @@ export default function GuidePage() {
             Préparez votre voyage Europe ↔ Maroc avec MRE Route.
           </p>
           <Link
-            href="/"
+            href="/telecharger"
             className="mt-8 inline-flex items-center gap-2 rounded-full bg-emerald-950 px-7 py-3 font-bold text-white hover:bg-emerald-900"
           >
             Commencer gratuitement <ArrowRight size={18} />

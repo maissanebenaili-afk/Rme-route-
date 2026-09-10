@@ -37,7 +37,7 @@ export default function DiscoverPage() {
           MRE Route
         </Link>
         <Link
-          href="/"
+          href="/telecharger"
           className="rounded-full border border-white/20 px-4 py-2 text-sm font-semibold hover:bg-white/10"
         >
           Ouvrir l&apos;application
