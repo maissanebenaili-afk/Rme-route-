@@ -43,7 +43,10 @@ export default function Home() {
               <p className="mt-2 text-sm text-slate-600">{profile.description}</p>
               <div className="mt-4 flex flex-wrap gap-2">
                 {profile.focus.map((item) => (
-                  <span key={item} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                  <span
+                    key={item}
+                    className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700"
+                  >
                     {item}
                   </span>
                 ))}

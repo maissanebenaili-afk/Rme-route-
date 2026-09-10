@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "RME Route – Mobilité diaspora Maroc",
   description:
     "RME Route accompagne les Ressortissants Marocains à l'Étranger avec un assistant de préparation de trajet, budget, traversée et services utiles autour du Maroc.",
+  manifest: "/manifest.webmanifest",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
