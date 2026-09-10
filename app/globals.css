@@ -10,3 +10,7 @@ body { margin: 0; background: #fbf7ef; color: #163b37; }
 
 input { background: #fffdf8; border-color: #ded5c5; }
 input:focus { border-color: #0d6255; }
+input:focus-visible {
+  outline: 2px solid #0d6255;
+  outline-offset: 2px;
+}
