@@ -25,7 +25,7 @@ const features = [
 ];
 
 export const metadata = {
-  title: 'Découvrir MRE Route',
+  title: 'Découvrir RME Voyage',
   description: 'La plateforme pour préparer vos trajets entre l’Europe et le Maroc.',
 };
 
@@ -34,7 +34,7 @@ export default function DiscoverPage() {
     <main className="min-h-screen bg-slate-950 text-white">
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
         <Link href="/" className="text-lg font-black tracking-tight">
-          MRE Route
+          RME <span className="font-medium text-emerald-300">Voyage</span>
         </Link>
         <Link
           href="/telecharger"
@@ -53,7 +53,7 @@ export default function DiscoverPage() {
             Votre voyage vers le Maroc, mieux préparé.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            MRE Route rassemble les outils essentiels pour planifier votre itinéraire, estimer votre
+            RME Voyage rassemble les outils essentiels pour planifier votre itinéraire, estimer votre
             budget et retrouver les services utiles sur la route.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
@@ -119,7 +119,7 @@ export default function DiscoverPage() {
             Prêt à organiser votre voyage ?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg">
-            Accédez à MRE Route et commencez votre préparation dès maintenant.
+            Accédez à RME Voyage et commencez votre préparation dès maintenant.
           </p>
           <Link
             href="/"
@@ -131,7 +131,7 @@ export default function DiscoverPage() {
       </section>
 
       <footer className="border-t border-white/10 px-5 py-8 text-center text-sm text-slate-400">
-        MRE Route — Informations indicatives. Vérifiez les conditions des transporteurs avant le
+        RME Voyage — Informations indicatives. Vérifiez les conditions des transporteurs avant le
         départ.
       </footer>
     </main>
