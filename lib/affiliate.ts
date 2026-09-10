@@ -38,6 +38,7 @@ export function buildFerryAffiliateUrl(params: {
   const base = clean(process.env.DIRECT_FERRIES_BASE_URL);
   if (!base) return null;
 
+  const url = new URL(base);
   let url: URL;
 
   try {
