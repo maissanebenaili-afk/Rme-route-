@@ -1,6 +1,6 @@
 export const MARKETS = {
   MA: {
-    name: "RME Voyage Maroc",
+    name: "RME Route Maroc",
     flag: "🇲🇦",
     defaultOrigin: "Paris, France",
     defaultDestination: "Tanger, Maroc"

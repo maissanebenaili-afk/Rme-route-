@@ -28,7 +28,7 @@ const pillars = [
 ];
 
 export const metadata = {
-  title: 'MRE Route | Préparer son voyage vers le Maroc',
+  title: 'RME Route | Préparer son voyage vers le Maroc',
   description: 'Comparez, planifiez et voyagez plus sereinement entre l’Europe et le Maroc.',
 };
 
@@ -38,7 +38,7 @@ export default function GuidePage() {
       <header className="border-b border-emerald-950/10 bg-[#073b34] text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
           <Link href="/" className="text-xl font-black tracking-tight">
-            MRE Route
+            RME Route
           </Link>
           <Link
             href="/"
@@ -52,13 +52,13 @@ export default function GuidePage() {
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.15fr_.85fr] lg:items-center">
           <div>
             <p className="text-sm font-extrabold uppercase tracking-[.18em] text-amber-300">
-              Le guide de route des MRE
+              Le guide de route des RME
             </p>
             <h1 className="mt-5 max-w-3xl text-5xl font-black leading-[1.04] tracking-tight sm:text-7xl">
               Partir au Maroc, sans laisser votre budget au hasard.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-emerald-50">
-              MRE Route vous aide à organiser le trajet, comparer vos options et garder les
+              RME Route vous aide à organiser le trajet, comparer vos options et garder les
               informations pratiques au même endroit.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
@@ -144,7 +144,7 @@ export default function GuidePage() {
               <ShieldCheck className="text-emerald-700" size={34} />
               <h3 className="mt-5 text-xl font-black">Monétisation transparente</h3>
               <p className="mt-3 text-sm leading-6 text-slate-600">
-                MRE Route peut recevoir une commission lorsqu’une réservation est réalisée auprès
+                RME Route peut recevoir une commission lorsqu’une réservation est réalisée auprès
                 d’un partenaire. Cela ne modifie pas le prix indiqué par ce partenaire.
               </p>
             </div>
@@ -182,7 +182,7 @@ export default function GuidePage() {
             Votre prochain trajet commence ici.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg">
-            Préparez votre voyage Europe ↔ Maroc avec MRE Route.
+            Préparez votre voyage Europe ↔ Maroc avec RME Route.
           </p>
           <Link
             href="/"
