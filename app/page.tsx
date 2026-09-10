@@ -72,28 +72,6 @@ export default function Home() {
           activés et vérifiés avant d'être présentés comme disponibles.
         </footer>
       </div>
-          <div className="relative mx-auto w-full max-w-md">
-            <div className="absolute inset-0 rotate-3 rounded-[2.25rem] bg-[#e6a44e]" />
-            <div className="relative rounded-[2.25rem] border border-white/10 bg-[#153f39] p-7 shadow-2xl sm:p-9">
-              <p className="text-sm font-bold text-[#f5cd93]">Votre carnet de voyage</p>
-              <h2 className="mt-3 text-3xl font-black leading-tight">Un parcours simple. Des décisions plus sereines.</h2>
-              <div className="mt-8 space-y-3">
-                <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f5cd93] font-black text-[#103d37]">1</span><div><p className="text-xs text-white/60">Avant le départ</p><p className="font-bold">Itinéraire et budget</p></div></div>
-                <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4"><span className="grid h-10 w-10 place-items-center rounded-xl bg-[#73c8b4] font-black text-[#103d37]">2</span><div><p className="text-xs text-white/60">Sur la route</p><p className="font-bold">Services et informations utiles</p></div></div>
-              </div>
-              <p className="mt-7 border-t border-white/10 pt-5 text-sm leading-6 text-white/65">Pensé mobile, lisible et utile, quel que soit votre point de départ.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-[#dce3dc] bg-white py-8"><div className="mx-auto grid max-w-6xl gap-6 px-5 sm:grid-cols-3 sm:px-8">{benefits.map(({ icon: Icon, title, text }) => <article key={title} className="flex gap-4"><span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl bg-[#e9f1ed] text-[#0d6255]"><Icon size={21} /></span><div><h2 className="font-extrabold">{title}</h2><p className="mt-1 text-sm leading-6 text-[#5a716c]">{text}</p></div></article>)}</div></section>
-
-      <section id="planifier" className="mx-auto max-w-5xl px-5 py-20 sm:px-8"><div className="mb-10 max-w-2xl"><p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Préparez sereinement</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">L’essentiel, au bon moment.</h2><p className="mt-4 text-lg leading-8 text-[#5a716c]">Commencez par votre trajet, puis ajustez votre budget avant de comparer vos options.</p></div><div className="space-y-6"><RouteSearch /><CostCalculator /></div></section>
-
-      <section className="bg-[#e8efe7] py-20"><div className="mx-auto max-w-5xl px-5 sm:px-8"><div className="mb-10 max-w-2xl"><p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">En route</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Les repères qui comptent.</h2></div><div className="space-y-6"><PrayerWidget /><ServicesMap /><NewsFeed /></div></div></section>
-
-      <footer className="bg-[#0d3f38] px-5 py-10 text-center text-sm text-white/65">RME Voyage — Votre compagnon de route entre l’Europe, le Maroc et les communautés du monde.</footer>
     </main>
   );
 }
