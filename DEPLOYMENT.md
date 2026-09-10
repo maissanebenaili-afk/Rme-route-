@@ -83,10 +83,13 @@ npm run build && npm run start
 
 ### Mobile (iOS/Android via Capacitor)
 ```bash
-npm run cap:build
-npx cap sync ios
-npx cap sync android
+CAPACITOR_SERVER_URL=https://votre-domaine.example npx cap add android
+CAPACITOR_SERVER_URL=https://votre-domaine.example npm run cap:build
 ```
+
+> Cette application dépend encore de routes API Next.js côté serveur. Avant une release Android,
+> déployez d'abord l'application web sur une URL HTTPS stable puis renseignez
+> `CAPACITOR_SERVER_URL`.
 
 ### PWA (Progressive Web App)
 - manifest.webmanifest ✓ configuré

@@ -36,3 +36,8 @@ npm run build
 3. Brancher géocodage + routing réel.
 4. Brancher les partenaires d’affiliation réellement validés.
 5. Ajouter tests, sécurité, analytics et CI.
+
+## Préparation Play Store Android
+- Voir `/PLAY_STORE_READINESS.md` pour l'état réel de préparation Android.
+- La page `/privacy` sert de base honnête avant publication et doit être publiée sur une URL stable.
+- Tant que les routes API Next.js existent, la version Android doit pointer vers une application web déployée en HTTPS via `CAPACITOR_SERVER_URL`.
