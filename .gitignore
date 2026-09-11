@@ -44,3 +44,5 @@ capacitor.config.json
 /.idea
 /android
 /ios.qa-shots/
+.qa-geocode-test/
+.qa-shots/
