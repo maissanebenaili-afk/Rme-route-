@@ -4,14 +4,13 @@ import { Inter, Plus_Jakarta_Sans, Amiri } from 'next/font/google';
 import PWAInstall from '@/components/PWAInstall';
 import Accessibility from '@/components/Accessibility';
 import RegisterSW from './register-sw';
+import { siteUrl } from '@/lib/siteUrl';
 
 // Fallback fonts (kept for RTL Arabic + safety net); primary display/body
 // identity fonts (Boska + General Sans) load via Fontshare <link> below.
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap', weight: ['400', '500', '600', '700', '800'] });
 const amiri = Amiri({ subsets: ['arabic', 'latin'], variable: '--font-amiri', display: 'swap', weight: ['400', '700'] });
-
-const siteUrl = 'https://rme-voyage.com';
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -30,13 +29,6 @@ export const metadata: Metadata = {
   creator: 'Nova Presta',
   publisher: 'Nova Presta',
   manifest: '/manifest.webmanifest',
-  alternates: {
-    languages: {
-      'fr': '/',
-      'en': '/en',
-      'ar': '/ar',
-    },
-  },
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
@@ -46,7 +38,7 @@ export const metadata: Metadata = {
     description: 'Itinéraire, budget, ferry, vol, horaires de prière et services sur votre route. Le compagnon de voyage des Marocains du monde.',
     images: [
       {
-        url: '/og-image.png',
+        url: '/opengraph-image',
         width: 1200,
         height: 630,
         alt: 'RME Voyage — Europe ↔ Maroc',
@@ -57,7 +49,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'RME Voyage — Europe ↔ Maroc',
     description: 'Préparez votre voyage entre l\'Europe et le Maroc : itinéraire, budget, ferry, vol, prières et services.',
-    images: ['/og-image.png'],
+    images: ['/opengraph-image'],
   },
   robots: {
     index: true,

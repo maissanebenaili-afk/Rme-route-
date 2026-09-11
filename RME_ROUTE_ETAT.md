@@ -1,5 +1,49 @@
 # RME Route — état maître
 
+## Correctif parcours v1.3.1 (2026-09-11, état de travail)
+
+Cette section remplace les affirmations de conformité Nominatim et de cache
+robuste figurant dans les anciens comptes rendus ci-dessous. Les résultats
+historiques ne constituent pas une preuve de publication actuelle.
+
+- Réservation : les anciens boutons n'ouvraient qu'une alerte. Ils deviennent
+  des liens réels vers les comparateurs publics, utilisables même sans partenaire.
+  L'affiliation nécessite désormais un lien HTTPS complet délivré par le tableau
+  de bord partenaire (`TRAVELPAYOUTS_FLIGHT_URL` / `DIRECT_FERRIES_AFFILIATE_URL`).
+  Aucun programme, marqueur, tarif ni gain n'est inventé.
+- Recherche : l'autocomplétion de l'API publique Nominatim était interdite par
+  https://operations.osmfoundation.org/policies/nominatim/ et le débit client
+  n'assurait pas le plafond agrégé. Remplacée par des suggestions locales,
+  gratuites, utilisables hors connexion, avec saisie libre. Les distances
+  routières non vérifiées ne sont plus affichées dans ce parcours. L'utilisateur
+  peut ouvrir un vrai calcul de trajet dans Google Maps, externe à l'app.
+- Partage : un lien préremplit villes/date dans l'application. Aucun envoi
+  automatique, aucune collecte d'identité/GPS, consentement via geste utilisateur.
+  Repli presse-papiers et champ manuel si les permissions ne sont pas disponibles.
+- Hors connexion : retrait de `/globals.css` inexistant, précache tolérant à un
+  fichier optionnel manquant, nettoyage limité aux caches RME Voyage, pas de
+  cache des API/affiliations, des dates partagées ni des réponses Next.js RSC.
+  Ce n'est pas une synchronisation hors ligne complète.
+- Partage social : image Open Graph réellement générée ; sitemap et métadonnées
+  pointent vers `https://rme-route.vercel.app` ou un domaine HTTPS explicitement
+  configuré, suppression des variantes `/en` et `/ar` inexistantes.
+- Livraison : `.vercelignore` corrigé (il contenait des `\n` littéraux sur une
+  seule ligne), script `typecheck` ajouté. Cela ne prouve pas que les contrôles
+  de déploiement tiers sont réparés.
+
+### Blocages observés sur les services connectés
+
+- GitHub : CI et CodeQL réussissent sur `6a4e5bf`.
+- Vercel : le déploiement `5vBo4tq43jNkKT67d97THb7fG3dE` est construit mais
+  non promu, avec « Checks for Deployment have failed ». Lint et Typecheck
+  affichent « No package.json found in project », alors que le fichier existe
+  dans GitHub et que le répertoire racine Vercel est vide (racine du dépôt).
+  Ne pas désactiver les contrôles obligatoires ni promouvoir à l'aveugle.
+  Diagnostic : https://vercel.com/maissanebenaili-2967/rme-route/5vBo4tq43jNkKT67d97THb7fG3dE
+- Travelpayouts : le navigateur connecté montre encore l'étape d'ajout du canal
+  à monétiser. Aucune approbation de programme ni lien de commission confirmé.
+  Aucune inscription partenaire ni publication sociale soumise pendant l'audit.
+
 Date : 2026-09-11 (v1.3.0 — CI GitHub Actions, rate limiting, durcissement CORS/CSP)
 
 ## Source de vérité

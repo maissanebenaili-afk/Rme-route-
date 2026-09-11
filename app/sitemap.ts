@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next';
+import { siteUrl } from '@/lib/siteUrl';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://rme-voyage.com';
+  const baseUrl = siteUrl;
   const lastModified = new Date();
 
   return [

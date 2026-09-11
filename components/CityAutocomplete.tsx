@@ -1,20 +1,18 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { Loader2, MapPin } from "lucide-react";
-import { geocodeSearch, type GeocodeResult } from "@/lib/geocoding";
-
-// Débounce minimum recommandé par la politique d'usage Nominatim pour éviter
-// de solliciter le service à chaque frappe clavier.
-const DEBOUNCE_MS = 450;
+import { MapPin } from "lucide-react";
+import { searchCitySuggestions, type CitySuggestion } from "@/lib/geocoding";
 
 type Props = {
   label: string;
   value: string;
   placeholder?: string;
   onChange: (value: string) => void;
-  onSelect: (result: GeocodeResult) => void;
+  onSelect: (result: CitySuggestion) => void;
   icon?: React.ReactNode;
+  /** Longueur max du champ texte ; alignée sur la limite du lien de partage (~120). */
+  maxLength?: number;
 };
 
 export default function CityAutocomplete({
@@ -24,14 +22,13 @@ export default function CityAutocomplete({
   onChange,
   onSelect,
   icon,
+  maxLength = 120,
 }: Props) {
-  const [suggestions, setSuggestions] = useState<GeocodeResult[]>([]);
+  const [suggestions, setSuggestions] = useState<CitySuggestion[]>([]);
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState(-1);
   const listboxId = useId();
-  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const abortRef = useRef<AbortController | null>(null);
+  const optionIdPrefix = useId();
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -44,46 +41,53 @@ export default function CityAutocomplete({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Suggestions locales instantanées : aucun appel réseau, aucun debounce,
+  // aucun timeout. Filtrage synchrone sur une liste statique (voir
+  // lib/geocoding.ts) — conforme à la politique d'usage Nominatim qui
+  // interdit l'autocomplétion côté client contre son API.
   function handleInputChange(next: string) {
     onChange(next);
-    setError(null);
 
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    if (abortRef.current) abortRef.current.abort();
-
-    const trimmed = next.trim();
-    if (trimmed.length < 2) {
-      setSuggestions([]);
-      setOpen(false);
-      setLoading(false);
-      return;
-    }
-
-    setLoading(true);
-    debounceRef.current = setTimeout(async () => {
-      const controller = new AbortController();
-      abortRef.current = controller;
-      try {
-        const results = await geocodeSearch(trimmed, { signal: controller.signal });
-        setSuggestions(results);
-        setOpen(results.length > 0);
-      } catch (err) {
-        if ((err as Error).name !== "AbortError") {
-          setError("Recherche de villes indisponible pour le moment (service tiers gratuit).");
-          setSuggestions([]);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }, DEBOUNCE_MS);
+    const results = searchCitySuggestions(next);
+    setSuggestions(results);
+    setOpen(results.length > 0);
+    setActiveIndex(-1);
   }
 
-  function handleSelect(result: GeocodeResult) {
-    onSelect(result);
+  // Important : on met d'abord à jour le texte (onChange) AVANT de propager
+  // la sélection (onSelect). Sinon, dans RouteSearch, le onChange du champ
+  // réinitialise les coordonnées juste après qu'onSelect les ait posées, et
+  // la sélection est perdue immédiatement.
+  function handleSelect(result: CitySuggestion) {
     onChange(result.displayName);
+    onSelect(result);
     setOpen(false);
     setSuggestions([]);
+    setActiveIndex(-1);
   }
+
+  function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (!open || suggestions.length === 0) return;
+
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setActiveIndex((i) => (i + 1) % suggestions.length);
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setActiveIndex((i) => (i <= 0 ? suggestions.length - 1 : i - 1));
+    } else if (e.key === "Enter") {
+      if (activeIndex >= 0 && activeIndex < suggestions.length) {
+        e.preventDefault();
+        handleSelect(suggestions[activeIndex]);
+      }
+    } else if (e.key === "Escape") {
+      setOpen(false);
+      setActiveIndex(-1);
+    }
+  }
+
+  const activeOptionId =
+    activeIndex >= 0 ? `${optionIdPrefix}-option-${activeIndex}` : undefined;
 
   return (
     <div ref={containerRef} className="relative">
@@ -96,7 +100,8 @@ export default function CityAutocomplete({
             value={value}
             onChange={(e) => handleInputChange(e.target.value)}
             onFocus={() => suggestions.length > 0 && setOpen(true)}
-            className="w-full rounded-xl border p-3 pr-8"
+            onKeyDown={handleKeyDown}
+            className="w-full rounded-xl border p-3 pr-8 min-h-[44px]"
             aria-label={label}
             placeholder={placeholder}
             autoComplete="off"
@@ -104,18 +109,11 @@ export default function CityAutocomplete({
             aria-expanded={open}
             aria-autocomplete="list"
             aria-controls={listboxId}
+            aria-activedescendant={activeOptionId}
+            maxLength={maxLength}
           />
-          {loading && (
-            <Loader2
-              size={16}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 animate-spin text-slate-400"
-              aria-hidden
-            />
-          )}
         </div>
       </label>
-
-      {error && <p className="mt-1 text-xs text-terracotta-600">{error}</p>}
 
       {open && suggestions.length > 0 && (
         <ul
@@ -124,13 +122,21 @@ export default function CityAutocomplete({
           className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-slate-200 bg-white shadow-lg"
         >
           {suggestions.map((s, idx) => (
-            <li key={`${s.lat}-${s.lon}-${idx}`} role="option" aria-selected="false">
+            <li
+              key={s.displayName}
+              id={`${optionIdPrefix}-option-${idx}`}
+              role="option"
+              aria-selected={idx === activeIndex}
+            >
               <button
                 type="button"
                 onClick={() => handleSelect(s)}
-                className="flex w-full items-start gap-2 px-3 py-2 text-left text-sm hover:bg-sable-50"
+                onMouseEnter={() => setActiveIndex(idx)}
+                className={`flex min-h-[44px] w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-sable-50 ${
+                  idx === activeIndex ? "bg-sable-50" : ""
+                }`}
               >
-                <MapPin size={14} className="mt-0.5 shrink-0 text-zellige-600" />
+                <MapPin size={14} className="shrink-0 text-zellige-600" />
                 <span className="truncate">{s.displayName}</span>
               </button>
             </li>
@@ -138,17 +144,8 @@ export default function CityAutocomplete({
         </ul>
       )}
 
-      <p className="mt-1 text-[11px] text-slate-400">
-        Suggestions via{" "}
-        <a
-          href="https://nominatim.openstreetmap.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="underline hover:text-slate-600"
-        >
-          Nominatim / OpenStreetMap
-        </a>{" "}
-        (service gratuit, débit limité)
+      <p className="mt-1 text-xs text-slate-400">
+        Suggestions locales • saisie libre possible
       </p>
     </div>
   );

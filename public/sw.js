@@ -1,265 +1,103 @@
-/**
- * RME Voyage - Service Worker
- * Offline support with cache versioning
- * - Stale-while-revalidate for main static pages (accueil, guide, découvrir)
- * - Cache-first for static assets (CSS, JS, fonts, images)
- * - Network-first for API calls
- * - Offline fallback page
+/* RME Voyage: cache only public pages and immutable local assets.
+ * Never cache affiliate URLs, API responses or private/authenticated requests.
  */
+const PREFIX = 'rme-voyage-';
+const VERSION = `${PREFIX}v3`;
+const ASSETS = `${VERSION}-assets`;
+const PAGES = `${VERSION}-pages`;
+const OFFLINE = '/offline.html';
+const PUBLIC_PAGES = ['/', '/guide', '/decouvrir', '/telecharger'];
+const PRECACHE = [OFFLINE, '/manifest.webmanifest', '/icon-192.svg', '/icon-512.svg'];
 
-const CACHE_VERSION = 'rme-voyage-v2';
-const STATIC_CACHE = `${CACHE_VERSION}-static`;
-const PAGES_CACHE = `${CACHE_VERSION}-pages`;
-const API_CACHE = `${CACHE_VERSION}-api`;
-const OFFLINE_URL = '/offline.html';
+async function precache(cacheName, paths) {
+  const cache = await caches.open(cacheName);
+  // Missing optional files cannot invalidate the entire offline installation.
+  await Promise.allSettled(paths.map(async (path) => {
+    const response = await fetch(path, { cache: 'reload' });
+    if (response.ok) await cache.put(path, response);
+  }));
+}
 
-const STATIC_ASSETS = [
-  '/',
-  '/offline.html',
-  '/manifest.webmanifest',
-  '/icon-192.svg',
-  '/icon-512.svg',
-  '/globals.css',
-];
-
-// Pages principales à garder disponibles hors-ligne, servies en
-// stale-while-revalidate (réponse cache immédiate + rafraîchissement réseau
-// en arrière-plan) pour un rendu instantané ET des contenus à jour.
-const MAIN_PAGES = ['/', '/guide', '/decouvrir'];
-
-// API path prefixes that use network-first strategy
-const API_PREFIXES = ['/api/'];
-
-// ─── Install: pre-cache static assets + main pages ───
 self.addEventListener('install', (event) => {
-  event.waitUntil(
-    Promise.all([
-      caches
-        .open(STATIC_CACHE)
-        .then((cache) => cache.addAll(STATIC_ASSETS))
-        .catch(() => {
-          // Some assets may not exist yet; ignore failures
-        }),
-      caches
-        .open(PAGES_CACHE)
-        .then((cache) => cache.addAll(MAIN_PAGES))
-        .catch(() => {
-          // Ignore failures (e.g. offline install)
-        }),
-    ])
-  );
-  self.skipWaiting();
+  event.waitUntil(Promise.all([precache(ASSETS, PRECACHE), precache(PAGES, PUBLIC_PAGES)])
+    .then(() => self.skipWaiting()));
 });
 
-// ─── Activate: clean up old caches ───
 self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => !key.startsWith(CACHE_VERSION))
-          .map((key) => caches.delete(key))
-      )
-    )
-  );
-  self.clients.claim();
+  event.waitUntil(caches.keys().then((keys) => Promise.all(keys
+    .filter((key) => key.startsWith(PREFIX) && !key.startsWith(`${VERSION}-`))
+    .map((key) => caches.delete(key)))).then(() => self.clients.claim()));
 });
 
-// ─── Helper: is this an API request? ───
-function isApiRequest(url) {
-  return API_PREFIXES.some((prefix) => url.pathname.startsWith(prefix));
+function offlineApi() {
+  return new Response(JSON.stringify({ error: 'Connexion requise', offline: true }), {
+    status: 503, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' },
+  });
 }
 
-// ─── Helper: is this a static asset? ───
-function isStaticAsset(url) {
-  const ext = url.pathname.split('.').pop();
-  return [
-    'html',
-    'css',
-    'js',
-    'mjs',
-    'woff',
-    'woff2',
-    'ttf',
-    'eot',
-    'svg',
-    'png',
-    'jpg',
-    'jpeg',
-    'gif',
-    'webp',
-    'ico',
-    'webmanifest',
-  ].includes(ext);
-}
-
-// ─── Cache-first strategy for static assets ───
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) {
-    // Update cache in background
-    fetch(request)
-      .then((response) => {
-        if (response && response.ok) {
-          const clone = response.clone();
-          caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
-        }
-      })
-      .catch(() => {});
-    return cached;
-  }
-
+async function navigation(request) {
+  const cache = await caches.open(PAGES);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 4500);
   try {
-    const response = await fetch(request);
-    if (response && response.ok) {
-      const clone = response.clone();
-      caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
+    const response = await fetch(request, { signal: controller.signal });
+    const url = new URL(request.url);
+    // Do not persist shared dates or travel plans from query parameters.
+    if (response.ok && !url.search && PUBLIC_PAGES.includes(url.pathname) &&
+        response.headers.get('content-type')?.includes('text/html')) {
+      await cache.put(request, response.clone());
     }
     return response;
-  } catch (err) {
-    // Offline fallback for navigation requests
-    if (request.mode === 'navigate') {
-      return caches.match(OFFLINE_URL);
-    }
-    return new Response('Offline', { status: 503, statusText: 'Offline' });
-  }
-}
-
-// ─── Stale-while-revalidate: instant cached response + background refresh ───
-// Utilisé pour les pages statiques principales (accueil, guide, découvrir) :
-// rendu hors-ligne instantané, contenu resynchronisé dès que le réseau revient.
-async function staleWhileRevalidate(request) {
-  const cache = await caches.open(PAGES_CACHE);
-  const cached = await cache.match(request);
-
-  const networkFetch = fetch(request)
-    .then((response) => {
-      if (response && response.ok) {
-        cache.put(request, response.clone());
-      }
-      return response;
-    })
-    .catch(() => null);
-
-  if (cached) {
-    // Rafraîchit en arrière-plan sans bloquer la réponse
-    networkFetch.catch(() => {});
-    return cached;
-  }
-
-  const networkResponse = await networkFetch;
-  if (networkResponse) return networkResponse;
-
-  return caches.match(OFFLINE_URL);
-}
-
-// ─── Network-first strategy for API calls ───
-async function networkFirst(request) {
-  try {
-    const response = await fetch(request);
-    if (response && response.ok) {
-      const clone = response.clone();
-      caches.open(API_CACHE).then((cache) => cache.put(request, clone));
-    }
-    return response;
-  } catch (err) {
-    // Fall back to cache if offline
-    const cached = await caches.match(request);
-    if (cached) return cached;
-    return new Response(
-      JSON.stringify({ error: 'Vous êtes hors ligne', offline: true }),
-      {
-        status: 503,
-        statusText: 'Offline',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
-  }
-}
-
-// ─── Fetch handler ───
-self.addEventListener('fetch', (event) => {
-  const { request } = event;
-
-  // Only handle GET requests
-  if (request.method !== 'GET') return;
-
-  let url;
-  try {
-    url = new URL(request.url);
   } catch {
-    return;
+    const cached = await cache.match(request);
+    return cached || await caches.match(OFFLINE) ||
+      new Response('Vous êtes hors ligne. Reconnectez-vous pour continuer.', {
+        status: 503, headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      });
+  } finally {
+    clearTimeout(timeout);
   }
+}
 
-  // Skip cross-origin requests
+async function asset(request) {
+  const cache = await caches.open(ASSETS);
+  const cached = await cache.match(request);
+  if (cached) return cached;
+  try {
+    const response = await fetch(request);
+    if (response.ok) await cache.put(request, response.clone());
+    return response;
+  } catch {
+    return new Response('', { status: 503 });
+  }
+}
+
+self.addEventListener('fetch', (event) => {
+  const request = event.request;
+  if (request.method !== 'GET') return;
+  const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-
-  // Skip Next.js HMR and internal dev requests
-  if (
-    url.pathname.startsWith('/_next/webpack-hmr') ||
-    url.pathname.startsWith('/__nextjs') ||
-    url.pathname.includes('hot-update')
-  ) {
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(fetch(request).catch(offlineApi));
     return;
   }
-
-  // Main static pages (accueil, guide, découvrir): stale-while-revalidate
-  // for instant offline-capable rendering with background refresh.
-  if (request.mode === 'navigate' && MAIN_PAGES.includes(url.pathname)) {
-    event.respondWith(staleWhileRevalidate(request));
-    return;
-  }
-
-  // Other navigation requests: network-first with offline fallback
+  // Next.js RSC, auth and development requests must not be served cached HTML.
+  if (request.headers.has('RSC') || url.searchParams.has('_rsc') ||
+      request.headers.has('Authorization') || url.pathname.includes('hot-update') ||
+      url.pathname.startsWith('/__nextjs')) return;
   if (request.mode === 'navigate') {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const clone = response.clone();
-          caches.open(STATIC_CACHE).then((cache) => cache.put(request, clone));
-          return response;
-        })
-        .catch(async () => {
-          const cached = await caches.match(request);
-          if (cached) return cached;
-          return caches.match(OFFLINE_URL);
-        })
-    );
+    event.respondWith(navigation(request));
     return;
   }
-
-  // API requests: network-first
-  if (isApiRequest(url)) {
-    event.respondWith(networkFirst(request));
-    return;
+  if (url.pathname.startsWith('/_next/static/') || PRECACHE.includes(url.pathname)) {
+    event.respondWith(asset(request));
   }
-
-  // Static assets: cache-first
-  if (isStaticAsset(url)) {
-    event.respondWith(cacheFirst(request));
-    return;
-  }
-
-  // Default: try network, fall back to cache
-  event.respondWith(
-    fetch(request)
-      .then((response) => response)
-      .catch(async () => {
-        const cached = await caches.match(request);
-        if (cached) return cached;
-        return new Response('Offline', { status: 503, statusText: 'Offline' });
-      })
-  );
 });
 
-// ─── Message handler: allow manual cache clear ───
 self.addEventListener('message', (event) => {
-  if (event.data === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
+  if (event.data === 'SKIP_WAITING') self.skipWaiting();
   if (event.data === 'CLEAR_CACHE') {
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((key) => caches.delete(key)))
-    );
+    event.waitUntil(caches.keys().then((keys) => Promise.all(keys
+      .filter((key) => key.startsWith(PREFIX)).map((key) => caches.delete(key)))));
   }
 });

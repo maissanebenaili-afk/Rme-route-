@@ -1,182 +1,85 @@
 /**
- * RME Voyage — Client de géocodage (Nominatim / OpenStreetMap)
+ * RME Voyage — Suggestions de villes (Europe / Maroc)
  *
- * ⚠️ IMPORTANT — service tiers gratuit, PAS une solution entreprise :
- * Nominatim (https://nominatim.openstreetmap.org) est le service de géocodage
- * public et gratuit du projet OpenStreetMap. Il n'y a pas de clé API, mais
- * son usage est soumis à une politique stricte ("Usage Policy") :
+ * ⚠️ Ce module N'APPELLE PLUS Nominatim/OpenStreetMap.
+ *
+ * L'autocomplétion "à chaque frappe" contre l'API publique Nominatim viole
+ * la politique d'usage officielle du projet (autocomplete-style queries
+ * interdites côté client, limite agrégée d'1 requête/seconde **par
+ * application**, pas par visiteur) :
  * https://operations.osmfoundation.org/policies/nominatim/
  *
- * Règles appliquées ici pour rester conforme :
- * - Un User-Agent explicite identifiant l'application (obligatoire).
- * - Débounce des requêtes (≥ 400 ms) pour ne pas interroger le service à
- *   chaque frappe clavier.
- * - Throttling client : au plus 1 requête/seconde envoyée au serveur.
- * - Cache mémoire simple des résultats déjà obtenus (par requête normalisée)
- *   pour éviter de re-géocoder les mêmes villes.
- * - Pas d'appels en parallèle massifs, pas de "bulk geocoding".
+ * À trafic réel (plusieurs visiteurs simultanés), un débounce/throttle par
+ * onglet ne suffit pas à respecter cette limite globale — il faudrait un
+ * serveur de géocodage dédié (self-hosted Nominatim, ou fournisseur payant
+ * avec clé API) pour ré-introduire une recherche de ville arbitraire.
  *
- * Ce service n'offre AUCUNE garantie de disponibilité ou de SLA — en cas
- * d'indisponibilité ou de dépassement du débit, l'UI doit se dégrader
- * proprement (message d'erreur, pas de crash) plutôt que prétendre que le
- * géocodage a réussi.
+ * Solution sobre retenue ici : une liste statique d'une vingtaine de
+ * grandes villes Europe ↔ Maroc, filtrée localement (aucun réseau, aucune
+ * latence, zéro risque de dépassement de quota). Ce ne sont que des
+ * libellés texte — aucune coordonnée GPS n'est inventée ni utilisée.
+ * La saisie libre reste toujours possible pour toute autre ville : ces
+ * suggestions n'imposent aucune sélection.
  */
 
-export interface GeocodeResult {
+export interface CitySuggestion {
+  /** Libellé affiché et utilisé tel quel comme valeur du champ. */
   displayName: string;
-  lat: number;
-  lon: number;
-  /** Type de lieu retourné par Nominatim (city, town, village, ...) */
-  type?: string;
-  /** Code pays ISO (ex: "fr", "ma") si disponible */
-  countryCode?: string;
-}
-
-const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search";
-
-// Nom explicite de l'app dans le User-Agent, requis par la politique Nominatim.
-// (Le champ User-Agent des requêtes fetch navigateur est géré par le navigateur
-// lui-même ; on l'inclut donc aussi via un paramètre `email`/référent applicatif
-// et un identifiant lisible dans les logs côté serveur si jamais ce module est
-// exécuté côté Node.)
-const APP_USER_AGENT = "RME-Voyage/1.0 (contact: contact@rme-voyage.com)";
-
-// ─── Cache mémoire simple (par process / session navigateur) ───
-const resultsCache = new Map<string, GeocodeResult[]>();
-
-// ─── Throttling client : au plus 1 requête/seconde vers Nominatim ───
-const MIN_INTERVAL_MS = 1000;
-let lastRequestAt = 0;
-let queueTail: Promise<unknown> = Promise.resolve();
-
-function normalizeQuery(query: string): string {
-  return query.trim().toLowerCase();
-}
-
-function scheduleThrottled<T>(task: () => Promise<T>): Promise<T> {
-  const run = queueTail.then(async () => {
-    const now = Date.now();
-    const wait = Math.max(0, lastRequestAt + MIN_INTERVAL_MS - now);
-    if (wait > 0) {
-      await new Promise((resolve) => setTimeout(resolve, wait));
-    }
-    lastRequestAt = Date.now();
-    return task();
-  });
-  // Garde la queue "vivante" même si `run` rejette, pour ne pas bloquer les
-  // appels suivants.
-  queueTail = run.catch(() => undefined);
-  return run;
+  /** Code pays ISO 3166-1 alpha-2 en minuscules, à titre indicatif seulement. */
+  countryCode: string;
 }
 
 /**
- * Interroge Nominatim pour une requête texte donnée et retourne une liste de
- * suggestions de lieux (villes en priorité). Utilise le cache mémoire si la
- * même requête (normalisée) a déjà été résolue.
- *
- * N'appelle PAS le réseau directement à chaque frappe : à combiner avec un
- * debounce (voir `useDebouncedGeocodeSearch` ci-dessous) côté composant React.
+ * ~25 grandes villes couvrant les trajets Europe ↔ Maroc les plus courants.
+ * Texte uniquement (nom + pays) : aucune coordonnée, aucune distance.
  */
-export async function geocodeSearch(
-  query: string,
-  options: { signal?: AbortSignal; limit?: number } = {}
-): Promise<GeocodeResult[]> {
+export const CITY_SUGGESTIONS: CitySuggestion[] = [
+  { displayName: "Paris, France", countryCode: "fr" },
+  { displayName: "Lyon, France", countryCode: "fr" },
+  { displayName: "Marseille, France", countryCode: "fr" },
+  { displayName: "Toulouse, France", countryCode: "fr" },
+  { displayName: "Lille, France", countryCode: "fr" },
+  { displayName: "Strasbourg, France", countryCode: "fr" },
+  { displayName: "Bordeaux, France", countryCode: "fr" },
+  { displayName: "Nice, France", countryCode: "fr" },
+  { displayName: "Bruxelles, Belgique", countryCode: "be" },
+  { displayName: "Amsterdam, Pays-Bas", countryCode: "nl" },
+  { displayName: "Francfort, Allemagne", countryCode: "de" },
+  { displayName: "Cologne, Allemagne", countryCode: "de" },
+  { displayName: "Milan, Italie", countryCode: "it" },
+  { displayName: "Madrid, Espagne", countryCode: "es" },
+  { displayName: "Barcelone, Espagne", countryCode: "es" },
+  { displayName: "Séville, Espagne", countryCode: "es" },
+  { displayName: "Algésiras, Espagne", countryCode: "es" },
+  { displayName: "Londres, Royaume-Uni", countryCode: "gb" },
+  { displayName: "Tanger, Maroc", countryCode: "ma" },
+  { displayName: "Tétouan, Maroc", countryCode: "ma" },
+  { displayName: "Rabat, Maroc", countryCode: "ma" },
+  { displayName: "Casablanca, Maroc", countryCode: "ma" },
+  { displayName: "Fès, Maroc", countryCode: "ma" },
+  { displayName: "Marrakech, Maroc", countryCode: "ma" },
+  { displayName: "Agadir, Maroc", countryCode: "ma" },
+];
+
+function normalize(text: string): string {
+  return text
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+}
+
+/**
+ * Filtre local (aucun réseau) des suggestions dont le libellé contient la
+ * requête. Retourne un tableau vide sous 2 caractères, comme avant.
+ */
+export function searchCitySuggestions(query: string, limit = 6): CitySuggestion[] {
   const trimmed = query.trim();
   if (trimmed.length < 2) return [];
 
-  const cacheKey = normalizeQuery(trimmed);
-  const cached = resultsCache.get(cacheKey);
-  if (cached) return cached;
-
-  const limit = options.limit ?? 5;
-  const url = new URL(NOMINATIM_BASE_URL);
-  url.searchParams.set("q", trimmed);
-  url.searchParams.set("format", "jsonv2");
-  url.searchParams.set("addressdetails", "0");
-  url.searchParams.set("limit", String(limit));
-  // Priorise les résultats de type ville/village pour l'autocomplétion de trajets
-  url.searchParams.set("featureType", "city");
-
-  const results = await scheduleThrottled(async () => {
-    const response = await fetch(url.toString(), {
-      signal: options.signal,
-      headers: {
-        Accept: "application/json",
-        // Nominatim exige un User-Agent identifiable. Les navigateurs
-        // imposent leur propre User-Agent réseau ; on transmet donc aussi un
-        // en-tête Referrer-Policy neutre et laissons le User-Agent réel du
-        // navigateur (conforme à la politique, qui accepte l'identification
-        // via Referer pour les usages web côté client).
-        "X-App-Name": APP_USER_AGENT,
-      },
-      referrerPolicy: "origin",
-    });
-
-    if (!response.ok) {
-      throw new Error(`Nominatim a répondu ${response.status}`);
-    }
-
-    const data = (await response.json()) as Array<{
-      display_name: string;
-      lat: string;
-      lon: string;
-      type?: string;
-      addresstype?: string;
-      address?: { country_code?: string };
-    }>;
-
-    return data.map((item) => ({
-      displayName: item.display_name,
-      lat: parseFloat(item.lat),
-      lon: parseFloat(item.lon),
-      type: item.addresstype ?? item.type,
-      countryCode: item.address?.country_code,
-    }));
-  });
-
-  resultsCache.set(cacheKey, results);
-  return results;
-}
-
-/**
- * Distance orthodromique (grand cercle) entre deux points, en kilomètres.
- * Utilisée pour affiner l'estimation de distance à partir des coordonnées
- * réelles obtenues par géocodage (au lieu d'une valeur statique approximative).
- */
-export function haversineDistanceKm(
-  a: { lat: number; lon: number },
-  b: { lat: number; lon: number }
-): number {
-  const R = 6371; // rayon moyen de la Terre en km
-  const toRad = (deg: number) => (deg * Math.PI) / 180;
-
-  const dLat = toRad(b.lat - a.lat);
-  const dLon = toRad(b.lon - a.lon);
-  const lat1 = toRad(a.lat);
-  const lat2 = toRad(b.lat);
-
-  const sinDLat = Math.sin(dLat / 2);
-  const sinDLon = Math.sin(dLon / 2);
-
-  const h =
-    sinDLat * sinDLat + Math.cos(lat1) * Math.cos(lat2) * sinDLon * sinDLon;
-  const c = 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-
-  return R * c;
-}
-
-/**
- * Facteur d'ajustement approximatif "distance routière ≈ distance à vol
- * d'oiseau × facteur" pour un trajet Europe ↔ Maroc typique (routes +
- * traversée maritime). Reste une estimation, affichée comme telle dans l'UI.
- */
-export const ROAD_DISTANCE_FACTOR = 1.35;
-
-export function estimateRoadDistanceKm(
-  origin: { lat: number; lon: number },
-  destination: { lat: number; lon: number }
-): number {
-  return Math.round(
-    haversineDistanceKm(origin, destination) * ROAD_DISTANCE_FACTOR
+  const needle = normalize(trimmed);
+  return CITY_SUGGESTIONS.filter((city) => normalize(city.displayName).includes(needle)).slice(
+    0,
+    limit
   );
 }
