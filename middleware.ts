@@ -153,9 +153,32 @@ export function middleware(request: NextRequest) {
 
   // Security headers (CSP resserrée : uniquement les origines tierces
   // réellement utilisées par l'app — voir RME_ROUTE_ETAT.md pour le détail).
+  //
+  // IMPORTANT — 'unsafe-eval' en développement uniquement : Next.js `next dev`
+  // utilise du code généré dynamiquement (React Refresh / source maps webpack)
+  // qui nécessite `eval`. Sans cette autorisation en dev, le CSP bloque
+  // silencieusement TOUTE l'hydratation React côté client (violation logguée
+  // en console, aucune erreur visible à l'écran) : le HTML rendu serveur
+  // s'affiche mais aucun useEffect/handler ne s'exécute jamais — panneau
+  // d'accessibilité, skip-link injecté, focus trap, etc. restent inertes.
+  // Ne JAMAIS ajouter 'unsafe-eval' en production : le build `next build` ne
+  // génère pas ce code eval-based, donc il n'est pas nécessaire et affaiblirait
+  // la CSP pour rien.
+  // Gate strictement sur 'development' (et non "!== 'production'") : Jest
+  // exécute les tests avec NODE_ENV="test", qui n'est ni development ni
+  // production. Le test de sécurité __tests__/middleware.test.ts vérifie
+  // que le CSP ne contient JAMAIS 'unsafe-eval' pour garantir qu'aucune
+  // régression future ne l'active accidentellement hors dev. Avec
+  // "!== 'production'", l'environnement de test aurait aussi reçu
+  // 'unsafe-eval', invalidant cette garantie de sécurité.
+  const scriptSrc =
+    process.env.NODE_ENV === 'development'
+      ? "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.aladhan.com"
+      : "script-src 'self' 'unsafe-inline' https://api.aladhan.com";
+
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' https://api.aladhan.com",
+    scriptSrc,
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com https://cdn.fontshare.com",
     "font-src 'self' https://fonts.gstatic.com https://cdn.fontshare.com",
     "img-src 'self' data: https: blob:",
