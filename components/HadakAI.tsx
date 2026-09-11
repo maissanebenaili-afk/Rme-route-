@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   MessageCircle,
   X,
@@ -450,9 +451,9 @@ export default function HadakAI() {
       {/* ============================= */}
       {/*  Floating chat bubble button   */}
       {/* ============================= */}
-      <button
+      <motion.button
         onClick={() => setOpen(!open)}
-        className="group fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full shadow-2xl transition-all duration-300 hover:scale-110 active:scale-95"
+        className="group fixed bottom-6 right-6 z-50 flex h-16 w-16 items-center justify-center rounded-full shadow-2xl"
         style={{
           background: open
             ? 'linear-gradient(135deg, #0d3f38 0%, #0a2e28 100%)'
@@ -461,34 +462,61 @@ export default function HadakAI() {
             ? '0 8px 32px rgba(13, 63, 56, 0.4)'
             : '0 8px 32px rgba(238, 173, 89, 0.45)',
         }}
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.3 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.94 }}
         aria-label={open ? 'Close Hadak chat' : 'Open Hadak chat'}
       >
         {/* Pulsing ring when closed */}
         {!open && (
-          <span
-            className="absolute inset-0 rounded-full animate-ping"
-            style={{ backgroundColor: 'rgba(238, 173, 89, 0.4)', animationDuration: '2.5s' }}
-          />
+          <>
+            <motion.span
+              className="absolute inset-0 rounded-full"
+              style={{ backgroundColor: 'rgba(238, 173, 89, 0.35)' }}
+              animate={{ scale: [1, 1.7, 1.7], opacity: [0.6, 0, 0] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut' }}
+            />
+            <motion.span
+              className="absolute inset-0 rounded-full"
+              style={{ backgroundColor: 'rgba(238, 173, 89, 0.35)' }}
+              animate={{ scale: [1, 1.7, 1.7], opacity: [0.6, 0, 0] }}
+              transition={{ duration: 2.4, repeat: Infinity, ease: 'easeOut', delay: 1.2 }}
+            />
+          </>
         )}
-        {open ? (
-          <X className="h-7 w-7 text-[#eead59] transition-transform duration-200" />
-        ) : (
-          <MessageCircle className="h-7 w-7 text-[#0d3f38] transition-transform duration-200 group-hover:rotate-12" />
-        )}
-      </button>
+        <motion.span
+          key={open ? 'close' : 'open'}
+          initial={{ rotate: -45, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          transition={{ duration: 0.2 }}
+          className="flex items-center justify-center"
+        >
+          {open ? (
+            <X className="h-7 w-7 text-[#eead59]" />
+          ) : (
+            <MessageCircle className="h-7 w-7 text-[#0d3f38] transition-transform duration-200 group-hover:rotate-12" />
+          )}
+        </motion.span>
+      </motion.button>
 
       {/* ============================= */}
       {/*  Chat panel                    */}
       {/* ============================= */}
+      <AnimatePresence>
       {open && (
-        <div
+        <motion.div
           className="fixed bottom-24 right-6 z-50 flex h-[min(560px,calc(100vh-7rem))] w-[calc(100vw-3rem)] max-w-[400px] flex-col overflow-hidden rounded-3xl shadow-2xl"
           style={{
             direction: isRtl ? 'rtl' : 'ltr',
             background: 'linear-gradient(180deg, #0d3f38 0%, #0a2e28 100%)',
             border: '1px solid rgba(238, 173, 89, 0.2)',
-            animation: 'hadak-slide-in 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
           }}
+          initial={{ opacity: 0, y: 24, scale: 0.94 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16, scale: 0.96 }}
+          transition={{ type: 'spring', stiffness: 340, damping: 30 }}
         >
           {/* ---- Header ---- */}
           <div
@@ -537,14 +565,18 @@ export default function HadakAI() {
                 <span className="hidden sm:inline">{LANG_LABELS[lang]}</span>
               </button>
 
+              <AnimatePresence>
               {langOpen && (
-                <div
+                <motion.div
                   className="absolute end-0 mt-2 w-40 overflow-hidden rounded-xl shadow-xl"
                   style={{
                     background: '#0a2e28',
                     border: '1px solid rgba(238, 173, 89, 0.2)',
-                    animation: 'hadak-fade-in 0.2s ease-out',
                   }}
+                  initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                  transition={{ duration: 0.16, ease: 'easeOut' }}
                 >
                   {ALL_LANGS.map((l) => (
                     <button
@@ -562,8 +594,9 @@ export default function HadakAI() {
                       {LANG_LABELS[l]}
                     </button>
                   ))}
-                </div>
+                </motion.div>
               )}
+              </AnimatePresence>
             </div>
           </div>
 
@@ -576,10 +609,12 @@ export default function HadakAI() {
             {messages.map((msg, i) => {
               const Icon = msg.topic ? TOPIC_ICON[msg.topic] : null;
               return (
-                <div
+                <motion.div
                   key={i}
                   className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                  style={{ animation: 'hadak-msg-in 0.3s ease-out' }}
+                  initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.28, ease: 'easeOut' }}
                 >
                   {msg.role === 'assistant' && (
                     <div
@@ -610,13 +645,20 @@ export default function HadakAI() {
                   >
                     {msg.content}
                   </div>
-                </div>
+                </motion.div>
               );
             })}
 
             {/* ---- Typing indicator ---- */}
+            <AnimatePresence>
             {isTyping && (
-              <div className="flex justify-start" style={{ animation: 'hadak-msg-in 0.3s ease-out' }}>
+              <motion.div
+                className="flex justify-start"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25, ease: 'easeOut' }}
+              >
                 <div
                   className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full mt-0.5 me-2"
                   style={{ background: 'rgba(238, 173, 89, 0.15)' }}
@@ -643,37 +685,48 @@ export default function HadakAI() {
                     style={{ animation: 'hadak-typing 1.2s infinite ease-in-out', animationDelay: '0.4s' }}
                   />
                 </div>
-              </div>
+              </motion.div>
             )}
+            </AnimatePresence>
           </div>
 
           {/* ---- Quick suggestion buttons ---- */}
+          <AnimatePresence>
           {suggestions.length > 0 && !isTyping && (
-            <div
+            <motion.div
               className="flex flex-wrap gap-2 px-4 pb-2"
-              style={{ animation: 'hadak-fade-in 0.3s ease-out' }}
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
             >
-              {suggestions.map((topic) => {
+              {suggestions.map((topic, idx) => {
                 const Icon = TOPIC_ICON[topic];
                 const label = TOPIC_LABELS[topic][lang] || TOPIC_LABELS[topic].da;
                 return (
-                  <button
+                  <motion.button
                     key={topic}
                     onClick={() => handleSend(label)}
-                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium transition-all hover:scale-105 active:scale-95"
+                    className="flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs font-medium"
                     style={{
                       background: 'rgba(238, 173, 89, 0.1)',
                       border: '1px solid rgba(238, 173, 89, 0.25)',
                       color: '#eead59',
                     }}
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.2, delay: idx * 0.05 }}
+                    whileHover={{ scale: 1.06 }}
+                    whileTap={{ scale: 0.95 }}
                   >
                     {Icon && <Icon className="h-3 w-3" />}
                     {label}
-                  </button>
+                  </motion.button>
                 );
               })}
-            </div>
+            </motion.div>
           )}
+          </AnimatePresence>
 
           {/* ---- Input area ---- */}
           <div
@@ -724,41 +777,14 @@ export default function HadakAI() {
               </button>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
 
       {/* ============================= */}
       {/*  Keyframe animations          */}
       {/* ============================= */}
       <style jsx>{`
-        @keyframes hadak-slide-in {
-          from {
-            opacity: 0;
-            transform: translateY(20px) scale(0.95);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0) scale(1);
-          }
-        }
-        @keyframes hadak-msg-in {
-          from {
-            opacity: 0;
-            transform: translateY(8px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        @keyframes hadak-fade-in {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
         @keyframes hadak-typing {
           0%, 60%, 100% {
             opacity: 0.3;
