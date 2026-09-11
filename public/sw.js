@@ -39,13 +39,13 @@ self.addEventListener('install', (event) => {
 // ─── Activate: clean up old caches ───
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => !key.startsWith(CACHE_VERSION))
-          .map((key) => caches.delete(key))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys.filter((key) => !key.startsWith(CACHE_VERSION)).map((key) => caches.delete(key))
+        )
       )
-    )
   );
   self.clients.claim();
 });
@@ -123,14 +123,11 @@ async function networkFirst(request) {
     // Fall back to cache if offline
     const cached = await caches.match(request);
     if (cached) return cached;
-    return new Response(
-      JSON.stringify({ error: 'Vous êtes hors ligne', offline: true }),
-      {
-        status: 503,
-        statusText: 'Offline',
-        headers: { 'Content-Type': 'application/json' },
-      }
-    );
+    return new Response(JSON.stringify({ error: 'Vous êtes hors ligne', offline: true }), {
+      status: 503,
+      statusText: 'Offline',
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
 
@@ -208,8 +205,6 @@ self.addEventListener('message', (event) => {
     self.skipWaiting();
   }
   if (event.data === 'CLEAR_CACHE') {
-    caches.keys().then((keys) =>
-      Promise.all(keys.map((key) => caches.delete(key)))
-    );
+    caches.keys().then((keys) => Promise.all(keys.map((key) => caches.delete(key))));
   }
 });

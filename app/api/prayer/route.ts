@@ -13,36 +13,36 @@ function parseMethod(value: string | null) {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const latitude = parseNumber(searchParams.get("latitude"));
-  const longitude = parseNumber(searchParams.get("longitude"));
-  const method = parseMethod(searchParams.get("method"));
+  const latitude = parseNumber(searchParams.get('latitude'));
+  const longitude = parseNumber(searchParams.get('longitude'));
+  const method = parseMethod(searchParams.get('method'));
 
   if (latitude === null || latitude < -90 || latitude > 90) {
-    return Response.json({ error: "Invalid latitude" }, { status: 400 });
+    return Response.json({ error: 'Invalid latitude' }, { status: 400 });
   }
 
   if (longitude === null || longitude < -180 || longitude > 180) {
-    return Response.json({ error: "Invalid longitude" }, { status: 400 });
+    return Response.json({ error: 'Invalid longitude' }, { status: 400 });
   }
 
   if (method === null) {
-    return Response.json({ error: "Invalid method" }, { status: 400 });
+    return Response.json({ error: 'Invalid method' }, { status: 400 });
   }
 
-  const upstreamUrl = new URL("https://api.aladhan.com/v1/timings");
-  upstreamUrl.searchParams.set("latitude", latitude.toString());
-  upstreamUrl.searchParams.set("longitude", longitude.toString());
-  upstreamUrl.searchParams.set("method", method.toString());
+  const upstreamUrl = new URL('https://api.aladhan.com/v1/timings');
+  upstreamUrl.searchParams.set('latitude', latitude.toString());
+  upstreamUrl.searchParams.set('longitude', longitude.toString());
+  upstreamUrl.searchParams.set('method', method.toString());
 
   const response = await fetch(upstreamUrl, {
     headers: {
-      accept: "application/json",
+      accept: 'application/json',
     },
     next: { revalidate: 3600 },
   });
 
   if (!response.ok) {
-    return Response.json({ error: "Prayer API error" }, { status: response.status });
+    return Response.json({ error: 'Prayer API error' }, { status: response.status });
   }
 
   const data = await response.json();

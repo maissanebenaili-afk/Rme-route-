@@ -6,8 +6,18 @@ import Accessibility from '@/components/Accessibility';
 import RegisterSW from './register-sw';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap', weight: ['400', '500', '600', '700', '800'] });
-const amiri = Amiri({ subsets: ['arabic', 'latin'], variable: '--font-amiri', display: 'swap', weight: ['400', '700'] });
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  variable: '--font-jakarta',
+  display: 'swap',
+  weight: ['400', '500', '600', '700', '800'],
+});
+const amiri = Amiri({
+  subsets: ['arabic', 'latin'],
+  variable: '--font-amiri',
+  display: 'swap',
+  weight: ['400', '700'],
+});
 
 const siteUrl = 'https://rme-voyage.com';
 
@@ -18,11 +28,20 @@ export const metadata: Metadata = {
     template: '%s | RME Voyage',
   },
   description:
-    'RME Voyage aide les Marocains du monde entier à préparer, organiser et simplifier leurs voyages entre l\'Europe et le Maroc. Itinéraire, budget, ferry, vol, prières et services sur la route.',
+    "RME Voyage aide les Marocains du monde entier à préparer, organiser et simplifier leurs voyages entre l'Europe et le Maroc. Itinéraire, budget, ferry, vol, prières et services sur la route.",
   keywords: [
-    'voyage Maroc', 'MRE', 'RME', 'ferry Maroc', 'vol Maroc',
-    'itinéraire Europe Maroc', 'budget voyage Maroc', 'horaires prière',
-    'route Maroc', 'diaspora marocaine', 'Tarifa Tanger', 'Algeciras Tanger',
+    'voyage Maroc',
+    'MRE',
+    'RME',
+    'ferry Maroc',
+    'vol Maroc',
+    'itinéraire Europe Maroc',
+    'budget voyage Maroc',
+    'horaires prière',
+    'route Maroc',
+    'diaspora marocaine',
+    'Tarifa Tanger',
+    'Algeciras Tanger',
   ],
   authors: [{ name: 'Nova Presta' }],
   creator: 'Nova Presta',
@@ -30,9 +49,9 @@ export const metadata: Metadata = {
   manifest: '/manifest.webmanifest',
   alternates: {
     languages: {
-      'fr': '/',
-      'en': '/en',
-      'ar': '/ar',
+      fr: '/',
+      en: '/en',
+      ar: '/ar',
     },
   },
   openGraph: {
@@ -41,7 +60,8 @@ export const metadata: Metadata = {
     url: siteUrl,
     siteName: 'RME Voyage',
     title: 'RME Voyage — Le voyage Europe ↔ Maroc, mieux préparé',
-    description: 'Itinéraire, budget, ferry, vol, horaires de prière et services sur votre route. Le compagnon de voyage des Marocains du monde.',
+    description:
+      'Itinéraire, budget, ferry, vol, horaires de prière et services sur votre route. Le compagnon de voyage des Marocains du monde.',
     images: [
       {
         url: '/og-image.png',
@@ -54,7 +74,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'RME Voyage — Europe ↔ Maroc',
-    description: 'Préparez votre voyage entre l\'Europe et le Maroc : itinéraire, budget, ferry, vol, prières et services.',
+    description:
+      "Préparez votre voyage entre l'Europe et le Maroc : itinéraire, budget, ferry, vol, prières et services.",
     images: ['/og-image.png'],
   },
   robots: {
@@ -92,7 +113,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               '@context': 'https://schema.org',
               '@type': 'WebApplication',
               name: 'RME Voyage',
-              description: 'Compagnon de voyage pour les Marocains résidant à l\'étranger. Préparez votre trajet Europe ↔ Maroc.',
+              description:
+                "Compagnon de voyage pour les Marocains résidant à l'étranger. Préparez votre trajet Europe ↔ Maroc.",
               url: siteUrl,
               applicationCategory: 'TravelApplication',
               operatingSystem: 'Web, iOS, Android',
@@ -120,7 +142,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               itemListElement: [
                 { '@type': 'ListItem', position: 1, name: 'Accueil', item: siteUrl },
                 { '@type': 'ListItem', position: 2, name: 'Guide', item: `${siteUrl}/guide` },
-                { '@type': 'ListItem', position: 3, name: 'Découvrir', item: `${siteUrl}/decouvrir` },
+                {
+                  '@type': 'ListItem',
+                  position: 3,
+                  name: 'Découvrir',
+                  item: `${siteUrl}/decouvrir`,
+                },
               ],
             }),
           }}

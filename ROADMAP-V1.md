@@ -1,12 +1,14 @@
 # MRE Route — feuille de route V1
 
 ## Maintenant
+
 1. Configurer les comptes d'affiliation.
 2. Brancher les vrais liens ferry/vol.
 3. Tester les redirections et le tracking.
 4. Mettre le domaine et l'analytics.
 
 ## Ensuite
+
 5. Géocodage réel.
 6. Routing réel avec plusieurs alternatives.
 7. Péages par pays.

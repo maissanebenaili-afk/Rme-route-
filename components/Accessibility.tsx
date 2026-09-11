@@ -191,10 +191,7 @@ export default function Accessibility() {
     }
   }, [open]);
 
-  const updateSetting = <K extends keyof A11ySettings>(
-    key: K,
-    value: A11ySettings[K]
-  ) => {
+  const updateSetting = <K extends keyof A11ySettings>(key: K, value: A11ySettings[K]) => {
     setSettings((prev) => ({ ...prev, [key]: value }));
   };
 
@@ -209,9 +206,7 @@ export default function Accessibility() {
 
     // Get main content
     const mainContent =
-      document.querySelector('main') ||
-      document.querySelector('#main-content') ||
-      document.body;
+      document.querySelector('main') || document.querySelector('#main-content') || document.body;
 
     // Collect text from visible elements
     const walker = document.createTreeWalker(mainContent, NodeFilter.SHOW_TEXT, {
@@ -312,9 +307,7 @@ export default function Accessibility() {
           {/* Header */}
           <div className="flex items-center gap-2 p-4 border-b border-white/10">
             <AccessibilityIcon size={18} className="text-[#eead59]" strokeWidth={2.5} />
-            <h3 className="font-bold text-[#f8f7f2] text-sm flex-1">
-              Accessibilité
-            </h3>
+            <h3 className="font-bold text-[#f8f7f2] text-sm flex-1">Accessibilité</h3>
             <button
               onClick={() => {
                 setOpen(false);
@@ -338,13 +331,11 @@ export default function Accessibility() {
                 </label>
               </div>
               <div className="flex gap-1.5" role="radiogroup" aria-label="Taille du texte">
-                {(
-                  [
-                    { value: 'normal' as TextSize, label: 'Normal', size: '14px' },
-                    { value: 'large' as TextSize, label: 'Grand', size: '16px' },
-                    { value: 'xlarge' as TextSize, label: 'Très grand', size: '18px' },
-                  ]
-                ).map((option) => (
+                {[
+                  { value: 'normal' as TextSize, label: 'Normal', size: '14px' },
+                  { value: 'large' as TextSize, label: 'Grand', size: '16px' },
+                  { value: 'xlarge' as TextSize, label: 'Très grand', size: '18px' },
+                ].map((option) => (
                   <button
                     key={option.value}
                     role="radio"
@@ -357,12 +348,9 @@ export default function Accessibility() {
                         settings.textSize === option.value
                           ? 'linear-gradient(135deg, #eead59, #d4a04a)'
                           : 'rgba(255,255,255,0.05)',
-                      color:
-                        settings.textSize === option.value ? '#0d3f38' : '#f8f7f2',
+                      color: settings.textSize === option.value ? '#0d3f38' : '#f8f7f2',
                       border: `1px solid ${
-                        settings.textSize === option.value
-                          ? '#eead59'
-                          : 'rgba(255,255,255,0.1)'
+                        settings.textSize === option.value ? '#eead59' : 'rgba(255,255,255,0.1)'
                       }`,
                     }}
                     aria-label={`Taille ${option.label}`}
@@ -381,9 +369,7 @@ export default function Accessibility() {
                 ) : (
                   <Moon size={16} className="text-[#f8f7f2]/60" strokeWidth={2.5} />
                 )}
-                <span className="text-sm font-semibold text-[#f8f7f2]">
-                  Contraste élevé
-                </span>
+                <span className="text-sm font-semibold text-[#f8f7f2]">Contraste élevé</span>
               </div>
               <button
                 role="switch"
@@ -392,17 +378,13 @@ export default function Accessibility() {
                 onClick={() => updateSetting('highContrast', !settings.highContrast)}
                 className="relative w-12 h-7 rounded-full transition-colors flex-shrink-0"
                 style={{
-                  background: settings.highContrast
-                    ? '#eead59'
-                    : 'rgba(255,255,255,0.15)',
+                  background: settings.highContrast ? '#eead59' : 'rgba(255,255,255,0.15)',
                 }}
               >
                 <span
                   className="absolute top-1 w-5 h-5 rounded-full bg-white transition-transform"
                   style={{
-                    transform: settings.highContrast
-                      ? 'translateX(22px)'
-                      : 'translateX(4px)',
+                    transform: settings.highContrast ? 'translateX(22px)' : 'translateX(4px)',
                   }}
                 />
               </button>
@@ -411,10 +393,12 @@ export default function Accessibility() {
             {/* Focus Visible Toggle */}
             <div className="flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Eye size={16} className={settings.focusVisible ? 'text-[#eead59]' : 'text-[#f8f7f2]/60'} strokeWidth={2.5} />
-                <span className="text-sm font-semibold text-[#f8f7f2]">
-                  Focus visible
-                </span>
+                <Eye
+                  size={16}
+                  className={settings.focusVisible ? 'text-[#eead59]' : 'text-[#f8f7f2]/60'}
+                  strokeWidth={2.5}
+                />
+                <span className="text-sm font-semibold text-[#f8f7f2]">Focus visible</span>
               </div>
               <button
                 role="switch"
@@ -423,17 +407,13 @@ export default function Accessibility() {
                 onClick={() => updateSetting('focusVisible', !settings.focusVisible)}
                 className="relative w-12 h-7 rounded-full transition-colors flex-shrink-0"
                 style={{
-                  background: settings.focusVisible
-                    ? '#eead59'
-                    : 'rgba(255,255,255,0.15)',
+                  background: settings.focusVisible ? '#eead59' : 'rgba(255,255,255,0.15)',
                 }}
               >
                 <span
                   className="absolute top-1 w-5 h-5 rounded-full bg-white transition-transform"
                   style={{
-                    transform: settings.focusVisible
-                      ? 'translateX(22px)'
-                      : 'translateX(4px)',
+                    transform: settings.focusVisible ? 'translateX(22px)' : 'translateX(4px)',
                   }}
                 />
               </button>

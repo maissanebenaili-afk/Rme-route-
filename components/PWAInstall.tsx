@@ -100,13 +100,15 @@ export default function PWAInstall() {
               to { opacity: 1; }
             }
           `}</style>
-          <div className="flex items-start gap-3 rounded-2xl p-4 shadow-2xl border border-[#eead59]/30"
+          <div
+            className="flex items-start gap-3 rounded-2xl p-4 shadow-2xl border border-[#eead59]/30"
             style={{
               background: 'linear-gradient(135deg, #0d3f38 0%, #0a2e28 100%)',
             }}
           >
             {/* Icon */}
-            <div className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
+            <div
+              className="flex-shrink-0 w-11 h-11 rounded-xl flex items-center justify-center"
               style={{ background: 'linear-gradient(135deg, #eead59, #d4a04a)' }}
             >
               <Download size={22} className="text-[#0d3f38]" strokeWidth={2.5} />
@@ -164,10 +166,7 @@ export default function PWAInstall() {
           style={{ animation: 'rmeFadeIn 0.3s ease forwards' }}
         >
           {/* Backdrop */}
-          <div
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={handleDismiss}
-          />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={handleDismiss} />
 
           {/* Modal */}
           <div
@@ -179,9 +178,7 @@ export default function PWAInstall() {
           >
             {/* Header */}
             <div className="flex items-center justify-between p-5 border-b border-white/10">
-              <h3 className="font-bold text-[#f8f7f2] text-lg">
-                Installer sur iPhone
-              </h3>
+              <h3 className="font-bold text-[#f8f7f2] text-lg">Installer sur iPhone</h3>
               <button
                 onClick={handleDismiss}
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-[#f8f7f2]/50 hover:text-[#f8f7f2] hover:bg-white/10 transition-colors"
@@ -194,7 +191,8 @@ export default function PWAInstall() {
             {/* Steps */}
             <div className="p-5 space-y-4">
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                <div
+                  className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: 'rgba(238, 173, 89, 0.15)' }}
                 >
                   <Share size={16} className="text-[#eead59]" strokeWidth={2.5} />
@@ -210,7 +208,8 @@ export default function PWAInstall() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                <div
+                  className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: 'rgba(238, 173, 89, 0.15)' }}
                 >
                   <Plus size={16} className="text-[#eead59]" strokeWidth={2.5} />
@@ -226,15 +225,14 @@ export default function PWAInstall() {
               </div>
 
               <div className="flex items-start gap-3">
-                <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
+                <div
+                  className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center"
                   style={{ background: 'rgba(238, 173, 89, 0.15)' }}
                 >
                   <Download size={16} className="text-[#eead59]" strokeWidth={2.5} />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#f8f7f2]">
-                    3. Appuyez sur « Ajouter »
-                  </p>
+                  <p className="text-sm font-semibold text-[#f8f7f2]">3. Appuyez sur « Ajouter »</p>
                   <p className="text-xs text-[#f8f7f2]/60 mt-0.5">
                     L'application apparaît sur votre écran d'accueil.
                   </p>

@@ -28,31 +28,76 @@ import TravelChecklist from '@/components/TravelChecklist';
 import CurrencyConverter from '@/components/CurrencyConverter';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import HadakAI from '@/components/HadakAI';
-import { WeatherMorocco, DarijaPhrasebook, CustomsCalculator, EmergencyContacts, MoroccanCalendar, ZakaatCalculator, TimeZoneSIM, FuelPriceComparator } from '@/components/TravelWidgets';
+import {
+  WeatherMorocco,
+  DarijaPhrasebook,
+  CustomsCalculator,
+  EmergencyContacts,
+  MoroccanCalendar,
+  ZakaatCalculator,
+  TimeZoneSIM,
+  FuelPriceComparator,
+} from '@/components/TravelWidgets';
 import SmartPacking from '@/components/SmartPacking';
 import HadakVoice from '@/components/HadakVoice';
 import JuryPack from '@/components/JuryPack';
 
 const benefits = [
-  { icon: MapPinned, title: 'Votre itinéraire', text: 'Préparez chaque étape, de votre ville à votre destination au Maroc.' },
-  { icon: Compass, title: 'Vos options', text: 'Route, ferry et vol comparés dans un seul parcours.' },
-  { icon: ShieldCheck, title: 'Vos repères', text: 'Prières, Qibla, services et conseils pour voyager sereinement.' },
+  {
+    icon: MapPinned,
+    title: 'Votre itinéraire',
+    text: 'Préparez chaque étape, de votre ville à votre destination au Maroc.',
+  },
+  {
+    icon: Compass,
+    title: 'Vos options',
+    text: 'Route, ferry et vol comparés dans un seul parcours.',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Vos repères',
+    text: 'Prières, Qibla, services et conseils pour voyager sereinement.',
+  },
 ];
 
 const stats = [
-  { value: '5M+', label: 'Marocains à l\'étranger', icon: Users },
+  { value: '5M+', label: "Marocains à l'étranger", icon: Users },
   { value: '19.8M', label: 'Touristes au Maroc (2025)', icon: Globe },
   { value: '2 100', label: 'km Paris → Tanger', icon: RouteIcon },
   { value: '4.9★', label: 'Objectif qualité', icon: Star },
 ];
 
 const features = [
-  { icon: RouteIcon, title: 'Recherche de trajet', text: 'Trouvez le meilleur itinéraire Europe ↔ Maroc en un clic.' },
-  { icon: Wallet, title: 'Calculateur de budget', text: 'Estimez carburant, péages, ferry et coût total.' },
-  { icon: Ship, title: 'Ferry & vol', text: 'Comparez les traversées et vols avec nos partenaires.' },
-  { icon: Moon, title: 'Horaires de prière', text: 'Prières et Qibla adaptés à votre position GPS.' },
-  { icon: CheckCircle2, title: 'Checklist voyage', text: 'Ne oubliez rien : documents, véhicule, santé, logistique.' },
-  { icon: Sparkles, title: 'Assistant IA Darija', text: 'Posez vos questions en darija, français, arabe, anglais ou espagnol.' },
+  {
+    icon: RouteIcon,
+    title: 'Recherche de trajet',
+    text: 'Trouvez le meilleur itinéraire Europe ↔ Maroc en un clic.',
+  },
+  {
+    icon: Wallet,
+    title: 'Calculateur de budget',
+    text: 'Estimez carburant, péages, ferry et coût total.',
+  },
+  {
+    icon: Ship,
+    title: 'Ferry & vol',
+    text: 'Comparez les traversées et vols avec nos partenaires.',
+  },
+  {
+    icon: Moon,
+    title: 'Horaires de prière',
+    text: 'Prières et Qibla adaptés à votre position GPS.',
+  },
+  {
+    icon: CheckCircle2,
+    title: 'Checklist voyage',
+    text: 'Ne oubliez rien : documents, véhicule, santé, logistique.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Assistant IA Darija',
+    text: 'Posez vos questions en darija, français, arabe, anglais ou espagnol.',
+  },
 ];
 
 export default function Home() {
@@ -68,14 +113,31 @@ export default function Home() {
         {/* Navigation */}
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
           <Link href="/" className="flex items-center gap-2 text-lg font-black tracking-tight">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#e6a44e] text-sm text-[#103d37]">R</span>
+            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#e6a44e] text-sm text-[#103d37]">
+              R
+            </span>
             RME <span className="font-medium text-[#f5cd93]">Voyage</span>
           </Link>
           <div className="flex items-center gap-3">
             <LanguageSwitcher />
-            <Link href="/guide" className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline">Le guide</Link>
-            <Link href="/decouvrir" className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline">Découvrir</Link>
-            <a href="#planifier" className="rounded-full bg-white px-4 py-2 text-sm font-extrabold text-[#0d3f38] transition hover:bg-[#f5cd93]">Planifier</a>
+            <Link
+              href="/guide"
+              className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline"
+            >
+              Le guide
+            </Link>
+            <Link
+              href="/decouvrir"
+              className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline"
+            >
+              Découvrir
+            </Link>
+            <a
+              href="#planifier"
+              className="rounded-full bg-white px-4 py-2 text-sm font-extrabold text-[#0d3f38] transition hover:bg-[#f5cd93]"
+            >
+              Planifier
+            </a>
           </div>
         </nav>
 
@@ -89,21 +151,33 @@ export default function Home() {
               Le voyage commence <span className="gradient-text-gold">bien avant le départ.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-white/75">
-              RME Voyage réunit itinéraire, budget, prières, Qibla et services dans une expérience claire,
-              pensée pour les familles qui voyagent entre l'Europe, le Maroc et au-delà.
+              RME Voyage réunit itinéraire, budget, prières, Qibla et services dans une expérience
+              claire, pensée pour les familles qui voyagent entre l'Europe, le Maroc et au-delà.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#planifier" className="inline-flex items-center gap-2 rounded-full bg-[#e6a44e] px-6 py-3.5 font-extrabold text-[#103d37] shadow-lg shadow-black/20 transition hover:bg-[#f5cd93]">
+              <a
+                href="#planifier"
+                className="inline-flex items-center gap-2 rounded-full bg-[#e6a44e] px-6 py-3.5 font-extrabold text-[#103d37] shadow-lg shadow-black/20 transition hover:bg-[#f5cd93]"
+              >
                 Préparer mon voyage <ArrowRight size={18} />
               </a>
-              <Link href="/decouvrir" className="rounded-full border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">
+              <Link
+                href="/decouvrir"
+                className="rounded-full border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10"
+              >
                 Découvrir le service
               </Link>
             </div>
             <div className="mt-10 flex flex-wrap gap-x-5 gap-y-3 text-sm font-semibold text-white/70">
-              <span className="inline-flex items-center gap-2"><BadgeCheck size={17} className="text-[#f2b963]" /> Gratuit à utiliser</span>
-              <span className="inline-flex items-center gap-2"><BadgeCheck size={17} className="text-[#f2b963]" /> Liens partenaires signalés</span>
-              <span className="inline-flex items-center gap-2"><BadgeCheck size={17} className="text-[#f2b963]" /> Prières & Qibla inclus</span>
+              <span className="inline-flex items-center gap-2">
+                <BadgeCheck size={17} className="text-[#f2b963]" /> Gratuit à utiliser
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <BadgeCheck size={17} className="text-[#f2b963]" /> Liens partenaires signalés
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <BadgeCheck size={17} className="text-[#f2b963]" /> Prières & Qibla inclus
+              </span>
             </div>
           </div>
 
@@ -112,19 +186,36 @@ export default function Home() {
             <div className="absolute inset-0 rotate-3 rounded-[2.25rem] bg-[#e6a44e]" />
             <div className="relative rounded-[2.25rem] border border-white/10 bg-[#153f39] p-7 shadow-2xl sm:p-9">
               <p className="text-sm font-bold text-[#f5cd93]">Votre carnet de voyage</p>
-              <h2 className="mt-3 text-3xl font-black leading-tight">Un parcours simple. Des décisions plus sereines.</h2>
+              <h2 className="mt-3 text-3xl font-black leading-tight">
+                Un parcours simple. Des décisions plus sereines.
+              </h2>
               <div className="mt-8 space-y-3">
                 <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f5cd93] font-black text-[#103d37]">1</span>
-                  <div><p className="text-xs text-white/60">Avant le départ</p><p className="font-bold">Itinéraire et budget</p></div>
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f5cd93] font-black text-[#103d37]">
+                    1
+                  </span>
+                  <div>
+                    <p className="text-xs text-white/60">Avant le départ</p>
+                    <p className="font-bold">Itinéraire et budget</p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#73c8b4] font-black text-[#103d37]">2</span>
-                  <div><p className="text-xs text-white/60">Sur la route</p><p className="font-bold">Prières, Qibla et services</p></div>
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#73c8b4] font-black text-[#103d37]">
+                    2
+                  </span>
+                  <div>
+                    <p className="text-xs text-white/60">Sur la route</p>
+                    <p className="font-bold">Prières, Qibla et services</p>
+                  </div>
                 </div>
                 <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4">
-                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#d9824b] font-black text-white">3</span>
-                  <div><p className="text-xs text-white/60">À l'arrivée</p><p className="font-bold">Checklist et conseils</p></div>
+                  <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#d9824b] font-black text-white">
+                    3
+                  </span>
+                  <div>
+                    <p className="text-xs text-white/60">À l'arrivée</p>
+                    <p className="font-bold">Checklist et conseils</p>
+                  </div>
                 </div>
               </div>
               <p className="mt-7 border-t border-white/10 pt-5 text-sm leading-6 text-white/65">
@@ -170,8 +261,12 @@ export default function Home() {
       {/* Planning Section */}
       <section id="planifier" className="mx-auto max-w-5xl px-5 py-20 sm:px-8">
         <div className="mb-10 max-w-2xl animate-fade-up">
-          <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Préparez sereinement</p>
-          <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">L'essentiel, au bon moment.</h2>
+          <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">
+            Préparez sereinement
+          </p>
+          <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+            L'essentiel, au bon moment.
+          </h2>
           <p className="mt-4 text-lg leading-8 text-[#5a716c]">
             Commencez par votre trajet, puis ajustez votre budget avant de comparer vos options.
           </p>
@@ -186,8 +281,12 @@ export default function Home() {
       <section className="bg-[#e8efe7] py-20">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="mb-10 max-w-2xl">
-            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Visualisez</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Votre trajet sur la carte.</h2>
+            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">
+              Visualisez
+            </p>
+            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+              Votre trajet sur la carte.
+            </h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
               Du départ en Europe à l'arrivée au Maroc, visualisez chaque étape de votre voyage.
             </p>
@@ -200,8 +299,12 @@ export default function Home() {
       <section className="bg-[#f8f7f2] py-20">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="mb-10 max-w-2xl">
-            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">En route</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Les repères qui comptent.</h2>
+            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">
+              En route
+            </p>
+            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+              Les repères qui comptent.
+            </h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
               Prières, Qibla, services et conseils pratiques pour un voyage serein.
             </p>
@@ -223,8 +326,12 @@ export default function Home() {
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="mb-12 text-center">
-            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Tout-en-un</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Un seul outil. Tout votre voyage.</h2>
+            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">
+              Tout-en-un
+            </p>
+            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
+              Un seul outil. Tout votre voyage.
+            </h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, text }) => (
@@ -250,10 +357,16 @@ export default function Home() {
             Accédez à RME Voyage et commencez votre préparation dès maintenant. Gratuit.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a href="#planifier" className="inline-flex items-center gap-2 rounded-full bg-[#e6a44e] px-6 py-3.5 font-extrabold text-[#103d37] transition hover:bg-[#f5cd93]">
+            <a
+              href="#planifier"
+              className="inline-flex items-center gap-2 rounded-full bg-[#e6a44e] px-6 py-3.5 font-extrabold text-[#103d37] transition hover:bg-[#f5cd93]"
+            >
               Commencer gratuitement <ArrowRight size={18} />
             </a>
-            <Link href="/guide" className="rounded-full border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10">
+            <Link
+              href="/guide"
+              className="rounded-full border border-white/20 px-6 py-3.5 font-bold text-white transition hover:bg-white/10"
+            >
               Voir le guide
             </Link>
           </div>
@@ -264,12 +377,15 @@ export default function Home() {
       <section className="py-16 bg-gradient-to-b from-[#f8f7f2] to-[#e8e6df]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-widest text-[#eead59]">Suite d'outils</p>
+            <p className="text-sm font-semibold uppercase tracking-widest text-[#eead59]">
+              Suite d'outils
+            </p>
             <h2 className="mt-3 font-[family-name:var(--font-jakarta)] text-3xl font-extrabold tracking-tight text-[#173a36] sm:text-4xl">
               15+ widgets intelligents dans une seule app
             </h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
-              Hadak ne parle pas seulement — il agit. Chaque widget résout un problème réel de voyage entre l'Europe et le Maroc.
+              Hadak ne parle pas seulement — il agit. Chaque widget résout un problème réel de
+              voyage entre l'Europe et le Maroc.
             </p>
           </div>
 
@@ -313,18 +429,38 @@ export default function Home() {
           <div className="grid gap-8 md:grid-cols-4">
             <div>
               <div className="flex items-center gap-2 text-lg font-black text-white">
-                <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#e6a44e] text-sm text-[#103d37]">R</span>
+                <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#e6a44e] text-sm text-[#103d37]">
+                  R
+                </span>
                 RME Voyage
               </div>
-              <p className="mt-3 text-sm">Votre compagnon de route entre l'Europe, le Maroc et les communautés du monde.</p>
+              <p className="mt-3 text-sm">
+                Votre compagnon de route entre l'Europe, le Maroc et les communautés du monde.
+              </p>
             </div>
             <div>
               <h3 className="font-bold text-white">Navigation</h3>
               <ul className="mt-3 space-y-2 text-sm">
-                <li><Link href="/" className="hover:text-white">Accueil</Link></li>
-                <li><Link href="/guide" className="hover:text-white">Guide</Link></li>
-                <li><Link href="/decouvrir" className="hover:text-white">Découvrir</Link></li>
-                <li><Link href="/telecharger" className="hover:text-white">Télécharger</Link></li>
+                <li>
+                  <Link href="/" className="hover:text-white">
+                    Accueil
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/guide" className="hover:text-white">
+                    Guide
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/decouvrir" className="hover:text-white">
+                    Découvrir
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/telecharger" className="hover:text-white">
+                    Télécharger
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>
@@ -347,8 +483,12 @@ export default function Home() {
             </div>
             <div>
               <h3 className="font-bold text-white">À propos</h3>
-              <p className="mt-3 text-sm">Un projet Nova Presta — SAS de conseil en gestion et services aux entreprises.</p>
-              <p className="mt-2 text-xs">MVP. Les données temps réel nécessitent des sources vérifiées.</p>
+              <p className="mt-3 text-sm">
+                Un projet Nova Presta — SAS de conseil en gestion et services aux entreprises.
+              </p>
+              <p className="mt-2 text-xs">
+                MVP. Les données temps réel nécessitent des sources vérifiées.
+              </p>
             </div>
           </div>
           <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs">

@@ -1,17 +1,17 @@
-import type { CapacitorConfig } from "@capacitor/cli";
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: "com.mreroute.app",
-  appName: "RME Voyage",
-  webDir: "out",
+  appId: 'com.mreroute.app',
+  appName: 'RME Voyage',
+  webDir: 'out',
   plugins: {
     SplashScreen: {
       launchShowDuration: 1200,
-      backgroundColor: "#065F46",
-      showSpinner: false
+      backgroundColor: '#065F46',
+      showSpinner: false,
     },
-    Geolocation: {}
-  }
+    Geolocation: {},
+  },
 };
 
 export default config;

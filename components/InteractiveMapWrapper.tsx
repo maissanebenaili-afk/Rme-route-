@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import dynamic from "next/dynamic";
+import dynamic from 'next/dynamic';
 
-const InteractiveMap = dynamic(() => import("./InteractiveMap"), {
+const InteractiveMap = dynamic(() => import('./InteractiveMap'), {
   ssr: false,
   loading: () => (
     <section className="rounded-2xl border bg-white p-5 shadow-sm">

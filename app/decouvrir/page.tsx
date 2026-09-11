@@ -53,8 +53,8 @@ export default function DiscoverPage() {
             Votre voyage vers le Maroc, mieux préparé.
           </h1>
           <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
-            RME Voyage rassemble les outils essentiels pour planifier votre itinéraire, estimer votre
-            budget et retrouver les services utiles sur la route.
+            RME Voyage rassemble les outils essentiels pour planifier votre itinéraire, estimer
+            votre budget et retrouver les services utiles sur la route.
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link

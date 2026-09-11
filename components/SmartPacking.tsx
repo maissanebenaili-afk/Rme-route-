@@ -24,13 +24,7 @@ type TripType = 'family' | 'solo' | 'business' | 'religious';
 type Duration = 'weekend' | 'short' | 'long' | 'extended';
 type Season = 'summer' | 'winter' | 'spring' | 'autumn';
 type CategoryId =
-  | 'documents'
-  | 'electronics'
-  | 'clothing'
-  | 'health'
-  | 'spiritual'
-  | 'gifts'
-  | 'misc';
+  'documents' | 'electronics' | 'clothing' | 'health' | 'spiritual' | 'gifts' | 'misc';
 
 interface PackingItem {
   id: string;
@@ -110,14 +104,22 @@ function generateItems(tripType: TripType, duration: Duration, season: Season): 
     items.push({ name: 'Family medical records', category: 'documents', aiSuggested: true });
   }
   if (tripType === 'religious') {
-    items.push({ name: 'Vaccination certificate (meningitis)', category: 'documents', aiSuggested: true });
+    items.push({
+      name: 'Vaccination certificate (meningitis)',
+      category: 'documents',
+      aiSuggested: true,
+    });
     items.push({ name: 'Umrah / Hajj visa', category: 'documents', aiSuggested: true });
   }
 
   // --- Electronics ---
   items.push({ name: 'Phone + charger', category: 'electronics', aiSuggested: true });
   items.push({ name: 'Power bank (10,000+ mAh)', category: 'electronics', aiSuggested: true });
-  items.push({ name: 'Universal power adapter (Type C/E)', category: 'electronics', aiSuggested: true });
+  items.push({
+    name: 'Universal power adapter (Type C/E)',
+    category: 'electronics',
+    aiSuggested: true,
+  });
   items.push({ name: 'Headphones / earbuds', category: 'electronics', aiSuggested: true });
 
   if (duration === 'long' || duration === 'extended') {
@@ -138,13 +140,25 @@ function generateItems(tripType: TripType, duration: Duration, season: Season): 
     category: 'clothing',
     aiSuggested: true,
   });
-  items.push({ name: `${Math.ceil(clothingCount / 2)}× socks`, category: 'clothing', aiSuggested: true });
-  items.push({ name: `${Math.ceil(clothingCount / 3)}× t-shirts`, category: 'clothing', aiSuggested: true });
+  items.push({
+    name: `${Math.ceil(clothingCount / 2)}× socks`,
+    category: 'clothing',
+    aiSuggested: true,
+  });
+  items.push({
+    name: `${Math.ceil(clothingCount / 3)}× t-shirts`,
+    category: 'clothing',
+    aiSuggested: true,
+  });
   items.push({ name: 'Comfortable walking shoes', category: 'clothing', aiSuggested: true });
 
   if (season === 'summer') {
     items.push({ name: 'Light breathable shirts', category: 'clothing', aiSuggested: true });
-    items.push({ name: 'Shorts (modest length for Morocco)', category: 'clothing', aiSuggested: true });
+    items.push({
+      name: 'Shorts (modest length for Morocco)',
+      category: 'clothing',
+      aiSuggested: true,
+    });
     items.push({ name: 'Sun hat / cap', category: 'clothing', aiSuggested: true });
   }
   if (season === 'winter') {
@@ -212,7 +226,11 @@ function generateItems(tripType: TripType, duration: Duration, season: Season): 
   // --- Miscellaneous ---
   items.push({ name: 'Reusable water bottle', category: 'misc', aiSuggested: true });
   items.push({ name: 'Snacks for travel', category: 'misc', aiSuggested: true });
-  items.push({ name: 'Moroccan SIM card (Maroc Telecom / Inwi)', category: 'misc', aiSuggested: true });
+  items.push({
+    name: 'Moroccan SIM card (Maroc Telecom / Inwi)',
+    category: 'misc',
+    aiSuggested: true,
+  });
   items.push({ name: 'Cash in MAD (Moroccan Dirham)', category: 'misc', aiSuggested: true });
 
   if (season === 'summer') {
@@ -251,8 +269,16 @@ function getForgottenItems(
   ];
 
   if (season === 'summer') {
-    candidates.push({ name: 'Aloe vera gel (sunburn relief)', category: 'health', aiSuggested: true });
-    candidates.push({ name: 'Light scarf for sun protection', category: 'clothing', aiSuggested: true });
+    candidates.push({
+      name: 'Aloe vera gel (sunburn relief)',
+      category: 'health',
+      aiSuggested: true,
+    });
+    candidates.push({
+      name: 'Light scarf for sun protection',
+      category: 'clothing',
+      aiSuggested: true,
+    });
   }
   if (season === 'winter') {
     candidates.push({ name: 'Thermal underwear', category: 'clothing', aiSuggested: true });
@@ -260,14 +286,26 @@ function getForgottenItems(
   }
   if (tripType === 'family') {
     candidates.push({ name: 'Small backpack for day trips', category: 'misc', aiSuggested: true });
-    candidates.push({ name: "Children's entertainment (tablet, books)", category: 'misc', aiSuggested: true });
+    candidates.push({
+      name: "Children's entertainment (tablet, books)",
+      category: 'misc',
+      aiSuggested: true,
+    });
   }
   if (tripType === 'business') {
-    candidates.push({ name: 'Portable projector (if presenting)', category: 'electronics', aiSuggested: true });
+    candidates.push({
+      name: 'Portable projector (if presenting)',
+      category: 'electronics',
+      aiSuggested: true,
+    });
     candidates.push({ name: 'Spare business attire', category: 'clothing', aiSuggested: true });
   }
   if (duration === 'extended') {
-    candidates.push({ name: 'Multi-plug extension cord', category: 'electronics', aiSuggested: true });
+    candidates.push({
+      name: 'Multi-plug extension cord',
+      category: 'electronics',
+      aiSuggested: true,
+    });
     candidates.push({ name: 'Travel-size detergent', category: 'health', aiSuggested: true });
   }
 
@@ -305,9 +343,7 @@ export default function SmartPacking() {
   };
 
   const toggleItem = (id: string) => {
-    setItems((prev) =>
-      prev.map((it) => (it.id === id ? { ...it, checked: !it.checked } : it))
-    );
+    setItems((prev) => prev.map((it) => (it.id === id ? { ...it, checked: !it.checked } : it)));
   };
 
   const removeItem = (id: string) => {
@@ -340,11 +376,10 @@ export default function SmartPacking() {
       } else {
         const pickCount = Math.min(3, forgotten.length);
         const picks = forgotten.slice(0, pickCount);
-        setItems((prev) => [
-          ...picks.map((p) => ({ ...p, id: uid(), checked: false })),
-          ...prev,
-        ]);
-        setShowAIHint(`Added ${pickCount} item${pickCount > 1 ? 's' : ''} you might have forgotten.`);
+        setItems((prev) => [...picks.map((p) => ({ ...p, id: uid(), checked: false })), ...prev]);
+        setShowAIHint(
+          `Added ${pickCount} item${pickCount > 1 ? 's' : ''} you might have forgotten.`
+        );
       }
       setAiSuggesting(false);
       setTimeout(() => setShowAIHint(null), 4000);
@@ -680,9 +715,7 @@ export default function SmartPacking() {
                 fontWeight: 800,
                 cursor: generating ? 'wait' : 'pointer',
                 transition: 'all 0.2s',
-                boxShadow: generating
-                  ? 'none'
-                  : '0 8px 24px rgba(238, 173, 89, 0.4)',
+                boxShadow: generating ? 'none' : '0 8px 24px rgba(238, 173, 89, 0.4)',
                 width: '100%',
               }}
             >
@@ -768,9 +801,9 @@ export default function SmartPacking() {
                 lineHeight: 1.6,
               }}
             >
-              Select your trip type, duration, and season — then let AI craft a personalized
-              packing list with documents, electronics, clothing, spiritual items, and Moroccan
-              gift suggestions.
+              Select your trip type, duration, and season — then let AI craft a personalized packing
+              list with documents, electronics, clothing, spiritual items, and Moroccan gift
+              suggestions.
             </p>
           </div>
         )}
@@ -796,12 +829,7 @@ export default function SmartPacking() {
                 justifyContent: 'center',
               }}
             >
-              <Sparkles
-                size={32}
-                color={THEME.gold}
-                strokeWidth={2}
-                className="sparkle-spin"
-              />
+              <Sparkles size={32} color={THEME.gold} strokeWidth={2} className="sparkle-spin" />
             </div>
             <p
               style={{
@@ -859,7 +887,9 @@ export default function SmartPacking() {
                     color: THEME.darkGreen,
                   }}
                 >
-                  {aiSuggesting ? 'Thinking of what you might have forgotten...' : 'AI Smart Suggest'}
+                  {aiSuggesting
+                    ? 'Thinking of what you might have forgotten...'
+                    : 'AI Smart Suggest'}
                 </div>
                 <div
                   style={{
@@ -998,7 +1028,9 @@ export default function SmartPacking() {
                             transition: 'all 0.2s',
                           }}
                         >
-                          {item.checked && <Check size={14} color={THEME.darkGreen} strokeWidth={3} />}
+                          {item.checked && (
+                            <Check size={14} color={THEME.darkGreen} strokeWidth={3} />
+                          )}
                         </div>
 
                         {/* Item name */}
@@ -1203,12 +1235,22 @@ export default function SmartPacking() {
       {/* ===== Inline Styles ===== */}
       <style jsx>{`
         @keyframes spin {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
+          from {
+            transform: rotate(0deg);
+          }
+          to {
+            transform: rotate(360deg);
+          }
         }
         @keyframes slideIn {
-          from { opacity: 0; transform: translateY(-8px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
         .sparkle-spin {
           animation: spin 1s linear infinite;

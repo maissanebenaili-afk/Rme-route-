@@ -1,22 +1,22 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import BookingCards from "./BookingCards";
-import { MapPin, Navigation, Calendar } from "lucide-react";
+import { useState } from 'react';
+import BookingCards from './BookingCards';
+import { MapPin, Navigation, Calendar } from 'lucide-react';
 
 const popularRoutes = [
-  { from: "Paris", to: "Tanger", distance: "2 100 km" },
-  { from: "Lyon", to: "Casablanca", distance: "2 500 km" },
-  { from: "Marseille", to: "Tanger", distance: "1 600 km" },
-  { from: "Bruxelles", to: "Rabat", distance: "2 400 km" },
-  { from: "Barcelone", to: "Tanger", distance: "1 300 km" },
-  { from: "Frankfurt", to: "Marrakech", distance: "2 800 km" },
+  { from: 'Paris', to: 'Tanger', distance: '2 100 km' },
+  { from: 'Lyon', to: 'Casablanca', distance: '2 500 km' },
+  { from: 'Marseille', to: 'Tanger', distance: '1 600 km' },
+  { from: 'Bruxelles', to: 'Rabat', distance: '2 400 km' },
+  { from: 'Barcelone', to: 'Tanger', distance: '1 300 km' },
+  { from: 'Frankfurt', to: 'Marrakech', distance: '2 800 km' },
 ];
 
 export default function RouteSearch() {
-  const [origin, setOrigin] = useState("Paris, France");
-  const [destination, setDestination] = useState("Tanger, Maroc");
-  const [date, setDate] = useState("");
+  const [origin, setOrigin] = useState('Paris, France');
+  const [destination, setDestination] = useState('Tanger, Maroc');
+  const [date, setDate] = useState('');
 
   return (
     <>

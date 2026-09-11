@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { useMemo, useState } from "react";
-import { calculateTravelCost } from "@/lib/costCalculator";
-import { Car, Fuel, Ship, Waypoints, Wallet } from "lucide-react";
+import { useMemo, useState } from 'react';
+import { calculateTravelCost } from '@/lib/costCalculator';
+import { Car, Fuel, Ship, Waypoints, Wallet } from 'lucide-react';
 
 export default function CostCalculator() {
   const [distance, setDistance] = useState(2100);
@@ -27,11 +27,17 @@ export default function CostCalculator() {
   const costPerPerson = (n: number) => Math.round(total.grandTotal / n);
 
   const inputs = [
-    { label: "Distance (km)", value: distance, setter: setDistance, icon: Waypoints, suffix: "km" },
-    { label: "Consommation", value: consumption, setter: setConsumption, icon: Car, suffix: "L/100km" },
-    { label: "Prix carburant", value: fuelPrice, setter: setFuelPrice, icon: Fuel, suffix: "€/L" },
-    { label: "Péages (€)", value: tolls, setter: setTolls, icon: Waypoints, suffix: "€" },
-    { label: "Ferry (€)", value: ferry, setter: setFerry, icon: Ship, suffix: "€" },
+    { label: 'Distance (km)', value: distance, setter: setDistance, icon: Waypoints, suffix: 'km' },
+    {
+      label: 'Consommation',
+      value: consumption,
+      setter: setConsumption,
+      icon: Car,
+      suffix: 'L/100km',
+    },
+    { label: 'Prix carburant', value: fuelPrice, setter: setFuelPrice, icon: Fuel, suffix: '€/L' },
+    { label: 'Péages (€)', value: tolls, setter: setTolls, icon: Waypoints, suffix: '€' },
+    { label: 'Ferry (€)', value: ferry, setter: setFerry, icon: Ship, suffix: '€' },
   ];
 
   return (
@@ -64,10 +70,31 @@ export default function CostCalculator() {
 
       {/* Results */}
       <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <Metric label="Carburant" value={`${total.fuelTotal.toFixed(0)} €`} icon={Fuel} color="text-orange-600 bg-orange-50" />
-        <Metric label="Péages" value={`${total.tollTotal.toFixed(0)} €`} icon={Waypoints} color="text-blue-600 bg-blue-50" />
-        <Metric label="Ferry" value={`${total.ferryTotal.toFixed(0)} €`} icon={Ship} color="text-purple-600 bg-purple-50" />
-        <Metric label="Total" value={`${total.grandTotal.toFixed(0)} €`} icon={Wallet} color="text-emerald-600 bg-emerald-50" highlight />
+        <Metric
+          label="Carburant"
+          value={`${total.fuelTotal.toFixed(0)} €`}
+          icon={Fuel}
+          color="text-orange-600 bg-orange-50"
+        />
+        <Metric
+          label="Péages"
+          value={`${total.tollTotal.toFixed(0)} €`}
+          icon={Waypoints}
+          color="text-blue-600 bg-blue-50"
+        />
+        <Metric
+          label="Ferry"
+          value={`${total.ferryTotal.toFixed(0)} €`}
+          icon={Ship}
+          color="text-purple-600 bg-purple-50"
+        />
+        <Metric
+          label="Total"
+          value={`${total.grandTotal.toFixed(0)} €`}
+          icon={Wallet}
+          color="text-emerald-600 bg-emerald-50"
+          highlight
+        />
       </div>
 
       {/* Cost per person */}
@@ -84,8 +111,8 @@ export default function CostCalculator() {
       {/* Tips */}
       <div className="mt-4 rounded-xl bg-amber-50 p-4 text-sm text-amber-900">
         💡 <strong>Astuce :</strong> Le trajet Paris-Tanger en voiture coûte en moyenne 350-450€
-        (carburant + péages + ferry), contre 150-300€ par personne en avion.
-        À 3+ voyageurs, la route devient plus économique.
+        (carburant + péages + ferry), contre 150-300€ par personne en avion. À 3+ voyageurs, la
+        route devient plus économique.
       </div>
     </section>
   );
@@ -107,12 +134,12 @@ function Metric({
   return (
     <div
       className={`rounded-xl p-3 text-center ${
-        highlight ? "ring-2 ring-emerald-500 " : ""
+        highlight ? 'ring-2 ring-emerald-500 ' : ''
       }${color}`}
     >
       <Icon size={18} className="mx-auto mb-1" />
       <div className="text-xs opacity-70">{label}</div>
-      <div className={`mt-1 text-lg font-black ${highlight ? "text-emerald-700" : ""}`}>
+      <div className={`mt-1 text-lg font-black ${highlight ? 'text-emerald-700' : ''}`}>
         {value}
       </div>
     </div>

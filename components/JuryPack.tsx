@@ -42,7 +42,7 @@ function generateQrPattern(text: string, size: number = 21) {
         continue;
       }
       // Deterministic pseudo-random based on position + hash
-      const v = ((x * 73 + y * 151 + hash * 17) % 100) < 48;
+      const v = (x * 73 + y * 151 + hash * 17) % 100 < 48;
       row.push(v);
     }
     grid.push(row);
@@ -59,7 +59,14 @@ function FinderPattern({ x, y, cell }: { x: number; y: number; cell: number }) {
       {/* Inner 5x5 white */}
       <rect x={cell} y={cell} width={cell * 5} height={cell * 5} fill="#fffdf8" rx={cell * 0.3} />
       {/* Center 3x3 */}
-      <rect x={cell * 2} y={cell * 2} width={cell * 3} height={cell * 3} fill="#0d3f38" rx={cell * 0.2} />
+      <rect
+        x={cell * 2}
+        y={cell * 2}
+        width={cell * 3}
+        height={cell * 3}
+        fill="#0d3f38"
+        rx={cell * 0.2}
+      />
     </g>
   );
 }
@@ -168,13 +175,11 @@ export default function JuryPack() {
         {/* Pitch */}
         <div className="mb-12 rounded-3xl border border-[#eead59]/15 bg-white/5 p-8 text-center sm:p-12">
           <p className="text-lg font-medium leading-relaxed text-white/90 sm:text-xl">
-            RME Voyage est la première plateforme d'assistance voyage pour les Marocains
-            de l'étranger, combinant un assistant IA en Darija, des outils de voyage
-            intelligents et une accessibilité totale — le tout en une seule PWA installable.
+            RME Voyage est la première plateforme d'assistance voyage pour les Marocains de
+            l'étranger, combinant un assistant IA en Darija, des outils de voyage intelligents et
+            une accessibilité totale — le tout en une seule PWA installable.
           </p>
-          <p className="mt-4 text-sm text-[#eead59]">
-            De Paris à Tanger, 2100 km de sérénité.
-          </p>
+          <p className="mt-4 text-sm text-[#eead59]">De Paris à Tanger, 2100 km de sérénité.</p>
         </div>
 
         {/* Main grid: QR + Metrics */}
@@ -183,9 +188,7 @@ export default function JuryPack() {
           <div className="flex flex-col items-center justify-center rounded-3xl border border-[#eead59]/15 bg-white/5 p-8">
             <div className="mb-4 flex items-center gap-2 text-[#eead59]">
               <QrCode className="h-5 w-5" />
-              <span className="text-sm font-bold uppercase tracking-wide">
-                Scannez pour l'app
-              </span>
+              <span className="text-sm font-bold uppercase tracking-wide">Scannez pour l'app</span>
             </div>
             <div className="rounded-3xl bg-[#fffdf8] p-6 shadow-xl">
               <QrCodeSvg url={appUrl} size={200} />

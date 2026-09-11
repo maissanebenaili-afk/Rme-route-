@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { Compass, Loader2, MapPin } from "lucide-react";
+import { useEffect, useState } from 'react';
+import { Compass, Loader2, MapPin } from 'lucide-react';
 
 export default function QiblaCompass() {
   const [qiblaDirection, setQiblaDirection] = useState<number | null>(null);
   const [userHeading, setUserHeading] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
-  const [location, setLocation] = useState<string>("");
+  const [location, setLocation] = useState<string>('');
 
   useEffect(() => {
     let watchId: number;
@@ -29,7 +29,7 @@ export default function QiblaCompass() {
           setLoading(false);
 
           // Track device orientation for live compass
-          if (typeof DeviceOrientationEvent !== "undefined") {
+          if (typeof DeviceOrientationEvent !== 'undefined') {
             const handler = (e: DeviceOrientationEvent) => {
               if (e.alpha !== null) {
                 setUserHeading(e.alpha);
@@ -37,19 +37,22 @@ export default function QiblaCompass() {
             };
 
             // Request permission for iOS
-            if (typeof (DeviceOrientationEvent as any).requestPermission === "function") {
-              (DeviceOrientationEvent as any).requestPermission().then((permission: string) => {
-                if (permission === "granted") {
-                  window.addEventListener("deviceorientation", handler);
-                  watchId = window.setInterval(() => {}, 1000) as unknown as number;
-                }
-              }).catch(() => {});
+            if (typeof (DeviceOrientationEvent as any).requestPermission === 'function') {
+              (DeviceOrientationEvent as any)
+                .requestPermission()
+                .then((permission: string) => {
+                  if (permission === 'granted') {
+                    window.addEventListener('deviceorientation', handler);
+                    watchId = window.setInterval(() => {}, 1000) as unknown as number;
+                  }
+                })
+                .catch(() => {});
             } else {
-              window.addEventListener("deviceorientation", handler);
+              window.addEventListener('deviceorientation', handler);
             }
 
             return () => {
-              window.removeEventListener("deviceorientation", handler);
+              window.removeEventListener('deviceorientation', handler);
             };
           }
         },
@@ -57,7 +60,7 @@ export default function QiblaCompass() {
           // Fallback to Paris
           const qibla = calculateQibla(48.8566, 2.3522);
           setQiblaDirection(qibla);
-          setLocation("Paris (position par défaut)");
+          setLocation('Paris (position par défaut)');
           setLoading(false);
         },
         { enableHighAccuracy: false, timeout: 5000, maximumAge: 600000 }
@@ -82,8 +85,7 @@ export default function QiblaCompass() {
     const lambda = (lon * Math.PI) / 180;
 
     const y = Math.sin(lambdaK - lambda);
-    const x =
-      Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda);
+    const x = Math.cos(phi) * Math.tan(phiK) - Math.sin(phi) * Math.cos(lambdaK - lambda);
     const qibla = (Math.atan2(y, x) * 180) / Math.PI;
 
     return (qibla + 360) % 360;
@@ -125,17 +127,14 @@ export default function QiblaCompass() {
           {/* Compass dial */}
           <div className="absolute inset-0 rounded-full border-4 border-slate-100 bg-gradient-to-br from-emerald-50 to-amber-50">
             {/* Cardinal directions */}
-            {["N", "E", "S", "O"].map((dir, i) => (
+            {['N', 'E', 'S', 'O'].map((dir, i) => (
               <div
                 key={dir}
                 className="absolute text-sm font-bold text-slate-400"
                 style={{
-                  top: i === 0 ? "8px" : i === 2 ? "calc(100% - 22px)" : "50%",
-                  left: i === 1 ? "calc(100% - 22px)" : i === 3 ? "8px" : "50%",
-                  transform:
-                    i === 0 || i === 2
-                      ? "translateX(-50%)"
-                      : "translateY(-50%)",
+                  top: i === 0 ? '8px' : i === 2 ? 'calc(100% - 22px)' : '50%',
+                  left: i === 1 ? 'calc(100% - 22px)' : i === 3 ? '8px' : '50%',
+                  transform: i === 0 || i === 2 ? 'translateX(-50%)' : 'translateY(-50%)',
                 }}
               >
                 {dir}
@@ -169,12 +168,8 @@ export default function QiblaCompass() {
         </div>
 
         <div className="mt-4 text-center">
-          <p className="text-2xl font-black text-emerald-700">
-            {Math.round(qiblaDirection)}°
-          </p>
-          <p className="text-xs text-slate-500">
-            Direction de la Kaaba depuis votre position
-          </p>
+          <p className="text-2xl font-black text-emerald-700">{Math.round(qiblaDirection)}°</p>
+          <p className="text-xs text-slate-500">Direction de la Kaaba depuis votre position</p>
         </div>
 
         <p className="mt-3 rounded-lg bg-amber-50 px-3 py-1.5 text-xs text-amber-800">

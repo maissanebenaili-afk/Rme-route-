@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Fuel, Moon, Utensils, Building, Bed, Wrench } from "lucide-react";
+import { useState } from 'react';
+import { Fuel, Moon, Utensils, Building, Bed, Wrench } from 'lucide-react';
 
 const services = [
-  { icon: Fuel, label: "Stations-service", color: "text-orange-600 bg-orange-50" },
-  { icon: Moon, label: "Mosquées", color: "text-emerald-600 bg-emerald-50" },
-  { icon: Utensils, label: "Restaurants halal", color: "text-red-600 bg-red-50" },
-  { icon: Building, label: "Consulats", color: "text-blue-600 bg-blue-50" },
-  { icon: Bed, label: "Aires de repos", color: "text-purple-600 bg-purple-50" },
-  { icon: Wrench, label: "Garages", color: "text-slate-600 bg-slate-100" },
+  { icon: Fuel, label: 'Stations-service', color: 'text-orange-600 bg-orange-50' },
+  { icon: Moon, label: 'Mosquées', color: 'text-emerald-600 bg-emerald-50' },
+  { icon: Utensils, label: 'Restaurants halal', color: 'text-red-600 bg-red-50' },
+  { icon: Building, label: 'Consulats', color: 'text-blue-600 bg-blue-50' },
+  { icon: Bed, label: 'Aires de repos', color: 'text-purple-600 bg-purple-50' },
+  { icon: Wrench, label: 'Garages', color: 'text-slate-600 bg-slate-100' },
 ];
 
 export default function ServicesMap() {
@@ -33,7 +33,7 @@ export default function ServicesMap() {
               className={`flex items-center gap-2 rounded-full border px-3 py-2 text-sm font-medium transition ${
                 isActive
                   ? `${service.color} border-transparent ring-2 ring-emerald-500`
-                  : "border-slate-200 hover:bg-slate-50"
+                  : 'border-slate-200 hover:bg-slate-50'
               }`}
             >
               <Icon size={16} />
@@ -93,7 +93,9 @@ export default function ServicesMap() {
         <span className="text-center">
           🗺️ Carte interactive avec géolocalisation des services à venir prochainement.
           <br />
-          <span className="text-xs">Sources : OpenStreetMap, Google Places, données communautaires.</span>
+          <span className="text-xs">
+            Sources : OpenStreetMap, Google Places, données communautaires.
+          </span>
         </span>
       </div>
     </section>

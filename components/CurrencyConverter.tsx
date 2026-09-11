@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useState, useMemo } from "react";
-import { ArrowRightLeft } from "lucide-react";
+import { useState, useMemo } from 'react';
+import { ArrowRightLeft } from 'lucide-react';
 
 const rates: Record<string, number> = {
   EUR: 1,
@@ -16,23 +16,23 @@ const rates: Record<string, number> = {
 };
 
 const currencies = [
-  { code: "EUR", flag: "🇪🇺", name: "Euro" },
-  { code: "MAD", flag: "🇲🇦", name: "Dirham marocain" },
-  { code: "USD", flag: "🇺🇸", name: "Dollar américain" },
-  { code: "GBP", flag: "🇬🇧", name: "Livre sterling" },
-  { code: "CHF", flag: "🇨🇭", name: "Franc suisse" },
-  { code: "CAD", flag: "🇨🇦", name: "Dollar canadien" },
-  { code: "SEK", flag: "🇸🇪", name: "Couronne suédoise" },
-  { code: "DKK", flag: "🇩🇰", name: "Couronne danoise" },
-  { code: "NOK", flag: "🇳🇴", name: "Couronne norvégienne" },
+  { code: 'EUR', flag: '🇪🇺', name: 'Euro' },
+  { code: 'MAD', flag: '🇲🇦', name: 'Dirham marocain' },
+  { code: 'USD', flag: '🇺🇸', name: 'Dollar américain' },
+  { code: 'GBP', flag: '🇬🇧', name: 'Livre sterling' },
+  { code: 'CHF', flag: '🇨🇭', name: 'Franc suisse' },
+  { code: 'CAD', flag: '🇨🇦', name: 'Dollar canadien' },
+  { code: 'SEK', flag: '🇸🇪', name: 'Couronne suédoise' },
+  { code: 'DKK', flag: '🇩🇰', name: 'Couronne danoise' },
+  { code: 'NOK', flag: '🇳🇴', name: 'Couronne norvégienne' },
 ];
 
 const quickAmounts = [50, 100, 200, 500, 1000];
 
 export default function CurrencyConverter() {
   const [amount, setAmount] = useState(100);
-  const [from, setFrom] = useState("EUR");
-  const [to, setTo] = useState("MAD");
+  const [from, setFrom] = useState('EUR');
+  const [to, setTo] = useState('MAD');
 
   const result = useMemo(() => {
     const eurAmount = amount / rates[from];
@@ -106,8 +106,8 @@ export default function CurrencyConverter() {
             onClick={() => setAmount(a)}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               amount === a
-                ? "bg-emerald-600 text-white"
-                : "bg-slate-100 text-slate-600 hover:bg-slate-200"
+                ? 'bg-emerald-600 text-white'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
             }`}
           >
             {a} {from}
@@ -118,11 +118,11 @@ export default function CurrencyConverter() {
       {/* Result */}
       <div className="mt-4 rounded-xl bg-gradient-to-br from-emerald-50 to-amber-50 p-5 text-center">
         <div className="text-3xl font-black text-emerald-700">
-          {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })}{" "}
+          {result.toLocaleString('fr-FR', { maximumFractionDigits: 2 })}{' '}
           <span className="text-lg">{to}</span>
         </div>
         <div className="mt-1 text-sm text-slate-500">
-          {amount} {from} = {result.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} {to}
+          {amount} {from} = {result.toLocaleString('fr-FR', { maximumFractionDigits: 2 })} {to}
         </div>
       </div>
 

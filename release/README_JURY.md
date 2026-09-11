@@ -6,25 +6,25 @@
 
 ## Accès immédiat
 
-| Ressource | URL |
-|-----------|-----|
+| Ressource            | URL                             |
+| -------------------- | ------------------------------- |
 | **Application live** | https://rme-voyage-app.pplx.app |
-| **Site marketing** | https://rme-voyage.pplx.app |
+| **Site marketing**   | https://rme-voyage.pplx.app     |
 
 L'app est installable directement depuis le navigateur (Android: "Installer l'app", iPhone: "Ajouter à l'écran d'accueil"). Aucun Play Store requis.
 
 ## Métriques clés
 
-| Métrique | Valeur |
-|----------|--------|
-| Composants React | 16+ |
-| Lignes de code | 8000+ |
-| Langues supportées | 5 (FR, EN, AR, ES, Darija) |
-| Widgets intelligents | 15+ |
-| Sujets IA Hadak | 17 |
-| Accessibilité | Malvoyant (Vue+, synthèse vocale, reconnaissance vocale) |
-| Mode offline | PWA + Service Worker |
-| Build | Production (Next.js 15, TypeScript strict) |
+| Métrique             | Valeur                                                   |
+| -------------------- | -------------------------------------------------------- |
+| Composants React     | 16+                                                      |
+| Lignes de code       | 8000+                                                    |
+| Langues supportées   | 5 (FR, EN, AR, ES, Darija)                               |
+| Widgets intelligents | 15+                                                      |
+| Sujets IA Hadak      | 17                                                       |
+| Accessibilité        | Malvoyant (Vue+, synthèse vocale, reconnaissance vocale) |
+| Mode offline         | PWA + Service Worker                                     |
+| Build                | Production (Next.js 15, TypeScript strict)               |
 
 ## Innovations différenciantes
 

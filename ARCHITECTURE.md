@@ -27,6 +27,7 @@
 ## Stack Technique
 
 ### Frontend
+
 - **Framework:** Next.js 15 (App Router)
 - **Language:** TypeScript 5.7 (strict mode)
 - **UI:** React 19 + Tailwind CSS 3.4
@@ -34,12 +35,14 @@
 - **Mobile:** Capacitor 7 (iOS/Android)
 
 ### Backend
+
 - **Runtime:** Node.js (via Next.js Server)
 - **API:** REST endpoints (/api/*)
 - **Database:** Supabase (PostgreSQL) - prepared for future
 - **Auth:** Supabase Auth - prepared for future
 
 ### Deployment
+
 - **Web:** Vercel, Netlify, Railway, etc.
 - **Mobile:** Capacitor + App Store/Google Play
 - **PWA:** manifest.webmanifest configured
@@ -92,6 +95,7 @@
 ## Flux de Données
 
 ### 1. Recherche de Trajet
+
 ```
 User → RouteSearch Component
        → /api/affiliates?type=flight&origin=Paris&destination=Tanger
@@ -101,6 +105,7 @@ User → RouteSearch Component
 ```
 
 ### 2. Calcul de Budget
+
 ```
 User → CostCalculator Component (client-side)
      → calculateTravelCost() (lib/costCalculator.ts)
@@ -109,6 +114,7 @@ User → CostCalculator Component (client-side)
 ```
 
 ### 3. Horaires de Prière
+
 ```
 PrayerWidget ("use client") → /api/prayer?latitude=48.8566&longitude=2.3522
                             → AlAdhan API proxy
@@ -118,25 +124,30 @@ PrayerWidget ("use client") → /api/prayer?latitude=48.8566&longitude=2.3522
 ## Principes de Conception
 
 ### 1. **Secrets → Server-side Only**
+
 - ✅ TRAVELPAYOUTS_PARTNER_ID en env backend
 - ❌ Jamais en client-side ou bundle JS
 
 ### 2. **API Routes sont Essentielles**
+
 - `/api/prayer` = proxy sécurisé vers AlAdhan
 - `/api/affiliates` = validation + link building
 - ❌ Ne pas utiliser `output: export` tant que ces routes existent
 
 ### 3. **Mobile-First Design**
+
 - Tailwind responsive (sm:, md:, lg:)
 - Manifest.webmanifest pour PWA
 - Capacitor prêt pour iOS/Android natif
 
 ### 4. **Validation & Error Handling**
+
 - Affiliate URLs: `if (!marker) return null` (graceful fallback)
 - Prayer API: AbortController + error state
 - Cost Calculator: Math.max(0, value) pour valeurs négatives
 
 ### 5. **Pas de Données Fictives en Production**
+
 - RME_ROUTE_ETAT.md documente l'état réel
 - Footer disclaimer: "MVP. Données temps réel nécessitent sources vérifiées."
 - Configurations de test ≠ production

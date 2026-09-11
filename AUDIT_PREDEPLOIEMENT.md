@@ -8,21 +8,22 @@
 
 ## 📊 Résumé Exécutif
 
-| Catégorie | Status | Score |
-|-----------|--------|-------|
-| **Code Quality** | ✅ Pass | 8.5/10 |
-| **Security** | ✅ Pass | 8/10 |
-| **Performance** | ✅ Pass | 8/10 |
-| **Documentation** | ✅ Pass | 9/10 |
-| **DevOps/CI-CD** | ⚠️ Partial | 4/10 |
-| **Testing** | ⚠️ Partial | 2/10 |
-| **GLOBAL** | ✅ **READY** | **7.5/10** |
+| Catégorie         | Status       | Score      |
+| ----------------- | ------------ | ---------- |
+| **Code Quality**  | ✅ Pass      | 8.5/10     |
+| **Security**      | ✅ Pass      | 8/10       |
+| **Performance**   | ✅ Pass      | 8/10       |
+| **Documentation** | ✅ Pass      | 9/10       |
+| **DevOps/CI-CD**  | ⚠️ Partial   | 4/10       |
+| **Testing**       | ⚠️ Partial   | 2/10       |
+| **GLOBAL**        | ✅ **READY** | **7.5/10** |
 
 ---
 
 ## ✅ Code Quality
 
 ### Typescript
+
 - ✅ `strict: true` en tsconfig.json
 - ✅ Pas de `any` types non justifiés
 - ✅ Imports paths configurés (@/)
@@ -30,12 +31,14 @@
 - ✅ Proper error handling avec try/catch
 
 **Fichiers vérifiés:**
+
 - CostCalculator.tsx — "use client" correct ✅
 - PrayerWidget.tsx — AbortController pattern ✅
 - affiliate.ts — Validation null-safe ✅
 - costCalculator.ts — Math rounding correct ✅
 
 ### React / Next.js
+
 - ✅ App Router (Next.js 15) activé
 - ✅ Server Components vs Client Components bien séparé
 - ✅ "use client" uniquement où nécessaire (2 fichiers)
@@ -44,6 +47,7 @@
 - ✅ Image optimization compatible avec Capacitor (unoptimized: true)
 
 ### Styling
+
 - ✅ Tailwind CSS v3.4 configuré
 - ✅ PostCSS configured
 - ✅ Pas de CSS-in-JS conflicts
@@ -51,6 +55,7 @@
 - ✅ Color palette cohérente (emerald, slate, white)
 
 ### Structure
+
 - ✅ Répertoires logiques (components/, lib/)
 - ✅ Exports nommés (pas de default exports risqués)
 - ✅ Pas de circular dependencies
@@ -63,6 +68,7 @@
 ## 🔐 Security
 
 ### Secrets Management
+
 - ✅ `.env.example` documenté (sans valeurs)
 - ✅ `.gitignore` complet (node_modules, .env, .next)
 - ✅ Aucun secret visible en git history
@@ -71,6 +77,7 @@
 - ❌ TODO: Supabase credentials à ajouter quand actifs
 
 ### Client-Side Security
+
 - ✅ Pas de secrets exposés en browser
 - ✅ No hardcoded API keys
 - ✅ Affiliate URLs construites côté serveur
@@ -78,6 +85,7 @@
 - ✅ Fetch calls use HTTPS (production)
 
 ### API Security
+
 - ✅ /api/prayer — Proxy sécurisé vers AlAdhan
 - ✅ /api/affiliates — Validation env vars
 - ⚠️ TODO: Rate limiting (brute force protection)
@@ -85,6 +93,7 @@
 - ⚠️ TODO: CSP headers configured
 
 ### Input Validation
+
 - ✅ URL params validés (origin, destination, type)
 - ✅ Math.max() protège contre valeurs négatives
 - ✅ Pas d'eval() ou innerHTML
@@ -97,6 +106,7 @@
 ## ⚡ Performance
 
 ### Bundle Size
+
 - ✅ Next.js 15 tree-shaking enabled
 - ✅ Tailwind purge configured
 - ✅ Lucide React (icônes légères)
@@ -106,6 +116,7 @@
 **Estimé: ~150-200KB gzipped JS**
 
 ### Rendering
+
 - ✅ Server-side rendering (default Next.js)
 - ✅ Static exports où possible (CSS, metadata)
 - ✅ Client-side hydration seulement pour interactif
@@ -113,12 +124,14 @@
 - ✅ useCallback/useMemo utilisés dans CostCalculator
 
 ### Images & Assets
+
 - ✅ images.unoptimized: true (Capacitor compatible)
 - ✅ manifest.webmanifest présent (PWA)
 - ✅ Favicon à ajouter (favicon.ico)
 - ✅ Aucune dépendance image externe dans build
 
 ### API Calls
+
 - ✅ /api/prayer cached friendly (no body mutation)
 - ✅ /api/affiliates lightweight response
 - ⚠️ TODO: Response caching headers
@@ -139,6 +152,7 @@
 - ✅ **NEW:** AUDIT_PREDEPLOIEMENT.md (this file)
 
 ### Code Comments
+
 - ✅ Affiliate.ts: "Never invent a partner marker"
 - ✅ CostCalculator.ts: Math rounding explained
 - ✅ PrayerWidget.tsx: AbortController pattern
@@ -151,6 +165,7 @@
 ## ⚠️ DevOps / CI-CD
 
 ### Build Pipeline
+
 - ✅ `npm run build` works locally
 - ✅ `npm run start` verified
 - ✅ `npm run dev` for development
@@ -159,6 +174,7 @@
 - ⚠️ TODO: Automated testing (Jest, Cypress)
 
 ### Deployment Targets
+
 - ✅ Next.js compatible avec Vercel, Netlify, Railway
 - ✅ Capacitor ready pour iOS/Android
 - ✅ Environment variables pattern established
@@ -166,6 +182,7 @@
 - ⚠️ TODO: Health check endpoint (/api/health)
 
 ### Monitoring
+
 - ⚠️ TODO: Error tracking (Sentry)
 - ⚠️ TODO: Performance monitoring (Vercel Analytics)
 - ⚠️ TODO: Logging (Winston, Pino)
@@ -178,17 +195,20 @@
 ## 🧪 Testing
 
 ### Unit Tests
+
 - ❌ Pas de tests Jest
 - ⚠️ TODO: costCalculator.ts — edge cases
 - ⚠️ TODO: affiliate.ts — null/empty validation
 - ⚠️ TODO: config.ts — market mapping
 
 **Needed:**
+
 ```bash
 npm install --save-dev jest @testing-library/react ts-jest
 ```
 
 ### E2E Tests
+
 - ❌ Pas de Cypress/Playwright
 - ⚠️ TODO: Happy path: search → affiliate link
 - ⚠️ TODO: Error path: no affiliate configured
@@ -196,6 +216,7 @@ npm install --save-dev jest @testing-library/react ts-jest
 - ⚠️ TODO: Cost calculator interactions
 
 ### Manual Testing Checklist
+
 - ✅ App loads on desktop
 - ⚠️ TODO: Test on mobile (iPhone, Android)
 - ⚠️ TODO: Test prayer times API
@@ -264,6 +285,7 @@ npm install --save-dev jest @testing-library/react ts-jest
 ## 📋 Déploiement Recommandé
 
 ### Phase 1: Web (Immédiat)
+
 ```bash
 # Option A: Vercel (Recommended)
 git push origin production-ready
@@ -275,18 +297,21 @@ npm run start
 ```
 
 ### Phase 2: Testing (1-2 semaines)
+
 - [ ] Beta testers accès au site
 - [ ] Affiliate partners setup
 - [ ] Monitoring + alerting configuré
 - [ ] Load testing (50-100 users)
 
 ### Phase 3: Mobile (1 mois)
+
 ```bash
 npm run cap:build
 # Build iOS/Android apps via Capacitor
 ```
 
 ### Phase 4: Production (Once validated)
+
 - [ ] Custom domain configured
 - [ ] Analytics enabled
 - [ ] Backup & disaster recovery

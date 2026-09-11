@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from 'react';
 import {
   CloudRain,
   Volume2,
@@ -16,23 +16,22 @@ import {
   Check,
   X,
   ExternalLink,
-} from "lucide-react";
+} from 'lucide-react';
 
 /* ──────────────────────────────────────────────
    Theme constants — RME Voyage
    Dark green #0d3f38 · Gold #eead59 · Cream #f8f7f2
    ────────────────────────────────────────────── */
 const THEME = {
-  green: "#0d3f38",
-  gold: "#eead59",
-  cream: "#f8f7f2",
+  green: '#0d3f38',
+  gold: '#eead59',
+  cream: '#f8f7f2',
 } as const;
 
-const cardBase =
-  "rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md";
-const greenBg = "bg-[#0d3f38] text-[#f8f7f2]";
-const goldText = "text-[#eead59]";
-const creamBg = "bg-[#f8f7f2]";
+const cardBase = 'rounded-2xl border p-5 shadow-sm transition-all duration-300 hover:shadow-md';
+const greenBg = 'bg-[#0d3f38] text-[#f8f7f2]';
+const goldText = 'text-[#eead59]';
+const creamBg = 'bg-[#f8f7f2]';
 
 /* ============================================================
    1. WeatherMorocco — Open-Meteo forecast for 6 Moroccan cities
@@ -48,43 +47,43 @@ type CityWeather = {
 };
 
 const WMO_CODE_MAP: Record<number, { label: string; emoji: string }> = {
-  0: { label: "Ciel dégagé", emoji: "☀️" },
-  1: { label: "Plutôt dégagé", emoji: "🌤️" },
-  2: { label: "Partiellement nuageux", emoji: "⛅" },
-  3: { label: "Couvert", emoji: "☁️" },
-  45: { label: "Brouillard", emoji: "🌫️" },
-  48: { label: "Brouillard givrant", emoji: "🌫️" },
-  51: { label: "Bruine légère", emoji: "🌦️" },
-  53: { label: "Bruine modérée", emoji: "🌦️" },
-  55: { label: "Bruine dense", emoji: "🌧️" },
-  61: { label: "Pluie légère", emoji: "🌧️" },
-  63: { label: "Pluie modérée", emoji: "🌧️" },
-  65: { label: "Pluie forte", emoji: "🌧️" },
-  71: { label: "Neige légère", emoji: "🌨️" },
-  73: { label: "Neige modérée", emoji: "🌨️" },
-  75: { label: "Neige forte", emoji: "❄️" },
-  77: { label: "Grains de neige", emoji: "🌨️" },
-  80: { label: "Averses légères", emoji: "🌦️" },
-  81: { label: "Averses modérées", emoji: "🌧️" },
-  82: { label: "Averses violentes", emoji: "⛈️" },
-  85: { label: "Averses de neige", emoji: "🌨️" },
-  86: { label: "Averses de neige fortes", emoji: "❄️" },
-  95: { label: "Orage", emoji: "⛈️" },
-  96: { label: "Orage avec grêle", emoji: "⛈️" },
-  99: { label: "Orage violent", emoji: "⛈️" },
+  0: { label: 'Ciel dégagé', emoji: '☀️' },
+  1: { label: 'Plutôt dégagé', emoji: '🌤️' },
+  2: { label: 'Partiellement nuageux', emoji: '⛅' },
+  3: { label: 'Couvert', emoji: '☁️' },
+  45: { label: 'Brouillard', emoji: '🌫️' },
+  48: { label: 'Brouillard givrant', emoji: '🌫️' },
+  51: { label: 'Bruine légère', emoji: '🌦️' },
+  53: { label: 'Bruine modérée', emoji: '🌦️' },
+  55: { label: 'Bruine dense', emoji: '🌧️' },
+  61: { label: 'Pluie légère', emoji: '🌧️' },
+  63: { label: 'Pluie modérée', emoji: '🌧️' },
+  65: { label: 'Pluie forte', emoji: '🌧️' },
+  71: { label: 'Neige légère', emoji: '🌨️' },
+  73: { label: 'Neige modérée', emoji: '🌨️' },
+  75: { label: 'Neige forte', emoji: '❄️' },
+  77: { label: 'Grains de neige', emoji: '🌨️' },
+  80: { label: 'Averses légères', emoji: '🌦️' },
+  81: { label: 'Averses modérées', emoji: '🌧️' },
+  82: { label: 'Averses violentes', emoji: '⛈️' },
+  85: { label: 'Averses de neige', emoji: '🌨️' },
+  86: { label: 'Averses de neige fortes', emoji: '❄️' },
+  95: { label: 'Orage', emoji: '⛈️' },
+  96: { label: 'Orage avec grêle', emoji: '⛈️' },
+  99: { label: 'Orage violent', emoji: '⛈️' },
 };
 
 const WEATHER_CITIES = [
-  { name: "Casablanca", lat: 33.57, lon: 7.59 },
-  { name: "Rabat", lat: 34.02, lon: 6.83 },
-  { name: "Marrakech", lat: 31.63, lon: 7.99 },
-  { name: "Fès", lat: 34.03, lon: 5.0 },
-  { name: "Tanger", lat: 35.76, lon: 5.83 },
-  { name: "Agadir", lat: 30.42, lon: 9.6 },
+  { name: 'Casablanca', lat: 33.57, lon: 7.59 },
+  { name: 'Rabat', lat: 34.02, lon: 6.83 },
+  { name: 'Marrakech', lat: 31.63, lon: 7.99 },
+  { name: 'Fès', lat: 34.03, lon: 5.0 },
+  { name: 'Tanger', lat: 35.76, lon: 5.83 },
+  { name: 'Agadir', lat: 30.42, lon: 9.6 },
 ];
 
 function getWeatherInfo(code: number) {
-  return WMO_CODE_MAP[code] || { label: "—", emoji: "🌡️" };
+  return WMO_CODE_MAP[code] || { label: '—', emoji: '🌡️' };
 }
 
 export function WeatherMorocco() {
@@ -105,7 +104,7 @@ export function WeatherMorocco() {
       try {
         const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,weather_code&timezone=Africa/Casablanca`;
         const res = await fetch(url, { signal: controller.signal });
-        if (!res.ok) throw new Error("Weather API error");
+        if (!res.ok) throw new Error('Weather API error');
         const data = await res.json();
         const temp = data?.current?.temperature_2m ?? 0;
         const code = data?.current?.weather_code ?? 0;
@@ -122,7 +121,7 @@ export function WeatherMorocco() {
           return next;
         });
       } catch (err) {
-        if ((err as Error).name !== "AbortError") {
+        if ((err as Error).name !== 'AbortError') {
           setCities((prev) => {
             const next = [...prev];
             next[idx] = { ...next[idx], loading: false, error: true };
@@ -140,9 +139,7 @@ export function WeatherMorocco() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <CloudRain className="text-[#0d3f38]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">
-          Météo du Maroc
-        </h2>
+        <h2 className="text-lg font-bold text-[#0d3f38]">Météo du Maroc</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Températures actuelles dans 6 villes — données Open-Meteo
@@ -165,20 +162,14 @@ export function WeatherMorocco() {
               ) : city.error ? (
                 <div className="flex flex-col items-center gap-1 text-center">
                   <span className="text-2xl">⚠️</span>
-                  <span className="text-sm font-semibold text-[#0d3f38]">
-                    {city.name}
-                  </span>
+                  <span className="text-sm font-semibold text-[#0d3f38]">{city.name}</span>
                   <span className="text-xs text-red-500">Indisponible</span>
                 </div>
               ) : (
                 <>
                   <span className="text-3xl">{info.emoji}</span>
-                  <span className="mt-1 text-sm font-bold text-[#0d3f38]">
-                    {city.name}
-                  </span>
-                  <span className="text-2xl font-black text-[#0d3f38]">
-                    {city.temp}°C
-                  </span>
+                  <span className="mt-1 text-sm font-bold text-[#0d3f38]">{city.name}</span>
+                  <span className="text-2xl font-black text-[#0d3f38]">{city.temp}°C</span>
                   <span className="text-xs text-[#0d3f38]/60">{info.label}</span>
                 </>
               )}
@@ -207,107 +198,115 @@ type DarijaCategory = {
 
 const DARIJA_CATEGORIES: DarijaCategory[] = [
   {
-    name: "Salutations",
-    emoji: "👋",
+    name: 'Salutations',
+    emoji: '👋',
     phrases: [
-      { darija: "Salam", arabic: "سلام", french: "Bonjour / Salut" },
-      { darija: "Salam alaykum", arabic: "السلام عليكم", french: "Que la paix soit sur vous" },
-      { darija: "Labas?", arabic: "لا باس؟", french: "Comment ça va?" },
-      { darija: "Labas, el hamdulillah", arabic: "لا باس الحمد لله", french: "Ça va, grâce à Dieu" },
-      { darija: "Bslama", arabic: "بسلامة", french: "Au revoir" },
-      { darija: "Nhar zwin", arabic: "نهار زوين", french: "Bonne journée" },
-      { darija: "Marhba", arabic: "مرحبا", french: "Bienvenue" },
+      { darija: 'Salam', arabic: 'سلام', french: 'Bonjour / Salut' },
+      { darija: 'Salam alaykum', arabic: 'السلام عليكم', french: 'Que la paix soit sur vous' },
+      { darija: 'Labas?', arabic: 'لا باس؟', french: 'Comment ça va?' },
+      {
+        darija: 'Labas, el hamdulillah',
+        arabic: 'لا باس الحمد لله',
+        french: 'Ça va, grâce à Dieu',
+      },
+      { darija: 'Bslama', arabic: 'بسلامة', french: 'Au revoir' },
+      { darija: 'Nhar zwin', arabic: 'نهار زوين', french: 'Bonne journée' },
+      { darija: 'Marhba', arabic: 'مرحبا', french: 'Bienvenue' },
     ],
   },
   {
-    name: "Nombres",
-    emoji: "🔢",
+    name: 'Nombres',
+    emoji: '🔢',
     phrases: [
-      { darija: "Wehed", arabic: "وحد", french: "Un" },
-      { darija: "Joj", arabic: "جوج", french: "Deux" },
-      { darija: "Tlata", arabic: "تلاتة", french: "Trois" },
-      { darija: "Arbaa", arabic: "أربعة", french: "Quatre" },
-      { darija: "Khamsa", arabic: "خمسة", french: "Cinq" },
-      { darija: "Sitta", arabic: "ستة", french: "Six" },
-      { darija: "Sebaa", arabic: "سبعة", french: "Sept" },
-      { darija: "Tmenya", arabic: "تمنية", french: "Huit" },
+      { darija: 'Wehed', arabic: 'وحد', french: 'Un' },
+      { darija: 'Joj', arabic: 'جوج', french: 'Deux' },
+      { darija: 'Tlata', arabic: 'تلاتة', french: 'Trois' },
+      { darija: 'Arbaa', arabic: 'أربعة', french: 'Quatre' },
+      { darija: 'Khamsa', arabic: 'خمسة', french: 'Cinq' },
+      { darija: 'Sitta', arabic: 'ستة', french: 'Six' },
+      { darija: 'Sebaa', arabic: 'سبعة', french: 'Sept' },
+      { darija: 'Tmenya', arabic: 'تمنية', french: 'Huit' },
     ],
   },
   {
-    name: "Nourriture",
-    emoji: "🍽️",
+    name: 'Nourriture',
+    emoji: '🍽️',
     phrases: [
-      { darija: "Bghit tajine", arabic: "بغيت طاجين", french: "Je veux un tajine" },
-      { darija: "Bghit atay", arabic: "بغيت أتاي", french: "Je veux du thé" },
-      { darija: "Ch7al?", arabic: "شحال؟", french: "Combien?" },
-      { darija: "Mzyan", arabic: "مزيان", french: "C'est bon / Bien" },
-      { darija: "Meskin", arabic: "مسكين", french: "Ce n'est pas bon" },
-      { darija: "Bghit ma", arabic: "بغيت ما", french: "Je veux de l'eau" },
-      { darija: "Safi", arabic: "صافي", french: "C'est suffisant / OK" },
-      { darija: "Barakallahu fik", arabic: "بارك الله فيك", french: "Merci beaucoup" },
+      { darija: 'Bghit tajine', arabic: 'بغيت طاجين', french: 'Je veux un tajine' },
+      { darija: 'Bghit atay', arabic: 'بغيت أتاي', french: 'Je veux du thé' },
+      { darija: 'Ch7al?', arabic: 'شحال؟', french: 'Combien?' },
+      { darija: 'Mzyan', arabic: 'مزيان', french: "C'est bon / Bien" },
+      { darija: 'Meskin', arabic: 'مسكين', french: "Ce n'est pas bon" },
+      { darija: 'Bghit ma', arabic: 'بغيت ما', french: "Je veux de l'eau" },
+      { darija: 'Safi', arabic: 'صافي', french: "C'est suffisant / OK" },
+      { darija: 'Barakallahu fik', arabic: 'بارك الله فيك', french: 'Merci beaucoup' },
     ],
   },
   {
-    name: "Voyage",
-    emoji: "✈️",
+    name: 'Voyage',
+    emoji: '✈️',
     phrases: [
-      { darija: "Fin kayn la gare?", arabic: "فين كاين لا غار؟", french: "Où est la gare?" },
-      { darija: "Ch7al taxi l...", arabic: "شحال طاكسي لـ", french: "Combien le taxi pour..." },
-      { darija: "Bghit tazir", arabic: "بغيت طازير", french: "Je veux un billet" },
-      { darija: "Fin kayn l'hotel?", arabic: "فين كاين لوطيل؟", french: "Où est l'hôtel?" },
-      { darija: "Mnin n-goul l'airport?", arabic: "منين نقول ل المطار؟", french: "Comment aller à l'aéroport?" },
-      { darija: "Ch7al l'heure?", arabic: "شحال الساعة؟", french: "Quelle heure est-il?" },
+      { darija: 'Fin kayn la gare?', arabic: 'فين كاين لا غار؟', french: 'Où est la gare?' },
+      { darija: 'Ch7al taxi l...', arabic: 'شحال طاكسي لـ', french: 'Combien le taxi pour...' },
+      { darija: 'Bghit tazir', arabic: 'بغيت طازير', french: 'Je veux un billet' },
+      { darija: "Fin kayn l'hotel?", arabic: 'فين كاين لوطيل؟', french: "Où est l'hôtel?" },
+      {
+        darija: "Mnin n-goul l'airport?",
+        arabic: 'منين نقول ل المطار؟',
+        french: "Comment aller à l'aéroport?",
+      },
+      { darija: "Ch7al l'heure?", arabic: 'شحال الساعة؟', french: 'Quelle heure est-il?' },
     ],
   },
   {
-    name: "Urgence",
-    emoji: "🚨",
+    name: 'Urgence',
+    emoji: '🚨',
     phrases: [
-      { darija: "Aaaawen!", arabic: "عاون!", french: "Aidez-moi!" },
-      { darija: "Mrehh el polis", arabic: "مريح البوليس", french: "Appelez la police" },
-      { darija: "Mrehh el ambulance", arabic: "مريح الإسعاف", french: "Appelez l'ambulance" },
-      { darija: "Ana marid", arabic: "أنا مريض", french: "Je suis malade" },
-      { darija: "Fin kayn l'hpital?", arabic: "فين كاين السبيطار؟", french: "Où est l'hôpital?" },
-      { darija: "Mrehh el dar", arabic: "مريح الدار", french: "Appelez chez moi" },
+      { darija: 'Aaaawen!', arabic: 'عاون!', french: 'Aidez-moi!' },
+      { darija: 'Mrehh el polis', arabic: 'مريح البوليس', french: 'Appelez la police' },
+      { darija: 'Mrehh el ambulance', arabic: 'مريح الإسعاف', french: "Appelez l'ambulance" },
+      { darija: 'Ana marid', arabic: 'أنا مريض', french: 'Je suis malade' },
+      { darija: "Fin kayn l'hpital?", arabic: 'فين كاين السبيطار؟', french: "Où est l'hôpital?" },
+      { darija: 'Mrehh el dar', arabic: 'مريح الدار', french: 'Appelez chez moi' },
     ],
   },
   {
-    name: "Shopping",
-    emoji: "🛍️",
+    name: 'Shopping',
+    emoji: '🛍️',
     phrases: [
-      { darija: "Bghit hada", arabic: "بغيت هادا", french: "Je veux celui-ci" },
-      { darija: "Ch7al hada?", arabic: "شحال هادا؟", french: "Combien ça coûte?" },
-      { darija: "Gali bezaf", arabic: "غالي بزاف", french: "C'est trop cher" },
-      { darija: "Wmen?", arabic: "ومن؟", french: "Moins cher?" },
-      { darija: "Kayn chi zaid?", arabic: "كاين شي زيادة؟", french: "Il y a autre chose?" },
-      { darija: "Safi, gadi", arabic: "صافي غادي", french: "D'accord, je le prends" },
+      { darija: 'Bghit hada', arabic: 'بغيت هادا', french: 'Je veux celui-ci' },
+      { darija: 'Ch7al hada?', arabic: 'شحال هادا؟', french: 'Combien ça coûte?' },
+      { darija: 'Gali bezaf', arabic: 'غالي بزاف', french: "C'est trop cher" },
+      { darija: 'Wmen?', arabic: 'ومن؟', french: 'Moins cher?' },
+      { darija: 'Kayn chi zaid?', arabic: 'كاين شي زيادة؟', french: 'Il y a autre chose?' },
+      { darija: 'Safi, gadi', arabic: 'صافي غادي', french: "D'accord, je le prends" },
     ],
   },
   {
-    name: "Famille",
-    emoji: "👨‍👩‍👧",
+    name: 'Famille',
+    emoji: '👨‍👩‍👧',
     phrases: [
-      { darija: "Mama", arabic: "ماما", french: "Maman" },
-      { darija: "Baba", arabic: "بابا", french: "Papa" },
-      { darija: "Khouya", arabic: "خويا", french: "Mon frère" },
-      { darija: "Okhti", arabic: "أختي", french: "Ma sœur" },
-      { darija: "Jeddi", arabic: "جدي", french: "Mon grand-père" },
-      { darija: "Jeddati", arabic: "جدتي", french: "Ma grand-mère" },
-      { darija: "Weld l3am", arabic: "ولد لعم", french: "Cousin" },
+      { darija: 'Mama', arabic: 'ماما', french: 'Maman' },
+      { darija: 'Baba', arabic: 'بابا', french: 'Papa' },
+      { darija: 'Khouya', arabic: 'خويا', french: 'Mon frère' },
+      { darija: 'Okhti', arabic: 'أختي', french: 'Ma sœur' },
+      { darija: 'Jeddi', arabic: 'جدي', french: 'Mon grand-père' },
+      { darija: 'Jeddati', arabic: 'جدتي', french: 'Ma grand-mère' },
+      { darija: 'Weld l3am', arabic: 'ولد لعم', french: 'Cousin' },
     ],
   },
 ];
 
 export function DarijaPhrasebook() {
   const [activeCategory, setActiveCategory] = useState(0);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [speakingIdx, setSpeakingIdx] = useState<number | null>(null);
 
   function speak(phrase: DarijaPhrase, idx: number) {
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
+    if (typeof window === 'undefined' || !window.speechSynthesis) return;
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(phrase.arabic);
-    utterance.lang = "ar-MA";
+    utterance.lang = 'ar-MA';
     utterance.rate = 0.8;
     setSpeakingIdx(idx);
     utterance.onend = () => setSpeakingIdx(null);
@@ -315,17 +314,15 @@ export function DarijaPhrasebook() {
     window.speechSynthesis.speak(utterance);
   }
 
-  const filteredPhrases = DARIJA_CATEGORIES[activeCategory].phrases.filter(
-    (p) => {
-      if (!search) return true;
-      const q = search.toLowerCase();
-      return (
-        p.darija.toLowerCase().includes(q) ||
-        p.french.toLowerCase().includes(q) ||
-        p.arabic.includes(q)
-      );
-    }
-  );
+  const filteredPhrases = DARIJA_CATEGORIES[activeCategory].phrases.filter((p) => {
+    if (!search) return true;
+    const q = search.toLowerCase();
+    return (
+      p.darija.toLowerCase().includes(q) ||
+      p.french.toLowerCase().includes(q) ||
+      p.arabic.includes(q)
+    );
+  });
 
   return (
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
@@ -339,10 +336,7 @@ export function DarijaPhrasebook() {
 
       {/* Search */}
       <div className="mt-4 relative">
-        <Search
-          size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0d3f38]/40"
-        />
+        <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0d3f38]/40" />
         <input
           type="text"
           value={search}
@@ -359,12 +353,12 @@ export function DarijaPhrasebook() {
             key={cat.name}
             onClick={() => {
               setActiveCategory(idx);
-              setSearch("");
+              setSearch('');
             }}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all duration-200 ${
               activeCategory === idx
-                ? greenBg + " shadow-sm"
-                : "bg-white text-[#0d3f38]/60 hover:bg-[#0d3f38]/5"
+                ? greenBg + ' shadow-sm'
+                : 'bg-white text-[#0d3f38]/60 hover:bg-[#0d3f38]/5'
             }`}
           >
             {cat.emoji} {cat.name}
@@ -375,9 +369,7 @@ export function DarijaPhrasebook() {
       {/* Phrases */}
       <div className="mt-4 space-y-2">
         {filteredPhrases.length === 0 ? (
-          <p className="py-6 text-center text-sm text-[#0d3f38]/40">
-            Aucune phrase trouvée
-          </p>
+          <p className="py-6 text-center text-sm text-[#0d3f38]/40">Aucune phrase trouvée</p>
         ) : (
           filteredPhrases.map((phrase, idx) => (
             <div
@@ -388,8 +380,8 @@ export function DarijaPhrasebook() {
                 onClick={() => speak(phrase, idx)}
                 className={`grid h-10 w-10 shrink-0 place-items-center rounded-lg transition-all duration-200 ${
                   speakingIdx === idx
-                    ? goldText + " bg-[#0d3f38] animate-pulse"
-                    : "bg-[#0d3f38]/5 text-[#0d3f38] hover:bg-[#eead59] hover:text-[#0d3f38]"
+                    ? goldText + ' bg-[#0d3f38] animate-pulse'
+                    : 'bg-[#0d3f38]/5 text-[#0d3f38] hover:bg-[#eead59] hover:text-[#0d3f38]'
                 }`}
                 aria-label="Écouter"
               >
@@ -397,9 +389,7 @@ export function DarijaPhrasebook() {
               </button>
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline gap-2">
-                  <span className="text-base font-bold text-[#0d3f38]">
-                    {phrase.darija}
-                  </span>
+                  <span className="text-base font-bold text-[#0d3f38]">{phrase.darija}</span>
                   <span className="text-lg text-[#0d3f38]/70" dir="rtl">
                     {phrase.arabic}
                   </span>
@@ -418,14 +408,14 @@ export function DarijaPhrasebook() {
    3. CustomsCalculator — Moroccan douane calculator
    ============================================================ */
 const RESTRICTED_ITEMS = [
-  { name: "Alcool (au-delà des quotas)", level: "warning" },
-  { name: "Produits du porc", level: "warning" },
-  { name: "Drones", level: "warning" },
-  { name: "Armes et munitions", level: "danger" },
-  { name: "Médicaments (sans ordonnance)", level: "warning" },
-  { name: "Antiquités et objets d'art", level: "warning" },
-  { name: "Devises > 10 000 EUR", level: "danger" },
-  { name: "Matériel de reproduction", level: "warning" },
+  { name: 'Alcool (au-delà des quotas)', level: 'warning' },
+  { name: 'Produits du porc', level: 'warning' },
+  { name: 'Drones', level: 'warning' },
+  { name: 'Armes et munitions', level: 'danger' },
+  { name: 'Médicaments (sans ordonnance)', level: 'warning' },
+  { name: "Antiquités et objets d'art", level: 'warning' },
+  { name: 'Devises > 10 000 EUR', level: 'danger' },
+  { name: 'Matériel de reproduction', level: 'warning' },
 ];
 
 export function CustomsCalculator() {
@@ -442,7 +432,7 @@ export function CustomsCalculator() {
   const electronicsDuty = electronics * DUTY_RATE;
   const totalDuty = electronicsDuty + personalExcess * DUTY_RATE + giftsExcess * DUTY_RATE;
 
-  const currency = (n: number) => `${n.toLocaleString("fr-FR")} MAD`;
+  const currency = (n: number) => `${n.toLocaleString('fr-FR')} MAD`;
 
   return (
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
@@ -462,26 +452,22 @@ export function CustomsCalculator() {
           </label>
           <input
             type="number"
-            value={electronics || ""}
+            value={electronics || ''}
             onChange={(e) => setElectronics(Math.max(0, Number(e.target.value)))}
             placeholder="0"
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none transition focus:border-[#eead59]"
           />
         </div>
         <div>
-          <label className="text-xs font-semibold text-[#0d3f38]/70">
-            Cadeaux (valeur en MAD)
-          </label>
+          <label className="text-xs font-semibold text-[#0d3f38]/70">Cadeaux (valeur en MAD)</label>
           <input
             type="number"
-            value={gifts || ""}
+            value={gifts || ''}
             onChange={(e) => setGifts(Math.max(0, Number(e.target.value)))}
             placeholder="0"
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none transition focus:border-[#eead59]"
           />
-          <p className="mt-1 text-xs text-[#0d3f38]/40">
-            Franchise: {currency(DUTY_FREE_GIFTS)}
-          </p>
+          <p className="mt-1 text-xs text-[#0d3f38]/40">Franchise: {currency(DUTY_FREE_GIFTS)}</p>
         </div>
         <div>
           <label className="text-xs font-semibold text-[#0d3f38]/70">
@@ -489,7 +475,7 @@ export function CustomsCalculator() {
           </label>
           <input
             type="number"
-            value={personal || ""}
+            value={personal || ''}
             onChange={(e) => setPersonal(Math.max(0, Number(e.target.value)))}
             placeholder="0"
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none transition focus:border-[#eead59]"
@@ -503,9 +489,7 @@ export function CustomsCalculator() {
       {/* Results */}
       <div className="mt-4 rounded-xl bg-gradient-to-br from-[#0d3f38] to-[#0d3f38]/90 p-4 text-[#f8f7f2]">
         <p className="text-xs uppercase tracking-wide text-[#eead59]">Droits estimés</p>
-        <p className="mt-1 text-3xl font-black text-[#eead59]">
-          {currency(Math.round(totalDuty))}
-        </p>
+        <p className="mt-1 text-3xl font-black text-[#eead59]">{currency(Math.round(totalDuty))}</p>
         <div className="mt-3 space-y-1 border-t border-white/10 pt-3 text-xs">
           {electronics > 0 && (
             <div className="flex justify-between">
@@ -525,9 +509,7 @@ export function CustomsCalculator() {
               <span>{currency(Math.round(giftsExcess * DUTY_RATE))}</span>
             </div>
           )}
-          {totalDuty === 0 && (
-            <p className="text-center text-[#eead59]">✓ Aucun droit à payer</p>
-          )}
+          {totalDuty === 0 && <p className="text-center text-[#eead59]">✓ Aucun droit à payer</p>}
         </div>
       </div>
 
@@ -542,12 +524,10 @@ export function CustomsCalculator() {
             <span
               key={item.name}
               className={`rounded-lg px-3 py-1.5 text-xs font-medium ${
-                item.level === "danger"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-amber-100 text-amber-700"
+                item.level === 'danger' ? 'bg-red-100 text-red-700' : 'bg-amber-100 text-amber-700'
               }`}
             >
-              {item.level === "danger" ? "🚫" : "⚠️"} {item.name}
+              {item.level === 'danger' ? '🚫' : '⚠️'} {item.name}
             </span>
           ))}
         </div>
@@ -560,72 +540,70 @@ export function CustomsCalculator() {
    4. EmergencyContacts — SOS embassy & emergency widget
    ============================================================ */
 const EMERGENCY_NUMBERS = [
-  { label: "Police", number: "190", emoji: "🚓" },
-  { label: "Ambulance", number: "150", emoji: "🚑" },
-  { label: "Pompiers", number: "150", emoji: "🚒" },
-  { label: "Autoroute (assistance)", number: "177", emoji: "🛣️" },
-  { label: "Garde Royale", number: "177", emoji: "👑" },
-  { label: "SOS Maroc", number: "112", emoji: "📱" },
+  { label: 'Police', number: '190', emoji: '🚓' },
+  { label: 'Ambulance', number: '150', emoji: '🚑' },
+  { label: 'Pompiers', number: '150', emoji: '🚒' },
+  { label: 'Autoroute (assistance)', number: '177', emoji: '🛣️' },
+  { label: 'Garde Royale', number: '177', emoji: '👑' },
+  { label: 'SOS Maroc', number: '112', emoji: '📱' },
 ];
 
 const EMBASSIES = [
   {
-    name: "Ambassade de France",
-    city: "Rabat",
-    address: "3 Rue Général Beaudot, Rabat",
-    phone: "+212537683200",
-    hours: "Lun–Ven 8h30–12h30",
+    name: 'Ambassade de France',
+    city: 'Rabat',
+    address: '3 Rue Général Beaudot, Rabat',
+    phone: '+212537683200',
+    hours: 'Lun–Ven 8h30–12h30',
   },
   {
-    name: "Consulat Général de France",
-    city: "Casablanca",
+    name: 'Consulat Général de France',
+    city: 'Casablanca',
     address: "31 Rue d'Ankara, Casablanca",
-    phone: "+212522489500",
-    hours: "Lun–Ven 8h–12h",
+    phone: '+212522489500',
+    hours: 'Lun–Ven 8h–12h',
   },
   {
-    name: "Ambassade de France",
-    city: "Tanger",
-    address: "Rue du Général Khenoussi, Tanger",
-    phone: "+212539321000",
-    hours: "Lun–Ven 9h–12h",
+    name: 'Ambassade de France',
+    city: 'Tanger',
+    address: 'Rue du Général Khenoussi, Tanger',
+    phone: '+212539321000',
+    hours: 'Lun–Ven 9h–12h',
   },
   {
-    name: "Ambassade de Belgique",
-    city: "Rabat",
-    address: "16 Rue du Mérou, Rabat",
-    phone: "+212537654800",
-    hours: "Lun–Ven 9h–13h",
+    name: 'Ambassade de Belgique',
+    city: 'Rabat',
+    address: '16 Rue du Mérou, Rabat',
+    phone: '+212537654800',
+    hours: 'Lun–Ven 9h–13h',
   },
 ];
 
 const CONSULATES = [
   {
-    name: "Consulat de France — Casablanca",
-    phone: "+212522489500",
+    name: 'Consulat de France — Casablanca',
+    phone: '+212522489500',
     address: "31 Rue d'Ankara, Casablanca",
   },
   {
-    name: "Consulat de France — Fès",
-    phone: "+212535932300",
-    address: "7 Rue de Belgique, Fès",
+    name: 'Consulat de France — Fès',
+    phone: '+212535932300',
+    address: '7 Rue de Belgique, Fès',
   },
   {
-    name: "Consulat de France — Marrakech",
-    phone: "+212524434700",
-    address: "Quartier Gueliz, Marrakech",
+    name: 'Consulat de France — Marrakech',
+    phone: '+212524434700',
+    address: 'Quartier Gueliz, Marrakech',
   },
   {
-    name: "Consulat de France — Tanger",
-    phone: "+212539321000",
-    address: "Rue du Général Khenoussi, Tanger",
+    name: 'Consulat de France — Tanger',
+    phone: '+212539321000',
+    address: 'Rue du Général Khenoussi, Tanger',
   },
 ];
 
 export function EmergencyContacts() {
-  const [tab, setTab] = useState<"emergency" | "embassies" | "consulates">(
-    "emergency"
-  );
+  const [tab, setTab] = useState<'emergency' | 'embassies' | 'consulates'>('emergency');
 
   return (
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
@@ -633,24 +611,20 @@ export function EmergencyContacts() {
         <Phone className="text-red-500" size={22} />
         <h2 className="text-lg font-bold text-[#0d3f38]">Contacts d'urgence</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
-        Numéros utiles au Maroc — appelez en un tap.
-      </p>
+      <p className="mt-1 text-sm text-[#0d3f38]/60">Numéros utiles au Maroc — appelez en un tap.</p>
 
       {/* Tabs */}
       <div className="mt-4 flex gap-2">
         {[
-          { key: "emergency", label: "🚨 Urgence", color: "bg-red-500 text-white" },
-          { key: "embassies", label: "🏛️ Ambassades", color: greenBg },
-          { key: "consulates", label: "📋 Consulates", color: greenBg },
+          { key: 'emergency', label: '🚨 Urgence', color: 'bg-red-500 text-white' },
+          { key: 'embassies', label: '🏛️ Ambassades', color: greenBg },
+          { key: 'consulates', label: '📋 Consulates', color: greenBg },
         ].map((t) => (
           <button
             key={t.key}
             onClick={() => setTab(t.key as typeof tab)}
             className={`flex-1 rounded-lg px-3 py-2 text-xs font-bold transition-all duration-200 ${
-              tab === t.key
-                ? t.color
-                : "bg-white text-[#0d3f38]/50 hover:bg-[#0d3f38]/5"
+              tab === t.key ? t.color : 'bg-white text-[#0d3f38]/50 hover:bg-[#0d3f38]/5'
             }`}
           >
             {t.label}
@@ -659,7 +633,7 @@ export function EmergencyContacts() {
       </div>
 
       {/* Emergency numbers */}
-      {tab === "emergency" && (
+      {tab === 'emergency' && (
         <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3">
           {EMERGENCY_NUMBERS.map((item) => (
             <a
@@ -668,9 +642,7 @@ export function EmergencyContacts() {
               className="flex flex-col items-center rounded-xl border-2 border-red-200 bg-white p-3 transition-all duration-200 hover:border-red-500 hover:shadow-md"
             >
               <span className="text-2xl">{item.emoji}</span>
-              <span className="mt-1 text-xs font-semibold text-[#0d3f38]">
-                {item.label}
-              </span>
+              <span className="mt-1 text-xs font-semibold text-[#0d3f38]">{item.label}</span>
               <span className="text-lg font-black text-red-500">{item.number}</span>
             </a>
           ))}
@@ -678,7 +650,7 @@ export function EmergencyContacts() {
       )}
 
       {/* Embassies */}
-      {tab === "embassies" && (
+      {tab === 'embassies' && (
         <div className="mt-4 space-y-2">
           {EMBASSIES.map((emb) => (
             <div
@@ -706,7 +678,7 @@ export function EmergencyContacts() {
       )}
 
       {/* Consulates */}
-      {tab === "consulates" && (
+      {tab === 'consulates' && (
         <div className="mt-4 space-y-2">
           {CONSULATES.map((con) => (
             <div
@@ -741,24 +713,29 @@ type HolidayEvent = {
   name: string;
   emoji: string;
   date: string; // ISO date
-  type: "islamic" | "national";
+  type: 'islamic' | 'national';
 };
 
 const HOLIDAYS_2026: HolidayEvent[] = [
-  { name: "Jour de l'An Hégirien", emoji: "🌙", date: "2026-06-17", type: "islamic" },
-  { name: "Al Mawlid Annabaoui", emoji: "🕌", date: "2026-08-25", type: "islamic" },
-  { name: "Fête du Trône", emoji: "👑", date: "2026-07-30", type: "national" },
-  { name: "Fête de la Jeunesse", emoji: "🎉", date: "2026-08-21", type: "national" },
-  { name: "Fête de la Révolution du Roi et du Peuple", emoji: "✊", date: "2026-08-20", type: "national" },
-  { name: "Green March Day", emoji: "🟢", date: "2026-11-06", type: "national" },
-  { name: "Fête de l'Indépendance", emoji: "🇲🇦", date: "2026-11-18", type: "national" },
-  { name: "Aïd al-Fitr", emoji: "🎉", date: "2026-03-20", type: "islamic" },
-  { name: "Aïd al-Adha", emoji: "🐑", date: "2026-05-28", type: "islamic" },
-  { name: "Début du Ramadan", emoji: "🌙", date: "2026-02-19", type: "islamic" },
+  { name: "Jour de l'An Hégirien", emoji: '🌙', date: '2026-06-17', type: 'islamic' },
+  { name: 'Al Mawlid Annabaoui', emoji: '🕌', date: '2026-08-25', type: 'islamic' },
+  { name: 'Fête du Trône', emoji: '👑', date: '2026-07-30', type: 'national' },
+  { name: 'Fête de la Jeunesse', emoji: '🎉', date: '2026-08-21', type: 'national' },
+  {
+    name: 'Fête de la Révolution du Roi et du Peuple',
+    emoji: '✊',
+    date: '2026-08-20',
+    type: 'national',
+  },
+  { name: 'Green March Day', emoji: '🟢', date: '2026-11-06', type: 'national' },
+  { name: "Fête de l'Indépendance", emoji: '🇲🇦', date: '2026-11-18', type: 'national' },
+  { name: 'Aïd al-Fitr', emoji: '🎉', date: '2026-03-20', type: 'islamic' },
+  { name: 'Aïd al-Adha', emoji: '🐑', date: '2026-05-28', type: 'islamic' },
+  { name: 'Début du Ramadan', emoji: '🌙', date: '2026-02-19', type: 'islamic' },
 ];
 
 function daysUntil(dateStr: string): number {
-  const target = new Date(dateStr + "T00:00:00");
+  const target = new Date(dateStr + 'T00:00:00');
   const now = new Date();
   const diff = target.getTime() - now.getTime();
   return Math.ceil(diff / (1000 * 60 * 60 * 24));
@@ -785,26 +762,20 @@ export function MoroccanCalendar() {
         <Calendar className="text-[#0d3f38]" size={22} />
         <h2 className="text-lg font-bold text-[#0d3f38]">Calendrier marocain</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
-        Fêtes religieuses et nationales du Maroc
-      </p>
+      <p className="mt-1 text-sm text-[#0d3f38]/60">Fêtes religieuses et nationales du Maroc</p>
 
       {/* Next event countdown */}
       {nextEvent && (
         <div className="mt-4 rounded-xl bg-gradient-to-br from-[#0d3f38] to-[#0d3f38]/90 p-4 text-center">
-          <p className="text-xs uppercase tracking-wide text-[#eead59]">
-            Prochain événement
-          </p>
+          <p className="text-xs uppercase tracking-wide text-[#eead59]">Prochain événement</p>
           <p className="mt-1 text-2xl">{nextEvent.emoji}</p>
           <p className="text-lg font-bold text-[#f8f7f2]">{nextEvent.name}</p>
-          <p className="mt-2 text-4xl font-black text-[#eead59]">
-            {daysUntil(nextEvent.date)}
-          </p>
+          <p className="mt-2 text-4xl font-black text-[#eead59]">{daysUntil(nextEvent.date)}</p>
           <p className="text-xs text-[#f8f7f2]/70">
             {daysUntil(nextEvent.date) === 0
               ? "C'est aujourd'hui!"
-              : `jour${daysUntil(nextEvent.date) > 1 ? "s" : ""} restant${
-                  daysUntil(nextEvent.date) > 1 ? "s" : ""
+              : `jour${daysUntil(nextEvent.date) > 1 ? 's' : ''} restant${
+                  daysUntil(nextEvent.date) > 1 ? 's' : ''
                 }`}
           </p>
         </div>
@@ -815,35 +786,35 @@ export function MoroccanCalendar() {
         {upcoming.map((holiday) => {
           const days = daysUntil(holiday.date);
           const isNext = nextEvent && nextEvent.date === holiday.date;
-          const eventDate = new Date(holiday.date + "T00:00:00");
+          const eventDate = new Date(holiday.date + 'T00:00:00');
           return (
             <div
               key={holiday.name}
               className={`flex items-center gap-3 rounded-xl border p-3 transition-all duration-200 ${
                 isNext
-                  ? "border-[#eead59] bg-[#eead59]/10"
-                  : "border-[#0d3f38]/10 bg-white hover:shadow-sm"
+                  ? 'border-[#eead59] bg-[#eead59]/10'
+                  : 'border-[#0d3f38]/10 bg-white hover:shadow-sm'
               }`}
             >
               <span className="text-2xl">{holiday.emoji}</span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-[#0d3f38]">{holiday.name}</p>
                 <p className="text-xs text-[#0d3f38]/60">
-                  {eventDate.toLocaleDateString("fr-FR", {
-                    day: "numeric",
-                    month: "long",
-                    year: "numeric",
+                  {eventDate.toLocaleDateString('fr-FR', {
+                    day: 'numeric',
+                    month: 'long',
+                    year: 'numeric',
                   })}
                 </p>
               </div>
               <span
                 className={`rounded-full px-2 py-1 text-xs font-bold ${
-                  holiday.type === "islamic"
-                    ? "bg-[#0d3f38]/10 text-[#0d3f38]"
-                    : "bg-[#eead59]/20 text-[#0d3f38]"
+                  holiday.type === 'islamic'
+                    ? 'bg-[#0d3f38]/10 text-[#0d3f38]'
+                    : 'bg-[#eead59]/20 text-[#0d3f38]'
                 }`}
               >
-                {days >= 0 ? `J-${days}` : "Passé"}
+                {days >= 0 ? `J-${days}` : 'Passé'}
               </span>
             </div>
           );
@@ -862,16 +833,14 @@ const USD_TO_MAD = 10.0;
 
 export function ZakaatCalculator() {
   const [amount, setAmount] = useState(0);
-  const [currency, setCurrency] = useState<"EUR" | "MAD">("EUR");
+  const [currency, setCurrency] = useState<'EUR' | 'MAD'>('EUR');
 
-  const amountMAD =
-    currency === "EUR" ? amount * EUR_TO_MAD : amount;
+  const amountMAD = currency === 'EUR' ? amount * EUR_TO_MAD : amount;
   const nisabMAD = NISAB_USD * USD_TO_MAD;
   const zakaat = amountMAD * 0.025;
   const aboveNisab = amountMAD >= nisabMAD;
 
-  const fmt = (n: number) =>
-    n.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
+  const fmt = (n: number) => n.toLocaleString('fr-FR', { maximumFractionDigits: 2 });
 
   return (
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
@@ -886,24 +855,20 @@ export function ZakaatCalculator() {
       {/* Input */}
       <div className="mt-4 flex gap-2">
         <div className="flex-1">
-          <label className="text-xs font-semibold text-[#0d3f38]/70">
-            Épargne / Capital
-          </label>
+          <label className="text-xs font-semibold text-[#0d3f38]/70">Épargne / Capital</label>
           <input
             type="number"
-            value={amount || ""}
+            value={amount || ''}
             onChange={(e) => setAmount(Math.max(0, Number(e.target.value)))}
             placeholder="0"
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none transition focus:border-[#eead59]"
           />
         </div>
         <div className="w-24">
-          <label className="text-xs font-semibold text-[#0d3f38]/70">
-            Devise
-          </label>
+          <label className="text-xs font-semibold text-[#0d3f38]/70">Devise</label>
           <select
             value={currency}
-            onChange={(e) => setCurrency(e.target.value as "EUR" | "MAD")}
+            onChange={(e) => setCurrency(e.target.value as 'EUR' | 'MAD')}
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none"
           >
             <option value="EUR">EUR</option>
@@ -915,9 +880,7 @@ export function ZakaatCalculator() {
       {/* Nisab status */}
       <div
         className={`mt-4 flex items-center gap-2 rounded-xl p-3 text-sm font-semibold ${
-          aboveNisab
-            ? "bg-[#eead59]/10 text-[#0d3f38]"
-            : "bg-[#0d3f38]/5 text-[#0d3f38]/60"
+          aboveNisab ? 'bg-[#eead59]/10 text-[#0d3f38]' : 'bg-[#0d3f38]/5 text-[#0d3f38]/60'
         }`}
       >
         {aboveNisab ? (
@@ -932,14 +895,12 @@ export function ZakaatCalculator() {
 
       {/* Result */}
       <div className="mt-3 rounded-xl bg-gradient-to-br from-[#eead59] to-[#eead59]/90 p-5 text-center">
-        <p className="text-xs uppercase tracking-wide text-[#0d3f38]/70">
-          Zakat à payer (2.5%)
-        </p>
+        <p className="text-xs uppercase tracking-wide text-[#0d3f38]/70">Zakat à payer (2.5%)</p>
         <p className="mt-1 text-3xl font-black text-[#0d3f38]">
           {fmt(Math.round(zakaat * 100) / 100)}
         </p>
         <p className="text-sm font-bold text-[#0d3f38]/70">MAD</p>
-        {currency === "EUR" && amount > 0 && (
+        {currency === 'EUR' && amount > 0 && (
           <p className="mt-2 text-xs text-[#0d3f38]/60">
             ≈ {fmt(Math.round((zakaat / EUR_TO_MAD) * 100) / 100)} EUR
           </p>
@@ -947,9 +908,8 @@ export function ZakaatCalculator() {
       </div>
 
       <p className="mt-3 text-xs text-[#0d3f38]/40">
-        Le nisab correspond à l'équivalent de 85g d'or (≈ {fmt(nisabMAD)} MAD).
-        La zakat est obligatoire si votre capital dépasse ce seuil pendant une
-        année lunaire.
+        Le nisab correspond à l'équivalent de 85g d'or (≈ {fmt(nisabMAD)} MAD). La zakat est
+        obligatoire si votre capital dépasse ce seuil pendant une année lunaire.
       </p>
     </section>
   );
@@ -960,40 +920,40 @@ export function ZakaatCalculator() {
    ============================================================ */
 const SIM_CARDS = [
   {
-    name: "Maroc Telecom",
-    emoji: "📞",
-    color: "bg-blue-500",
-    price: "50 MAD",
-    priceEur: "≈ 4.60€",
-    data: "10 Go",
-    voice: "1h",
-    valid: "30 jours",
-    pros: ["Meilleure couverture rurale", "Réseau le plus étendu"],
-    cons: ["Plus cher en data"],
+    name: 'Maroc Telecom',
+    emoji: '📞',
+    color: 'bg-blue-500',
+    price: '50 MAD',
+    priceEur: '≈ 4.60€',
+    data: '10 Go',
+    voice: '1h',
+    valid: '30 jours',
+    pros: ['Meilleure couverture rurale', 'Réseau le plus étendu'],
+    cons: ['Plus cher en data'],
   },
   {
-    name: "Orange Maroc",
-    emoji: "🟠",
-    color: "bg-orange-500",
-    price: "30 MAD",
-    priceEur: "≈ 2.80€",
-    data: "5 Go",
-    voice: "30 min",
-    valid: "30 jours",
-    pros: ["Bon rapport qualité-prix", "Bonne couverture villes"],
-    cons: ["Couverture rurale limitée"],
+    name: 'Orange Maroc',
+    emoji: '🟠',
+    color: 'bg-orange-500',
+    price: '30 MAD',
+    priceEur: '≈ 2.80€',
+    data: '5 Go',
+    voice: '30 min',
+    valid: '30 jours',
+    pros: ['Bon rapport qualité-prix', 'Bonne couverture villes'],
+    cons: ['Couverture rurale limitée'],
   },
   {
-    name: "INWI",
-    emoji: "🟣",
-    color: "bg-purple-500",
-    price: "20 MAD",
-    priceEur: "≈ 1.85€",
-    data: "3 Go",
-    voice: "Illimitées INWI",
-    valid: "7 jours",
-    pros: ["Le moins cher", "Appels illimités INWI→INWI"],
-    cons: ["Data limitée", "Couverture moyenne"],
+    name: 'INWI',
+    emoji: '🟣',
+    color: 'bg-purple-500',
+    price: '20 MAD',
+    priceEur: '≈ 1.85€',
+    data: '3 Go',
+    voice: 'Illimitées INWI',
+    valid: '7 jours',
+    pros: ['Le moins cher', 'Appels illimités INWI→INWI'],
+    cons: ['Data limitée', 'Couverture moyenne'],
   },
 ];
 
@@ -1004,23 +964,23 @@ const ROAMING_COSTS = {
 };
 
 export function TimeZoneSIM() {
-  const [frTime, setFrTime] = useState("");
-  const [maTime, setMaTime] = useState("");
+  const [frTime, setFrTime] = useState('');
+  const [maTime, setMaTime] = useState('');
 
   useEffect(() => {
     function updateTime() {
       const now = new Date();
-      const fr = now.toLocaleTimeString("fr-FR", {
-        timeZone: "Europe/Paris",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+      const fr = now.toLocaleTimeString('fr-FR', {
+        timeZone: 'Europe/Paris',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
       });
-      const ma = now.toLocaleTimeString("fr-FR", {
-        timeZone: "Africa/Casablanca",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
+      const ma = now.toLocaleTimeString('fr-FR', {
+        timeZone: 'Africa/Casablanca',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
       });
       setFrTime(fr);
       setMaTime(ma);
@@ -1044,24 +1004,18 @@ export function TimeZoneSIM() {
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="rounded-xl border border-[#0d3f38]/10 bg-white p-4 text-center">
           <p className="text-2xl">🇫🇷</p>
-          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/60">
-            France (UTC+1)
-          </p>
+          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/60">France (UTC+1)</p>
           <p className="mt-1 text-xl font-black text-[#0d3f38]">{frTime}</p>
         </div>
         <div className="rounded-xl border border-[#0d3f38]/10 bg-white p-4 text-center">
           <p className="text-2xl">🇲🇦</p>
-          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/60">
-            Maroc (UTC+1)
-          </p>
+          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/60">Maroc (UTC+1)</p>
           <p className="mt-1 text-xl font-black text-[#0d3f38]">{maTime}</p>
         </div>
       </div>
 
       {/* SIM cards */}
-      <h3 className="mt-5 text-sm font-bold text-[#0d3f38]">
-        Cartes SIM locales
-      </h3>
+      <h3 className="mt-5 text-sm font-bold text-[#0d3f38]">Cartes SIM locales</h3>
       <div className="mt-2 space-y-2">
         {SIM_CARDS.map((sim) => (
           <div
@@ -1071,17 +1025,11 @@ export function TimeZoneSIM() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <span className="text-xl">{sim.emoji}</span>
-                <span className="text-sm font-bold text-[#0d3f38]">
-                  {sim.name}
-                </span>
+                <span className="text-sm font-bold text-[#0d3f38]">{sim.name}</span>
               </div>
               <div className="text-right">
-                <span className="text-lg font-black text-[#0d3f38]">
-                  {sim.price}
-                </span>
-                <span className="ml-1 text-xs text-[#0d3f38]/50">
-                  {sim.priceEur}
-                </span>
+                <span className="text-lg font-black text-[#0d3f38]">{sim.price}</span>
+                <span className="ml-1 text-xs text-[#0d3f38]/50">{sim.priceEur}</span>
               </div>
             </div>
             <div className="mt-2 flex flex-wrap gap-2">
@@ -1121,12 +1069,12 @@ export function TimeZoneSIM() {
       <div className="mt-4 rounded-xl bg-red-50 p-4">
         <div className="flex items-center gap-2">
           <AlertTriangle size={16} className="text-red-500" />
-          <h3 className="text-sm font-bold text-red-700">
-            Coût du roaming (opérateur FR)
-          </h3>
+          <h3 className="text-sm font-bold text-red-700">Coût du roaming (opérateur FR)</h3>
         </div>
         <div className="mt-2 space-y-1 text-xs text-red-700/80">
-          <p>📱 Data: {ROAMING_COSTS.dataPerMb}€/Mo (100 Mo = {ROAMING_COSTS.dataPerMb * 100}€)</p>
+          <p>
+            📱 Data: {ROAMING_COSTS.dataPerMb}€/Mo (100 Mo = {ROAMING_COSTS.dataPerMb * 100}€)
+          </p>
           <p>📞 Appels: {ROAMING_COSTS.callPerMin}€/min</p>
           <p>💬 SMS: {ROAMING_COSTS.sms}€/SMS</p>
         </div>
@@ -1150,31 +1098,31 @@ type FuelData = {
 
 const FUEL_DATA: FuelData[] = [
   {
-    country: "France",
-    flag: "🇫🇷",
-    currency: "€",
+    country: 'France',
+    flag: '🇫🇷',
+    currency: '€',
     fuels: [
-      { name: "Diesel (Gasoil)", price: 1.89, unit: "€/L" },
-      { name: "SP95", price: 1.78, unit: "€/L" },
-      { name: "SP98", price: 1.85, unit: "€/L" },
+      { name: 'Diesel (Gasoil)', price: 1.89, unit: '€/L' },
+      { name: 'SP95', price: 1.78, unit: '€/L' },
+      { name: 'SP98', price: 1.85, unit: '€/L' },
     ],
   },
   {
-    country: "Espagne",
-    flag: "🇪🇸",
-    currency: "€",
+    country: 'Espagne',
+    flag: '🇪🇸',
+    currency: '€',
     fuels: [
-      { name: "Diesel (Gasoil)", price: 1.52, unit: "€/L" },
-      { name: "SP95", price: 1.65, unit: "€/L" },
+      { name: 'Diesel (Gasoil)', price: 1.52, unit: '€/L' },
+      { name: 'SP95', price: 1.65, unit: '€/L' },
     ],
   },
   {
-    country: "Maroc",
-    flag: "🇲🇦",
-    currency: "MAD",
+    country: 'Maroc',
+    flag: '🇲🇦',
+    currency: 'MAD',
     fuels: [
-      { name: "Diesel (Gasoil)", price: 14.95, unit: "MAD/L" },
-      { name: "SP95", price: 15.3, unit: "MAD/L" },
+      { name: 'Diesel (Gasoil)', price: 14.95, unit: 'MAD/L' },
+      { name: 'SP95', price: 15.3, unit: 'MAD/L' },
     ],
   },
 ];
@@ -1214,10 +1162,7 @@ export function FuelPriceComparator() {
             </div>
             <div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">
               {country.fuels.map((fuel) => (
-                <div
-                  key={fuel.name}
-                  className="rounded-lg bg-[#0d3f38]/5 p-2 text-center"
-                >
+                <div key={fuel.name} className="rounded-lg bg-[#0d3f38]/5 p-2 text-center">
                   <p className="text-xs text-[#0d3f38]/60">{fuel.name}</p>
                   <p className="text-base font-black text-[#0d3f38]">
                     {fuel.price}
@@ -1247,9 +1192,7 @@ export function FuelPriceComparator() {
           </div>
         </div>
         <div className="mt-3 rounded-lg bg-[#eead59] p-3">
-          <p className="text-2xl font-black text-[#0d3f38]">
-            Économie: {savings.toFixed(2)}€
-          </p>
+          <p className="text-2xl font-black text-[#0d3f38]">Économie: {savings.toFixed(2)}€</p>
           <p className="text-sm font-bold text-[#0d3f38]/70">
             Soit {savingsPct}% moins cher au Maroc!
           </p>
@@ -1257,8 +1200,8 @@ export function FuelPriceComparator() {
       </div>
 
       <p className="mt-3 text-xs text-[#0d3f38]/40">
-        Prix indicatifs 2026 — susceptibles de varier. Le carburant marocain
-        reste subventionné par l'État.
+        Prix indicatifs 2026 — susceptibles de varier. Le carburant marocain reste subventionné par
+        l'État.
       </p>
     </section>
   );
@@ -1269,14 +1212,14 @@ export function FuelPriceComparator() {
    ============================================================ */
 export default function TravelWidgets() {
   const widgets = [
-    { component: <WeatherMorocco />, key: "weather" },
-    { component: <DarijaPhrasebook />, key: "darija" },
-    { component: <CustomsCalculator />, key: "customs" },
-    { component: <EmergencyContacts />, key: "emergency" },
-    { component: <MoroccanCalendar />, key: "calendar" },
-    { component: <ZakaatCalculator />, key: "zakaat" },
-    { component: <TimeZoneSIM />, key: "timezone" },
-    { component: <FuelPriceComparator />, key: "fuel" },
+    { component: <WeatherMorocco />, key: 'weather' },
+    { component: <DarijaPhrasebook />, key: 'darija' },
+    { component: <CustomsCalculator />, key: 'customs' },
+    { component: <EmergencyContacts />, key: 'emergency' },
+    { component: <MoroccanCalendar />, key: 'calendar' },
+    { component: <ZakaatCalculator />, key: 'zakaat' },
+    { component: <TimeZoneSIM />, key: 'timezone' },
+    { component: <FuelPriceComparator />, key: 'fuel' },
   ];
 
   return (

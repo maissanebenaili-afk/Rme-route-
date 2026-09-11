@@ -1,15 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, useCallback } from 'react';
-import {
-  Mic,
-  MicOff,
-  Volume2,
-  VolumeX,
-  Radio,
-  Square,
-  Loader2,
-} from 'lucide-react';
+import { Mic, MicOff, Volume2, VolumeX, Radio, Square, Loader2 } from 'lucide-react';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -42,11 +34,31 @@ const SPEECH_LANG: Record<Lang, string> = {
 };
 
 const VOICE_LABELS: Record<Lang, { speak: string; listening: string; notSupported: string }> = {
-  da: { speak: 'Parler à Hadak', listening: 'Kansm3ek...', notSupported: 'L-vision m3a l-kalima machi momkin f had navigateur' },
-  fr: { speak: 'Parler à Hadak', listening: 'Je vous écoute...', notSupported: 'La reconnaissance vocale n\'est pas disponible sur ce navigateur' },
-  en: { speak: 'Speak to Hadak', listening: 'Listening...', notSupported: 'Speech recognition is not available in this browser' },
-  ar: { speak: 'تحدث إلى حدّاك', listening: 'أستمع إليك...', notSupported: 'التعرف على الصوت غير متاح في هذا المتصفح' },
-  es: { speak: 'Hablar con Hadak', listening: 'Escuchando...', notSupported: 'El reconocimiento de voz no está disponible en este navegador' },
+  da: {
+    speak: 'Parler à Hadak',
+    listening: 'Kansm3ek...',
+    notSupported: 'L-vision m3a l-kalima machi momkin f had navigateur',
+  },
+  fr: {
+    speak: 'Parler à Hadak',
+    listening: 'Je vous écoute...',
+    notSupported: "La reconnaissance vocale n'est pas disponible sur ce navigateur",
+  },
+  en: {
+    speak: 'Speak to Hadak',
+    listening: 'Listening...',
+    notSupported: 'Speech recognition is not available in this browser',
+  },
+  ar: {
+    speak: 'تحدث إلى حدّاك',
+    listening: 'أستمع إليك...',
+    notSupported: 'التعرف على الصوت غير متاح في هذا المتصفح',
+  },
+  es: {
+    speak: 'Hablar con Hadak',
+    listening: 'Escuchando...',
+    notSupported: 'El reconocimiento de voz no está disponible en este navegador',
+  },
 };
 
 /* ------------------------------------------------------------------ */
@@ -64,9 +76,7 @@ function VoiceWaveform({ active }: { active: boolean }) {
           className="w-1 rounded-full"
           style={{
             background: '#eead59',
-            animation: active
-              ? `hadak-wave-${i} 0.9s ease-in-out infinite`
-              : 'none',
+            animation: active ? `hadak-wave-${i} 0.9s ease-in-out infinite` : 'none',
             height: active ? undefined : '6px',
           }}
         />
@@ -122,8 +132,7 @@ export default function HadakVoice({
 
     // Speech Recognition (webkit prefix for Chrome/Edge/Safari)
     const SpeechRecognitionImpl =
-      (window as any).SpeechRecognition ||
-      (window as any).webkitSpeechRecognition;
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
 
     if (SpeechRecognitionImpl) {
       const rec = new SpeechRecognitionImpl();
@@ -152,9 +161,19 @@ export default function HadakVoice({
 
       rec.onerror = (event: any) => {
         if (event.error === 'no-speech') {
-          setError(lang === 'fr' ? 'Aucune parole détectée' : lang === 'ar' ? 'لم يتم اكتشاف كلام' : 'No speech detected');
+          setError(
+            lang === 'fr'
+              ? 'Aucune parole détectée'
+              : lang === 'ar'
+                ? 'لم يتم اكتشاف كلام'
+                : 'No speech detected'
+          );
         } else if (event.error === 'not-allowed') {
-          setError(lang === 'fr' ? 'Microphone bloqué. Autorisez-le dans les réglages.' : 'Microphone blocked. Allow access in settings.');
+          setError(
+            lang === 'fr'
+              ? 'Microphone bloqué. Autorisez-le dans les réglages.'
+              : 'Microphone blocked. Allow access in settings.'
+          );
         } else {
           setError(event.error);
         }
@@ -309,7 +328,13 @@ export default function HadakVoice({
             <div className="flex items-center gap-2">
               <Radio className="h-5 w-5 text-[#eead59]" />
               <span className="text-sm font-bold text-white">
-                {lang === 'da' ? 'Hadak Voice' : lang === 'fr' ? 'Hadak Voix' : lang === 'ar' ? 'حدّاك صوتي' : 'Hadak Voice'}
+                {lang === 'da'
+                  ? 'Hadak Voice'
+                  : lang === 'fr'
+                    ? 'Hadak Voix'
+                    : lang === 'ar'
+                      ? 'حدّاك صوتي'
+                      : 'Hadak Voice'}
               </span>
             </div>
             <button
@@ -328,9 +353,7 @@ export default function HadakVoice({
               <div
                 className="flex h-16 w-16 items-center justify-center rounded-full transition-all"
                 style={{
-                  background: listening
-                    ? 'rgba(238, 173, 89, 0.2)'
-                    : 'rgba(255, 255, 255, 0.05)',
+                  background: listening ? 'rgba(238, 173, 89, 0.2)' : 'rgba(255, 255, 255, 0.05)',
                   border: listening ? '2px solid #eead59' : '2px solid rgba(255,255,255,0.1)',
                 }}
               >
@@ -346,8 +369,14 @@ export default function HadakVoice({
                 {listening
                   ? labels.listening
                   : speaking
-                  ? lang === 'da' ? 'Hadak kayhdar...' : lang === 'fr' ? 'Hadak parle...' : lang === 'ar' ? 'حدّاك يتحدث...' : 'Hadak is speaking...'
-                  : labels.speak}
+                    ? lang === 'da'
+                      ? 'Hadak kayhdar...'
+                      : lang === 'fr'
+                        ? 'Hadak parle...'
+                        : lang === 'ar'
+                          ? 'حدّاك يتحدث...'
+                          : 'Hadak is speaking...'
+                    : labels.speak}
               </p>
             </div>
 
@@ -362,7 +391,13 @@ export default function HadakVoice({
             {(transcript || interim) && (
               <div className="rounded-xl bg-white/5 px-3 py-2.5">
                 <p className="text-xs text-white/40 mb-1">
-                  {lang === 'da' ? 'Text dyalek:' : lang === 'fr' ? 'Votre texte :' : lang === 'ar' ? 'نصك:' : 'Your text:'}
+                  {lang === 'da'
+                    ? 'Text dyalek:'
+                    : lang === 'fr'
+                      ? 'Votre texte :'
+                      : lang === 'ar'
+                        ? 'نصك:'
+                        : 'Your text:'}
                 </p>
                 <p className="text-sm text-white/90">
                   {transcript}
@@ -389,7 +424,13 @@ export default function HadakVoice({
                 {listening ? (
                   <>
                     <Square className="h-4 w-4" />
-                    {lang === 'da' ? 'Wqef' : lang === 'fr' ? 'Arrêter' : lang === 'ar' ? 'إيقاف' : 'Stop'}
+                    {lang === 'da'
+                      ? 'Wqef'
+                      : lang === 'fr'
+                        ? 'Arrêter'
+                        : lang === 'ar'
+                          ? 'إيقاف'
+                          : 'Stop'}
                   </>
                 ) : (
                   <>
@@ -413,7 +454,13 @@ export default function HadakVoice({
                 }}
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-white/10 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-white/15"
               >
-                {lang === 'da' ? 'Sift l-Hadak' : lang === 'fr' ? 'Envoyer à Hadak' : lang === 'ar' ? 'أرسل إلى حدّاك' : 'Send to Hadak'}
+                {lang === 'da'
+                  ? 'Sift l-Hadak'
+                  : lang === 'fr'
+                    ? 'Envoyer à Hadak'
+                    : lang === 'ar'
+                      ? 'أرسل إلى حدّاك'
+                      : 'Send to Hadak'}
               </button>
             )}
 
@@ -427,7 +474,13 @@ export default function HadakVoice({
                 aria-label="Toggle auto-read"
               >
                 {autoRead ? <Volume2 className="h-4 w-4" /> : <VolumeX className="h-4 w-4" />}
-                {lang === 'da' ? 'Lecture auto' : lang === 'fr' ? 'Lecture auto' : lang === 'ar' ? 'قراءة تلقائية' : 'Auto-read'}
+                {lang === 'da'
+                  ? 'Lecture auto'
+                  : lang === 'fr'
+                    ? 'Lecture auto'
+                    : lang === 'ar'
+                      ? 'قراءة تلقائية'
+                      : 'Auto-read'}
               </button>
 
               {/* Stop speaking */}
@@ -448,7 +501,13 @@ export default function HadakVoice({
                 <textarea
                   value={transcript}
                   onChange={(e) => setTranscript(e.target.value)}
-                  placeholder={lang === 'da' ? 'Ktub hna w hadak ghadi yqra...' : lang === 'fr' ? 'Écrivez ici et Hadak lira...' : 'Type here and Hadak will read it...'}
+                  placeholder={
+                    lang === 'da'
+                      ? 'Ktub hna w hadak ghadi yqra...'
+                      : lang === 'fr'
+                        ? 'Écrivez ici et Hadak lira...'
+                        : 'Type here and Hadak will read it...'
+                  }
                   className="w-full resize-none rounded-xl bg-white/5 px-3 py-2 text-sm text-white placeholder:text-white/30 focus:outline-none focus:ring-1 focus:ring-[#eead59]/50"
                   rows={2}
                   dir={lang === 'ar' ? 'rtl' : 'ltr'}
@@ -459,7 +518,11 @@ export default function HadakVoice({
                   className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#eead59] px-4 py-2 text-xs font-bold text-[#0d3f38] transition hover:bg-[#f5cd93] disabled:opacity-30"
                 >
                   <Volume2 className="h-4 w-4" />
-                  {lang === 'da' ? 'Qra b-sout' : lang === 'fr' ? 'Lire à voix haute' : 'Read aloud'}
+                  {lang === 'da'
+                    ? 'Qra b-sout'
+                    : lang === 'fr'
+                      ? 'Lire à voix haute'
+                      : 'Read aloud'}
                 </button>
               </div>
             )}
@@ -472,7 +535,11 @@ export default function HadakVoice({
                 rel="noopener noreferrer"
                 className="block text-center text-xs font-medium text-[#eead59]/70 transition hover:text-[#eead59]"
               >
-                {lang === 'da' ? 'Ftah Hadak chat kamel →' : lang === 'fr' ? 'Ouvrir le chat complet →' : 'Open full chat →'}
+                {lang === 'da'
+                  ? 'Ftah Hadak chat kamel →'
+                  : lang === 'fr'
+                    ? 'Ouvrir le chat complet →'
+                    : 'Open full chat →'}
               </a>
             )}
           </div>
@@ -480,13 +547,16 @@ export default function HadakVoice({
           {/* Animations */}
           <style jsx>{`
             @keyframes hadak-pulse {
-              0%, 100% {
-                box-shadow: 0 6px 20px rgba(238, 173, 89, 0.4),
-                            0 0 0 0 rgba(238, 173, 89, 0.5);
+              0%,
+              100% {
+                box-shadow:
+                  0 6px 20px rgba(238, 173, 89, 0.4),
+                  0 0 0 0 rgba(238, 173, 89, 0.5);
               }
               50% {
-                box-shadow: 0 6px 20px rgba(238, 173, 89, 0.4),
-                            0 0 0 12px rgba(238, 173, 89, 0);
+                box-shadow:
+                  0 6px 20px rgba(238, 173, 89, 0.4),
+                  0 0 0 12px rgba(238, 173, 89, 0);
               }
             }
             @keyframes hadak-voice-in {

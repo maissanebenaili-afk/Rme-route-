@@ -1,6 +1,7 @@
 # Google Play Store Listing - RME Voyage
 
 ## App Details
+
 - **Package ID**: com.mreroute.app
 - **App Name**: RME Voyage
 - **Category**: Travel & Local
@@ -8,9 +9,11 @@
 - **Price**: Free
 
 ## Short Description (80 chars max)
+
 Compagnon voyage Europe-Maroc: itinéraire, prières, Qibla, budget, IA darija.
 
 ## Full Description (4000 chars max)
+
 RME Voyage est le compagnon de voyage ultime pour les Marocains résidant à l'étranger (MRE/RME) et tous les voyageurs entre l'Europe et le Maroc.
 
 L'application réunit tous les services essentiels dans une expérience claire et intuitive, pensée pour les familles qui voyagent entre l'Europe, le Maroc et au-delà.
@@ -32,6 +35,7 @@ FONCTIONNALITÉS PRINCIPALES:
 • Assistant IA en Darija - Posez vos questions en darija, français, arabe, anglais ou espagnol. Réponses instantanées sur les itinéraires, prières, ferry, documents, urgences et plus.
 
 5 LANGUES DISPONIBLES:
+
 - Français
 - English
 - العربية
@@ -43,9 +47,11 @@ L'application est gratuite et sans publicité. Les liens partenaires sont claire
 RME Voyage - Parce que le voyage commence bien avant le départ.
 
 ## Keywords (max 100 chars)
+
 voyage, maroc, MRE, RME, prière, qibla, itinéraire, ferry, darija, diaspora
 
 ## Screenshots needed
+
 1. Hero page with route planner
 2. Prayer times & Qibla compass
 3. Interactive map with route
@@ -54,6 +60,7 @@ voyage, maroc, MRE, RME, prière, qibla, itinéraire, ferry, darija, diaspora
 6. Currency converter
 
 ## Build Instructions
+
 1. Install Android SDK (via Android Studio or command-line tools)
 2. Run: npx cap add android
 3. Run: npx cap sync

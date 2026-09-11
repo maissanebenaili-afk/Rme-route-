@@ -21,7 +21,7 @@ export function LanguageProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       try {
         document.documentElement.lang = newLang;
-        document.documentElement.dir = (newLang === 'ar' || newLang === 'da') ? 'rtl' : 'ltr';
+        document.documentElement.dir = newLang === 'ar' || newLang === 'da' ? 'rtl' : 'ltr';
       } catch (e) {
         // ignore
       }

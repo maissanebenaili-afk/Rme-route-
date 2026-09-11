@@ -14,10 +14,7 @@ export interface TravelCostBreakdown {
 }
 
 export function calculateTravelCost(input: TravelCostInput): TravelCostBreakdown {
-  const fuelTotal =
-    (input.distanceKm / 100) *
-    input.consumptionPer100Km *
-    input.fuelPricePerLiter;
+  const fuelTotal = (input.distanceKm / 100) * input.consumptionPer100Km * input.fuelPricePerLiter;
 
   const tollTotal = Math.max(0, input.tollFeesEstimate);
   const ferryTotal = Math.max(0, input.ferryTicketCost);
@@ -26,6 +23,6 @@ export function calculateTravelCost(input: TravelCostInput): TravelCostBreakdown
     fuelTotal: Math.round(fuelTotal * 100) / 100,
     tollTotal: Math.round(tollTotal * 100) / 100,
     ferryTotal: Math.round(ferryTotal * 100) / 100,
-    grandTotal: Math.round((fuelTotal + tollTotal + ferryTotal) * 100) / 100
+    grandTotal: Math.round((fuelTotal + tollTotal + ferryTotal) * 100) / 100,
   };
 }
