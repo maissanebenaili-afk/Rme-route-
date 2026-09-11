@@ -2,8 +2,12 @@
 
 import { useState } from "react";
 import BookingCards from "./BookingCards";
-import { MapPin, Navigation, Calendar } from "lucide-react";
+import CityAutocomplete from "./CityAutocomplete";
+import { Navigation, Calendar, Ruler } from "lucide-react";
+import { estimateRoadDistanceKm, type GeocodeResult } from "@/lib/geocoding";
 
+// Distances statiques indicatives (secours si le géocodage n'a pas encore
+// résolu de coordonnées réelles pour l'un des deux points).
 const popularRoutes = [
   { from: "Paris", to: "Tanger", distance: "2 100 km" },
   { from: "Lyon", to: "Casablanca", distance: "2 500 km" },
@@ -17,6 +21,13 @@ export default function RouteSearch() {
   const [origin, setOrigin] = useState("Paris, France");
   const [destination, setDestination] = useState("Tanger, Maroc");
   const [date, setDate] = useState("");
+  const [originCoords, setOriginCoords] = useState<GeocodeResult | null>(null);
+  const [destinationCoords, setDestinationCoords] = useState<GeocodeResult | null>(null);
+
+  const estimatedDistanceKm =
+    originCoords && destinationCoords
+      ? estimateRoadDistanceKm(originCoords, destinationCoords)
+      : null;
 
   return (
     <>
@@ -30,30 +41,26 @@ export default function RouteSearch() {
         </p>
 
         <div className="mt-4 grid gap-3 sm:grid-cols-3">
-          <label className="text-sm font-medium">
-            <span className="flex items-center gap-1 text-xs text-slate-500">
-              <MapPin size={12} /> Départ
-            </span>
-            <input
-              value={origin}
-              onChange={(e) => setOrigin(e.target.value)}
-              className="mt-1 w-full rounded-xl border p-3"
-              aria-label="Départ"
-              placeholder="Ville de départ"
-            />
-          </label>
-          <label className="text-sm font-medium">
-            <span className="flex items-center gap-1 text-xs text-slate-500">
-              <MapPin size={12} /> Destination
-            </span>
-            <input
-              value={destination}
-              onChange={(e) => setDestination(e.target.value)}
-              className="mt-1 w-full rounded-xl border p-3"
-              aria-label="Destination"
-              placeholder="Ville d'arrivée"
-            />
-          </label>
+          <CityAutocomplete
+            label="Départ"
+            value={origin}
+            placeholder="Ville de départ"
+            onChange={(v) => {
+              setOrigin(v);
+              setOriginCoords(null);
+            }}
+            onSelect={(result) => setOriginCoords(result)}
+          />
+          <CityAutocomplete
+            label="Destination"
+            value={destination}
+            placeholder="Ville d'arrivée"
+            onChange={(v) => {
+              setDestination(v);
+              setDestinationCoords(null);
+            }}
+            onSelect={(result) => setDestinationCoords(result)}
+          />
           <label className="text-sm font-medium">
             <span className="flex items-center gap-1 text-xs text-slate-500">
               <Calendar size={12} /> Date
@@ -68,6 +75,15 @@ export default function RouteSearch() {
           </label>
         </div>
 
+        {estimatedDistanceKm !== null && (
+          <div className="mt-3 flex items-center gap-2 rounded-xl bg-zellige-50 px-3 py-2 text-sm text-zellige-800">
+            <Ruler size={14} />
+            <span>
+              Distance estimée (à partir des coordonnées géocodées) : ~{estimatedDistanceKm.toLocaleString("fr-FR")} km
+            </span>
+          </div>
+        )}
+
         {/* Popular routes */}
         <div className="mt-4">
           <p className="text-xs font-semibold text-slate-400">Trajets populaires :</p>
@@ -78,6 +94,8 @@ export default function RouteSearch() {
                 onClick={() => {
                   setOrigin(`${route.from}`);
                   setDestination(`${route.to}, Maroc`);
+                  setOriginCoords(null);
+                  setDestinationCoords(null);
                 }}
                 className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-medium text-slate-600 transition hover:border-emerald-400 hover:bg-emerald-50 hover:text-emerald-700"
               >
