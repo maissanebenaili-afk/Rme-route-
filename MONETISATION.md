@@ -24,6 +24,7 @@ Aucun identifiant ou endpoint fictif n'est inclus.
 ## Revenus
 
 Le produit peut ensuite mesurer :
+
 - recherches ;
 - clics vers partenaire ;
 - route recherchée ;

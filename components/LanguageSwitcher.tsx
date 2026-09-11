@@ -1,0 +1,58 @@
+'use client';
+
+import { useState, useRef, useEffect } from 'react';
+import { Globe, ChevronDown } from 'lucide-react';
+import { languages, Language } from '@/lib/i18n';
+import { useLanguage } from '@/lib/LanguageContext';
+
+export default function LanguageSwitcher() {
+  const { lang, setLang } = useLanguage();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClick(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    }
+    document.addEventListener('click', handleClick);
+    return () => document.removeEventListener('click', handleClick);
+  }, []);
+
+  const current = languages.find((l) => l.code === lang) || languages[0];
+
+  return (
+    <div className="relative" ref={ref}>
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1.5 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-sm font-medium text-white hover:bg-white/10 transition-colors"
+        aria-label="Changer de langue"
+        aria-expanded={open}
+      >
+        <Globe className="h-3.5 w-3.5" />
+        <span>{current.label}</span>
+        <ChevronDown className={`h-3 w-3 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+      {open && (
+        <div className="absolute right-0 top-full mt-2 w-44 overflow-hidden rounded-xl border border-white/10 bg-[#0b2b21] shadow-xl z-50">
+          {languages.map((l) => (
+            <button
+              key={l.code}
+              onClick={() => {
+                setLang(l.code as Language);
+                setOpen(false);
+              }}
+              className={`flex w-full items-center gap-2 px-4 py-2.5 text-sm text-left hover:bg-white/10 transition-colors ${
+                lang === l.code ? 'bg-white/10 text-amber-300' : 'text-white'
+              }`}
+            >
+              <span>{l.flag}</span>
+              <span>{l.label}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
