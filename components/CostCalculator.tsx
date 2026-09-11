@@ -49,14 +49,14 @@ export default function CostCalculator() {
           <label key={label} className="text-sm font-medium text-zellige-800">
             {label}
             <div className="mt-1 flex items-center gap-2">
-              <Icon size={16} className="text-sable-500" />
+              <Icon size={16} className="text-sable-700" />
               <input
                 type="number"
                 value={value}
                 onChange={(e) => setter(Number(e.target.value))}
                 className="w-full rounded-xl border border-sable-300 p-3 outline-none transition focus:border-zellige-500 focus:ring-2 focus:ring-zellige-500/40"
               />
-              <span className="text-xs text-sable-500">{suffix}</span>
+              <span className="text-xs text-sable-700">{suffix}</span>
             </div>
           </label>
         ))}
@@ -75,7 +75,7 @@ export default function CostCalculator() {
         <span className="text-sm text-sable-700">Coût par personne :</span>
         {[2, 3, 4].map((n) => (
           <div key={n} className="text-center">
-            <div className="text-xs text-sable-500">{n} pers.</div>
+            <div className="text-xs text-sable-700">{n} pers.</div>
             <div className="font-bold text-zellige-700">{costPerPerson(n)} €</div>
           </div>
         ))}

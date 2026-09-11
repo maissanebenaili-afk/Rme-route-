@@ -128,7 +128,7 @@ export default function InteractiveMap() {
                   <p className="font-bold">{city.name}</p>
                   <p className="text-xs text-slate-500">{city.country}</p>
                   {city.type === "ferry" && (
-                    <p className="mt-1 text-xs font-bold text-[#b07a1f]">⛴️ Port de ferry</p>
+                    <p className="mt-1 text-xs font-bold text-[#9c6b0e]">⛴️ Port de ferry</p>
                   )}
                   {city.type === "origin" && (
                     <p className="mt-1 text-xs font-bold text-[#0d6255]">🏁 Départ</p>
