@@ -21,7 +21,7 @@ const benefits = [
 
 export default function Home() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#f8f7f2] text-[#173a36]">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden bg-[#f8f7f2] text-[#173a36]">
       <section className="relative isolate overflow-hidden bg-[#0d3f38] text-white">
         <div className="absolute -right-20 -top-24 -z-10 h-96 w-96 rounded-full bg-[#eead59]/20 blur-3xl" />
         <div className="absolute -bottom-36 left-1/4 -z-10 h-72 w-72 rounded-full bg-[#4cc3ac]/15 blur-3xl" />
