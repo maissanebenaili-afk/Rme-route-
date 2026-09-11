@@ -1,13 +1,15 @@
 /**
  * RME Voyage - Service Worker
  * Offline support with cache versioning
- * - Cache-first for static assets (HTML, CSS, JS, fonts)
+ * - Stale-while-revalidate for main static pages (accueil, guide, découvrir)
+ * - Cache-first for static assets (CSS, JS, fonts, images)
  * - Network-first for API calls
  * - Offline fallback page
  */
 
-const CACHE_VERSION = 'rme-voyage-v1';
+const CACHE_VERSION = 'rme-voyage-v2';
 const STATIC_CACHE = `${CACHE_VERSION}-static`;
+const PAGES_CACHE = `${CACHE_VERSION}-pages`;
 const API_CACHE = `${CACHE_VERSION}-api`;
 const OFFLINE_URL = '/offline.html';
 
@@ -20,18 +22,31 @@ const STATIC_ASSETS = [
   '/globals.css',
 ];
 
+// Pages principales à garder disponibles hors-ligne, servies en
+// stale-while-revalidate (réponse cache immédiate + rafraîchissement réseau
+// en arrière-plan) pour un rendu instantané ET des contenus à jour.
+const MAIN_PAGES = ['/', '/guide', '/decouvrir'];
+
 // API path prefixes that use network-first strategy
 const API_PREFIXES = ['/api/'];
 
-// ─── Install: pre-cache static assets ───
+// ─── Install: pre-cache static assets + main pages ───
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches
-      .open(STATIC_CACHE)
-      .then((cache) => cache.addAll(STATIC_ASSETS))
-      .catch(() => {
-        // Some assets may not exist yet; ignore failures
-      })
+    Promise.all([
+      caches
+        .open(STATIC_CACHE)
+        .then((cache) => cache.addAll(STATIC_ASSETS))
+        .catch(() => {
+          // Some assets may not exist yet; ignore failures
+        }),
+      caches
+        .open(PAGES_CACHE)
+        .then((cache) => cache.addAll(MAIN_PAGES))
+        .catch(() => {
+          // Ignore failures (e.g. offline install)
+        }),
+    ])
   );
   self.skipWaiting();
 });
@@ -110,6 +125,34 @@ async function cacheFirst(request) {
   }
 }
 
+// ─── Stale-while-revalidate: instant cached response + background refresh ───
+// Utilisé pour les pages statiques principales (accueil, guide, découvrir) :
+// rendu hors-ligne instantané, contenu resynchronisé dès que le réseau revient.
+async function staleWhileRevalidate(request) {
+  const cache = await caches.open(PAGES_CACHE);
+  const cached = await cache.match(request);
+
+  const networkFetch = fetch(request)
+    .then((response) => {
+      if (response && response.ok) {
+        cache.put(request, response.clone());
+      }
+      return response;
+    })
+    .catch(() => null);
+
+  if (cached) {
+    // Rafraîchit en arrière-plan sans bloquer la réponse
+    networkFetch.catch(() => {});
+    return cached;
+  }
+
+  const networkResponse = await networkFetch;
+  if (networkResponse) return networkResponse;
+
+  return caches.match(OFFLINE_URL);
+}
+
 // ─── Network-first strategy for API calls ───
 async function networkFirst(request) {
   try {
@@ -160,7 +203,14 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Navigation requests: network-first with offline fallback
+  // Main static pages (accueil, guide, découvrir): stale-while-revalidate
+  // for instant offline-capable rendering with background refresh.
+  if (request.mode === 'navigate' && MAIN_PAGES.includes(url.pathname)) {
+    event.respondWith(staleWhileRevalidate(request));
+    return;
+  }
+
+  // Other navigation requests: network-first with offline fallback
   if (request.mode === 'navigate') {
     event.respondWith(
       fetch(request)
