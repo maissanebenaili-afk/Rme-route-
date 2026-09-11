@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { Loader2, MapPin } from "lucide-react";
 import { geocodeSearch, type GeocodeResult } from "@/lib/geocoding";
 
@@ -29,6 +29,7 @@ export default function CityAutocomplete({
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const listboxId = useId();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const abortRef = useRef<AbortController | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -102,6 +103,7 @@ export default function CityAutocomplete({
             role="combobox"
             aria-expanded={open}
             aria-autocomplete="list"
+            aria-controls={listboxId}
           />
           {loading && (
             <Loader2
@@ -117,6 +119,7 @@ export default function CityAutocomplete({
 
       {open && suggestions.length > 0 && (
         <ul
+          id={listboxId}
           role="listbox"
           className="absolute z-20 mt-1 max-h-56 w-full overflow-auto rounded-xl border border-slate-200 bg-white shadow-lg"
         >

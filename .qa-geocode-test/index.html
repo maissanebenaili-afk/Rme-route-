@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>Test géocodage Nominatim — RME Voyage</title>
+<style>
+  body { font-family: sans-serif; max-width: 640px; margin: 40px auto; }
+  input { width: 100%; padding: 10px; font-size: 16px; box-sizing: border-box; }
+  ul { list-style: none; padding: 0; border: 1px solid #ddd; margin-top: 4px; }
+  li { padding: 8px 10px; border-bottom: 1px solid #eee; }
+  h1 { font-size: 18px; }
+  .status { color: #666; font-size: 13px; margin-top: 6px; }
+</style>
+</head>
+<body>
+<h1>Test isolé — même logique que lib/geocoding.ts (RouteSearch.tsx)</h1>
+<p>Champ "Départ" :</p>
+<input id="origin" placeholder="Ville de départ" value="" />
+<div class="status" id="origin-status"></div>
+<ul id="origin-list"></ul>
+
+<p>Champ "Destination" :</p>
+<input id="dest" placeholder="Ville d'arrivée" value="" />
+<div class="status" id="dest-status"></div>
+<ul id="dest-list"></ul>
+
+<script type="module">
+// Reproduction fidèle de lib/geocoding.ts pour test isolé en navigateur
+const NOMINATIM_BASE_URL = "https://nominatim.openstreetmap.org/search";
+const resultsCache = new Map();
+const MIN_INTERVAL_MS = 1000;
+let lastRequestAt = 0;
+let queueTail = Promise.resolve();
+
+function normalizeQuery(q){ return q.trim().toLowerCase(); }
+
+function scheduleThrottled(task) {
+  const run = queueTail.then(async () => {
+    const now = Date.now();
+    const wait = Math.max(0, lastRequestAt + MIN_INTERVAL_MS - now);
+    if (wait > 0) await new Promise(r => setTimeout(r, wait));
+    lastRequestAt = Date.now();
+    return task();
+  });
+  queueTail = run.catch(() => undefined);
+  return run;
+}
+
+async function geocodeSearch(query, { signal, limit = 5 } = {}) {
+  const trimmed = query.trim();
+  if (trimmed.length < 2) return [];
+  const cacheKey = normalizeQuery(trimmed);
+  const cached = resultsCache.get(cacheKey);
+  if (cached) return cached;
+
+  const url = new URL(NOMINATIM_BASE_URL);
+  url.searchParams.set("q", trimmed);
+  url.searchParams.set("format", "jsonv2");
+  url.searchParams.set("addressdetails", "0");
+  url.searchParams.set("limit", String(limit));
+  url.searchParams.set("featureType", "city");
+
+  const results = await scheduleThrottled(async () => {
+    const response = await fetch(url.toString(), {
+      signal,
+      headers: { Accept: "application/json", "X-App-Name": "RME-Voyage/1.0 (contact: contact@rme-voyage.com)" },
+      referrerPolicy: "origin",
+    });
+    if (!response.ok) throw new Error("Nominatim a répondu " + response.status);
+    const data = await response.json();
+    return data.map(item => ({
+      displayName: item.display_name,
+      lat: parseFloat(item.lat),
+      lon: parseFloat(item.lon),
+    }));
+  });
+  resultsCache.set(cacheKey, results);
+  return results;
+}
+
+function wireField(inputId, listId, statusId) {
+  const input = document.getElementById(inputId);
+  const list = document.getElementById(listId);
+  const status = document.getElementById(statusId);
+  let debounceTimer = null;
+  let controller = null;
+
+  input.addEventListener("input", () => {
+    if (debounceTimer) clearTimeout(debounceTimer);
+    if (controller) controller.abort();
+    const val = input.value;
+    if (val.trim().length < 2) { list.innerHTML = ""; status.textContent = ""; return; }
+    status.textContent = "Recherche en cours (debounce 450ms)...";
+    debounceTimer = setTimeout(async () => {
+      controller = new AbortController();
+      try {
+        const results = await geocodeSearch(val, { signal: controller.signal });
+        list.innerHTML = "";
+        results.forEach(r => {
+          const li = document.createElement("li");
+          li.textContent = r.displayName + `  (lat: ${r.lat.toFixed(4)}, lon: ${r.lon.toFixed(4)})`;
+          list.appendChild(li);
+        });
+        status.textContent = results.length + " résultat(s) réel(s) via Nominatim";
+      } catch (e) {
+        status.textContent = "Erreur: " + e.message;
+      }
+    }, 450);
+  });
+}
+
+wireField("origin", "origin-list", "origin-status");
+wireField("dest", "dest-list", "dest-status");
+</script>
+</body>
+</html>
