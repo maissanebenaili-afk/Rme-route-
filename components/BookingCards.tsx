@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Ship, Plane, Loader2 } from "lucide-react";
 
 type Props = {
   origin: string;
@@ -25,33 +26,43 @@ export default function BookingCards({ origin, destination, date }: Props) {
   }
 
   return (
-    <section className="rounded-2xl border bg-white p-5 shadow-sm">
-      <h2 className="text-xl font-bold">Réserver au meilleur prix</h2>
-      <p className="mt-1 text-sm text-slate-500">
+    <section className="rounded-3xl border border-sable-300 bg-white p-6 shadow-sm">
+      <h2 className="font-display text-xl font-semibold text-zellige-800">Réserver au meilleur prix</h2>
+      <p className="mt-1.5 text-sm leading-6 text-sable-700">
         Comparez puis réservez auprès de nos partenaires. Les liens affiliés
-        sont utilisés uniquement lorsqu'un compte partenaire est configuré.
+        sont utilisés uniquement lorsqu&apos;un compte partenaire est configuré.
       </p>
 
-      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <button
           onClick={() => go("ferry")}
           disabled={loading !== null}
-          className="rounded-xl bg-emerald-700 p-4 text-left font-bold text-white disabled:opacity-60"
+          className="group flex items-start gap-3 rounded-2xl bg-zellige-700 p-4 text-left font-bold text-white shadow-warm transition hover:bg-zellige-600 disabled:opacity-60"
         >
-          ⛴️ {loading === "ferry" ? "Recherche…" : "Comparer les ferries"}
-          <span className="mt-1 block text-xs font-normal opacity-90">
-            Espagne / France ↔ Maroc
+          <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/15">
+            {loading === "ferry" ? <Loader2 size={18} className="animate-spin" /> : <Ship size={18} />}
+          </span>
+          <span>
+            {loading === "ferry" ? "Recherche…" : "Comparer les ferries"}
+            <span className="mt-1 block text-xs font-normal text-white/75">
+              Espagne / France ↔ Maroc
+            </span>
           </span>
         </button>
 
         <button
           onClick={() => go("flight")}
           disabled={loading !== null}
-          className="rounded-xl bg-slate-900 p-4 text-left font-bold text-white disabled:opacity-60"
+          className="group flex items-start gap-3 rounded-2xl bg-terracotta-600 p-4 text-left font-bold text-white shadow-warm transition hover:bg-terracotta-500 disabled:opacity-60"
         >
-          ✈️ {loading === "flight" ? "Recherche…" : "Comparer les vols"}
-          <span className="mt-1 block text-xs font-normal opacity-90">
-            Europe ↔ Maroc
+          <span className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/15">
+            {loading === "flight" ? <Loader2 size={18} className="animate-spin" /> : <Plane size={18} />}
+          </span>
+          <span>
+            {loading === "flight" ? "Recherche…" : "Comparer les vols"}
+            <span className="mt-1 block text-xs font-normal text-white/75">
+              Europe ↔ Maroc
+            </span>
           </span>
         </button>
       </div>

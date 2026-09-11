@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   Award,
   ExternalLink,
@@ -159,7 +160,7 @@ export default function JuryPack() {
               Défi Étatique
             </span>
           </div>
-          <h2 className="text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="font-display text-3xl font-semibold tracking-tight text-white sm:text-4xl md:text-5xl">
             Présentation Jury
           </h2>
           <div className="mx-auto mt-4 h-1 w-24 rounded-full bg-gradient-to-r from-transparent via-[#eead59] to-transparent" />
@@ -208,22 +209,26 @@ export default function JuryPack() {
           <div className="rounded-3xl border border-[#eead59]/15 bg-white/5 p-8">
             <div className="mb-6 flex items-center gap-2">
               <Zap className="h-5 w-5 text-[#eead59]" />
-              <h3 className="text-lg font-bold text-white">Chiffres clés</h3>
+              <h3 className="font-display text-lg font-semibold text-white">Chiffres clés</h3>
             </div>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-              {metrics.map((m) => {
+              {metrics.map((m, idx) => {
                 const Icon = m.icon;
                 return (
-                  <div
+                  <motion.div
                     key={m.label}
-                    className="flex flex-col items-center gap-2 rounded-2xl bg-white/5 p-4 text-center transition hover:bg-white/10"
+                    className="flex flex-col items-center gap-2 rounded-2xl bg-white/5 p-4 text-center transition-colors hover:bg-white/10"
+                    initial={{ opacity: 0, y: 12 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, margin: '-40px' }}
+                    transition={{ duration: 0.35, delay: idx * 0.06, ease: 'easeOut' }}
                   >
                     <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#eead59]/15">
                       <Icon className="h-5 w-5 text-[#eead59]" />
                     </div>
-                    <span className="text-2xl font-black text-white">{m.value}</span>
+                    <span className="font-display text-2xl font-semibold tabular-nums text-white">{m.value}</span>
                     <span className="text-xs font-medium text-white/60">{m.label}</span>
-                  </div>
+                  </motion.div>
                 );
               })}
             </div>
@@ -234,17 +239,21 @@ export default function JuryPack() {
         <div className="mb-12 rounded-3xl border border-[#eead59]/15 bg-white/5 p-8">
           <div className="mb-6 flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-[#eead59]" />
-            <h3 className="text-lg font-bold text-white">Points d'innovation</h3>
+            <h3 className="font-display text-lg font-semibold text-white">Points d'innovation</h3>
           </div>
           <div className="grid gap-3 sm:grid-cols-2">
             {innovations.map((item, i) => (
-              <div
+              <motion.div
                 key={i}
-                className="flex items-start gap-3 rounded-xl bg-white/5 p-3 transition hover:bg-white/10"
+                className="flex items-start gap-3 rounded-xl bg-white/5 p-3 transition-colors hover:bg-white/10"
+                initial={{ opacity: 0, x: -8 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.3, delay: i * 0.04, ease: 'easeOut' }}
               >
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-[#eead59]" />
                 <span className="text-sm text-white/80">{item}</span>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
@@ -263,7 +272,7 @@ export default function JuryPack() {
             }}
           >
             <Globe className="h-5 w-5" />
-            Voir l'app en direct
+            Ouvrir l'aperçu de l'app
             <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
           <a
@@ -277,6 +286,9 @@ export default function JuryPack() {
             <ExternalLink className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
           </a>
         </div>
+        <p className="mx-auto mt-4 max-w-md text-center text-xs text-white/35">
+          Liens de démonstration — disponibilité selon l'environnement d'hébergement au moment de la consultation.
+        </p>
 
         {/* Footer */}
         <div className="mt-12 flex items-center justify-center gap-2 text-xs text-white/40">

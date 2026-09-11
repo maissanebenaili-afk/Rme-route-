@@ -5,6 +5,8 @@ import PWAInstall from '@/components/PWAInstall';
 import Accessibility from '@/components/Accessibility';
 import RegisterSW from './register-sw';
 
+// Fallback fonts (kept for RTL Arabic + safety net); primary display/body
+// identity fonts (Boska + General Sans) load via Fontshare <link> below.
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
 const jakarta = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-jakarta', display: 'swap', weight: ['400', '500', '600', '700', '800'] });
 const amiri = Amiri({ subsets: ['arabic', 'latin'], variable: '--font-amiri', display: 'swap', weight: ['400', '700'] });
@@ -85,6 +87,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="fr" className={`${inter.variable} ${jakarta.variable} ${amiri.variable}`}>
       <head>
+        <link rel="preconnect" href="https://api.fontshare.com" />
+        <link rel="preconnect" href="https://cdn.fontshare.com" crossOrigin="" />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=boska@500,600,700&f[]=general-sans@400,500,600,700&display=swap"
+          rel="stylesheet"
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

@@ -140,7 +140,7 @@ export function WeatherMorocco() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <CloudRain className="text-[#0d3f38]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">
           Météo du Maroc
         </h2>
       </div>
@@ -331,7 +331,7 @@ export function DarijaPhrasebook() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <span className="text-xl">📚</span>
-        <h2 className="text-lg font-bold text-[#0d3f38]">Darija — Guide de conversation</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Darija — Guide de conversation</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Apprenez le darija marocain. Cliquez pour écouter la prononciation.
@@ -448,7 +448,7 @@ export function CustomsCalculator() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <Calculator className="text-[#0d3f38]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">Calculateur douane</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Calculateur douane</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Estimez les droits de douane à l'entrée au Maroc.
@@ -631,7 +631,7 @@ export function EmergencyContacts() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <Phone className="text-red-500" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">Contacts d'urgence</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Contacts d'urgence</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Numéros utiles au Maroc — appelez en un tap.
@@ -783,7 +783,7 @@ export function MoroccanCalendar() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <Calendar className="text-[#0d3f38]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">Calendrier marocain</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Calendrier marocain</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Fêtes religieuses et nationales du Maroc
@@ -877,7 +877,7 @@ export function ZakaatCalculator() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <Star className="text-[#eead59]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">Calculateur de Zakat</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Calculateur de Zakat</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Calculez votre zakat — 2.5% du capital / زكاة
@@ -1034,7 +1034,7 @@ export function TimeZoneSIM() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <Clock className="text-[#0d3f38]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">Fuseau horaire & SIM</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Fuseau horaire & SIM</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Comparez les horaires et les cartes SIM marocaines
@@ -1195,7 +1195,7 @@ export function FuelPriceComparator() {
     <section className={`${cardBase} ${creamBg} border-[#0d3f38]/10`}>
       <div className="flex items-center gap-2">
         <Fuel className="text-[#0d3f38]" size={22} />
-        <h2 className="text-lg font-bold text-[#0d3f38]">Prix du carburant</h2>
+        <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Prix du carburant</h2>
       </div>
       <p className="mt-1 text-sm text-[#0d3f38]/60">
         Comparaison FR / ES / MA — prix approximatifs 2026

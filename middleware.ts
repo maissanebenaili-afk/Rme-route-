@@ -63,10 +63,10 @@ export function middleware(request: NextRequest) {
   const csp = [
     "default-src 'self'",
     "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://api.aladhan.com",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com",
-    "font-src 'self' https://fonts.gstatic.com https://unpkg.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com https://api.fontshare.com https://cdn.fontshare.com",
+    "font-src 'self' https://fonts.gstatic.com https://unpkg.com https://cdn.fontshare.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://api.aladhan.com https://*.tile.openstreetmap.org https://router.project-osrm.org",
+    "connect-src 'self' https://api.aladhan.com https://*.tile.openstreetmap.org https://router.project-osrm.org https://api.open-meteo.com",
     "frame-src 'self' https://www.openstreetmap.org",
     "base-uri 'self'",
     "form-action 'self'",

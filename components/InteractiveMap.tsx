@@ -54,11 +54,11 @@ const ferryRoute: [number, number][] = [
 function getIcon(type: string) {
   const colors: Record<string, string> = {
     origin: "#0d6255",
-    destination: "#b45b34",
-    ferry: "#2563eb",
-    stop: "#64748b",
+    destination: "#d9824b",
+    ferry: "#eead59",
+    stop: "#7a6d54",
   };
-  const color = colors[type] || "#64748b";
+  const color = colors[type] || "#7a6d54";
   return L.divIcon({
     html: `<div style="background:${color};width:14px;height:14px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
     className: "",
@@ -76,9 +76,9 @@ export default function InteractiveMap() {
 
   if (!mounted) {
     return (
-      <section className="rounded-2xl border bg-white p-5 shadow-sm">
-        <h2 className="text-lg font-bold">🗺️ Carte du trajet Europe ↔ Maroc</h2>
-        <div className="mt-4 flex h-64 items-center justify-center rounded-xl bg-slate-100 text-sm text-slate-500">
+      <section className="rounded-3xl border border-sable-300 bg-white p-6 shadow-sm">
+        <h2 className="font-display text-lg font-semibold text-zellige-800">🗺️ Carte du trajet Europe ↔ Maroc</h2>
+        <div className="mt-4 flex h-64 items-center justify-center rounded-2xl bg-sable-100 text-sm text-sable-600">
           Chargement de la carte...
         </div>
       </section>
@@ -86,18 +86,18 @@ export default function InteractiveMap() {
   }
 
   return (
-    <section className="rounded-2xl border bg-white p-5 shadow-sm">
+    <section className="rounded-3xl border border-sable-300 bg-white p-6 shadow-sm">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-bold">🗺️ Carte du trajet Europe ↔ Maroc</h2>
-        <div className="flex gap-2 text-xs">
-          <span className="flex items-center gap-1 rounded-full bg-emerald-50 px-2 py-1 text-emerald-700">
-            <span className="h-2 w-2 rounded-full bg-emerald-600" /> Départ
+        <h2 className="font-display text-lg font-semibold text-zellige-800">🗺️ Carte du trajet Europe ↔ Maroc</h2>
+        <div className="flex flex-wrap gap-2 text-xs">
+          <span className="flex items-center gap-1 rounded-full bg-zellige-50 px-2 py-1 text-zellige-700">
+            <span className="h-2 w-2 rounded-full bg-zellige-600" /> Départ
           </span>
-          <span className="flex items-center gap-1 rounded-full bg-blue-50 px-2 py-1 text-blue-700">
-            <span className="h-2 w-2 rounded-full bg-blue-600" /> Ferry
+          <span className="flex items-center gap-1 rounded-full bg-safran-100 px-2 py-1 text-safran-800">
+            <span className="h-2 w-2 rounded-full bg-safran-500" /> Ferry
           </span>
-          <span className="flex items-center gap-1 rounded-full bg-orange-50 px-2 py-1 text-orange-700">
-            <span className="h-2 w-2 rounded-full bg-orange-600" /> Arrivée
+          <span className="flex items-center gap-1 rounded-full bg-terracotta-100 px-2 py-1 text-terracotta-700">
+            <span className="h-2 w-2 rounded-full bg-terracotta-500" /> Arrivée
           </span>
         </div>
       </div>
@@ -118,7 +118,7 @@ export default function InteractiveMap() {
           <Polyline positions={mainRoute} color="#0d6255" weight={3} opacity={0.7} dashArray="10, 8" />
 
           {/* Ferry route */}
-          <Polyline positions={ferryRoute} color="#2563eb" weight={2} opacity={0.6} dashArray="5, 10" />
+          <Polyline positions={ferryRoute} color="#eead59" weight={2} opacity={0.8} dashArray="5, 10" />
 
           {/* City markers */}
           {cities.map((city) => (
@@ -128,13 +128,13 @@ export default function InteractiveMap() {
                   <p className="font-bold">{city.name}</p>
                   <p className="text-xs text-slate-500">{city.country}</p>
                   {city.type === "ferry" && (
-                    <p className="mt-1 text-xs font-bold text-blue-600">⛴️ Port de ferry</p>
+                    <p className="mt-1 text-xs font-bold text-[#b07a1f]">⛴️ Port de ferry</p>
                   )}
                   {city.type === "origin" && (
-                    <p className="mt-1 text-xs font-bold text-emerald-600">🏁 Départ</p>
+                    <p className="mt-1 text-xs font-bold text-[#0d6255]">🏁 Départ</p>
                   )}
                   {city.type === "destination" && (
-                    <p className="mt-1 text-xs font-bold text-orange-600">🎯 Arrivée</p>
+                    <p className="mt-1 text-xs font-bold text-[#b4562f]">🎯 Arrivée</p>
                   )}
                 </div>
               </Popup>
@@ -145,20 +145,20 @@ export default function InteractiveMap() {
 
       {/* Route info */}
       <div className="mt-4 grid grid-cols-3 gap-3">
-        <div className="rounded-xl bg-slate-50 p-3 text-center">
-          <Navigation size={18} className="mx-auto text-emerald-600" />
-          <div className="mt-1 text-xs text-slate-500">Distance</div>
-          <div className="font-bold">~2 100 km</div>
+        <div className="rounded-2xl bg-sable-100 p-3 text-center">
+          <Navigation size={18} className="mx-auto text-zellige-600" />
+          <div className="mt-1 text-xs text-sable-600">Distance</div>
+          <div className="font-bold text-zellige-800">~2 100 km</div>
         </div>
-        <div className="rounded-xl bg-slate-50 p-3 text-center">
-          <Ship size={18} className="mx-auto text-blue-600" />
-          <div className="mt-1 text-xs text-slate-500">Ferry</div>
-          <div className="font-bold">~1h30</div>
+        <div className="rounded-2xl bg-sable-100 p-3 text-center">
+          <Ship size={18} className="mx-auto text-safran-700" />
+          <div className="mt-1 text-xs text-sable-600">Ferry</div>
+          <div className="font-bold text-zellige-800">~1h30</div>
         </div>
-        <div className="rounded-xl bg-slate-50 p-3 text-center">
-          <Fuel size={18} className="mx-auto text-orange-600" />
-          <div className="mt-1 text-xs text-slate-500">Carburant</div>
-          <div className="font-bold">~140 L</div>
+        <div className="rounded-2xl bg-sable-100 p-3 text-center">
+          <Fuel size={18} className="mx-auto text-terracotta-600" />
+          <div className="mt-1 text-xs text-sable-600">Carburant</div>
+          <div className="font-bold text-zellige-800">~140 L</div>
         </div>
       </div>
     </section>
