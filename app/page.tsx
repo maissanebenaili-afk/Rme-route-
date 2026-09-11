@@ -85,7 +85,7 @@ export default function Home() {
             <p className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 text-xs font-extrabold uppercase tracking-[.16em] text-[#f5cd93]">
               <Sparkles size={14} /> Europe · Maroc · Diaspora
             </p>
-            <h1 className="mt-6 max-w-3xl text-5xl font-black leading-[.96] tracking-tight sm:text-7xl">
+            <h1 className="mt-6 max-w-3xl text-5xl font-display font-semibold leading-[.96] tracking-tight sm:text-7xl">
               Le voyage commence <span className="gradient-text-gold">bien avant le départ.</span>
             </h1>
             <p className="mt-6 max-w-xl text-lg leading-8 text-white/75">
@@ -112,7 +112,7 @@ export default function Home() {
             <div className="absolute inset-0 rotate-3 rounded-[2.25rem] bg-[#e6a44e]" />
             <div className="relative rounded-[2.25rem] border border-white/10 bg-[#153f39] p-7 shadow-2xl sm:p-9">
               <p className="text-sm font-bold text-[#f5cd93]">Votre carnet de voyage</p>
-              <h2 className="mt-3 text-3xl font-black leading-tight">Un parcours simple. Des décisions plus sereines.</h2>
+              <h2 className="mt-3 text-3xl font-display font-semibold leading-tight">Un parcours simple. Des décisions plus sereines.</h2>
               <div className="mt-8 space-y-3">
                 <div className="flex items-center gap-4 rounded-2xl bg-white/10 p-4">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-[#f5cd93] font-black text-[#103d37]">1</span>
@@ -171,7 +171,7 @@ export default function Home() {
       <section id="planifier" className="mx-auto max-w-5xl px-5 py-20 sm:px-8">
         <div className="mb-10 max-w-2xl animate-fade-up">
           <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Préparez sereinement</p>
-          <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">L'essentiel, au bon moment.</h2>
+          <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">L'essentiel, au bon moment.</h2>
           <p className="mt-4 text-lg leading-8 text-[#5a716c]">
             Commencez par votre trajet, puis ajustez votre budget avant de comparer vos options.
           </p>
@@ -187,7 +187,7 @@ export default function Home() {
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="mb-10 max-w-2xl">
             <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Visualisez</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Votre trajet sur la carte.</h2>
+            <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">Votre trajet sur la carte.</h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
               Du départ en Europe à l'arrivée au Maroc, visualisez chaque étape de votre voyage.
             </p>
@@ -201,7 +201,7 @@ export default function Home() {
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="mb-10 max-w-2xl">
             <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">En route</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Les repères qui comptent.</h2>
+            <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">Les repères qui comptent.</h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
               Prières, Qibla, services et conseils pratiques pour un voyage serein.
             </p>
@@ -224,7 +224,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="mb-12 text-center">
             <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Tout-en-un</p>
-            <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Un seul outil. Tout votre voyage.</h2>
+            <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">Un seul outil. Tout votre voyage.</h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {features.map(({ icon: Icon, title, text }) => (
@@ -243,7 +243,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="bg-[#0d3f38] py-20">
         <div className="mx-auto max-w-4xl px-5 text-center sm:px-8">
-          <h2 className="text-4xl font-black tracking-tight text-white sm:text-5xl">
+          <h2 className="text-4xl font-display font-semibold tracking-tight text-white sm:text-5xl">
             Prêt à organiser votre voyage ?
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-lg text-white/70">

@@ -35,7 +35,7 @@ export default function LanguageSwitcher() {
         <ChevronDown className={`h-3 w-3 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-2 w-44 overflow-hidden rounded-xl border border-white/10 bg-[#0b2b21] shadow-xl z-50">
+        <div className="absolute right-0 top-full mt-2 w-44 overflow-hidden rounded-2xl border border-white/10 bg-zellige-800 shadow-warm-lg z-50">
           {languages.map((l) => (
             <button
               key={l.code}
@@ -43,9 +43,9 @@ export default function LanguageSwitcher() {
                 setLang(l.code as Language);
                 setOpen(false);
               }}
-              className={`flex w-full items-center gap-2 px-4 py-2.5 text-sm text-left hover:bg-white/10 transition-colors ${
-                lang === l.code ? 'bg-white/10 text-amber-300' : 'text-white'
-              }`}
+              className={`flex w-full items-center gap-2 px-4 py-2.5 text-sm text-left transition-colors hover:bg-white/10 ${
+                lang === l.code ? 'bg-white/10 text-safran-300' : 'text-white'
+              } ${l.rtl ? 'flex-row-reverse text-right' : ''}`}
             >
               <span>{l.flag}</span>
               <span>{l.label}</span>
