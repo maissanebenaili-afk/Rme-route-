@@ -34,7 +34,7 @@ export const metadata = {
 
 export default function GuidePage() {
   return (
-    <main className="min-h-screen bg-[#fffdf8] text-[#173a36]">
+    <main id="main-content" tabIndex={-1} className="min-h-screen bg-[#fffdf8] text-[#173a36]">
       <header className="border-b border-white/10 bg-[#0d3f38] text-white">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5 sm:px-8">
           <Link href="/" className="flex items-center gap-2 text-lg font-black tracking-tight">
@@ -104,7 +104,7 @@ export default function GuidePage() {
       </section>
 
       <section className="mx-auto max-w-6xl px-5 py-20 sm:px-8">
-        <p className="text-sm font-extrabold uppercase tracking-[.18em] text-[#b45b34]">
+        <p className="text-sm font-extrabold uppercase tracking-[.18em] text-[#a84f2b]">
           Un réflexe avant de partir
         </p>
         <h2 className="mt-3 max-w-3xl font-display text-3xl font-semibold tracking-tight sm:text-5xl">

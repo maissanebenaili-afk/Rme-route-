@@ -24,7 +24,7 @@ export default function DownloadPage() {
   if (downloadUrl) redirect(downloadUrl);
 
   return (
-    <main className="relative grid min-h-screen place-items-center overflow-hidden bg-[#0d3f38] px-5 text-white">
+    <main id="main-content" tabIndex={-1} className="relative grid min-h-screen place-items-center overflow-hidden bg-[#0d3f38] px-5 text-white">
       <div className="pointer-events-none absolute -right-20 -top-24 -z-10 h-96 w-96 rounded-full bg-[#eead59]/20 blur-3xl" />
       <div className="pointer-events-none absolute -bottom-36 left-1/4 -z-10 h-72 w-72 rounded-full bg-[#4cc3ac]/15 blur-3xl" />
 

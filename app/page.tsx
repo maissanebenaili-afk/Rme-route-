@@ -57,7 +57,7 @@ const features = [
 
 export default function Home() {
   return (
-    <main id="main-content" className="min-h-screen overflow-hidden bg-[#f8f7f2] text-[#173a36]">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden bg-[#f8f7f2] text-[#173a36]">
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-[#0d3f38] text-white">
         {/* Background decorations */}
@@ -170,7 +170,7 @@ export default function Home() {
       {/* Planning Section */}
       <section id="planifier" className="mx-auto max-w-5xl px-5 py-20 sm:px-8">
         <div className="mb-10 max-w-2xl animate-fade-up">
-          <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Préparez sereinement</p>
+          <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#a84f2b]">Préparez sereinement</p>
           <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">L'essentiel, au bon moment.</h2>
           <p className="mt-4 text-lg leading-8 text-[#5a716c]">
             Commencez par votre trajet, puis ajustez votre budget avant de comparer vos options.
@@ -186,7 +186,7 @@ export default function Home() {
       <section className="bg-[#e8efe7] py-20">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="mb-10 max-w-2xl">
-            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Visualisez</p>
+            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#a84f2b]">Visualisez</p>
             <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">Votre trajet sur la carte.</h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
               Du départ en Europe à l'arrivée au Maroc, visualisez chaque étape de votre voyage.
@@ -200,7 +200,7 @@ export default function Home() {
       <section className="bg-[#f8f7f2] py-20">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
           <div className="mb-10 max-w-2xl">
-            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">En route</p>
+            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#a84f2b]">En route</p>
             <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">Les repères qui comptent.</h2>
             <p className="mt-4 text-lg leading-8 text-[#5a716c]">
               Prières, Qibla, services et conseils pratiques pour un voyage serein.
@@ -223,7 +223,7 @@ export default function Home() {
       <section className="bg-white py-20">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
           <div className="mb-12 text-center">
-            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#b45b34]">Tout-en-un</p>
+            <p className="text-sm font-extrabold uppercase tracking-[.16em] text-[#a84f2b]">Tout-en-un</p>
             <h2 className="mt-3 text-4xl font-display font-semibold tracking-tight sm:text-5xl">Un seul outil. Tout votre voyage.</h2>
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -264,7 +264,7 @@ export default function Home() {
       <section className="py-16 bg-gradient-to-b from-[#f8f7f2] to-[#e8e6df]">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <p className="text-sm font-semibold uppercase tracking-widest text-[#eead59]">Suite d'outils</p>
+            <p className="text-sm font-semibold uppercase tracking-widest text-[#8f5b08]">Suite d'outils</p>
             <h2 className="mt-3 font-[family-name:var(--font-jakarta)] text-3xl font-extrabold tracking-tight text-[#173a36] sm:text-4xl">
               15+ widgets intelligents dans une seule app
             </h2>

@@ -31,7 +31,7 @@ export const metadata = {
 
 export default function DiscoverPage() {
   return (
-    <main className="min-h-screen overflow-hidden bg-[#0d3f38] text-white">
+    <main id="main-content" tabIndex={-1} className="min-h-screen overflow-hidden bg-[#0d3f38] text-white">
       {/* Background decorations, consistent with homepage hero */}
       <div className="relative isolate">
         <div className="pointer-events-none absolute -right-24 -top-24 -z-10 h-96 w-96 rounded-full bg-[#eead59]/20 blur-3xl" />
@@ -105,7 +105,7 @@ export default function DiscoverPage() {
 
       <section id="fonctionnalites" className="bg-[#fffdf8] py-20 text-[#173a36]">
         <div className="mx-auto max-w-6xl px-5 sm:px-8">
-          <p className="text-sm font-extrabold uppercase tracking-[.18em] text-[#b45b34]">
+          <p className="text-sm font-extrabold uppercase tracking-[.18em] text-[#a84f2b]">
             Pensé pour votre trajet
           </p>
           <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold tracking-tight sm:text-5xl">
