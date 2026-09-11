@@ -1,6 +1,6 @@
 # RME Route — état maître
 
-Date : 2026-09-11 (Refonte design/UX concours — v1.2.0)
+Date : 2026-09-11 (v1.3.0 — CI GitHub Actions, rate limiting, durcissement CORS/CSP)
 
 ## Source de vérité
 Le dépôt GitHub est la source de vérité technique. Les modifications doivent :
@@ -17,6 +17,7 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - **NEW:** Architecture stricte TypeScript + security layers
 - **NEW:** Documentation production-ready (DEPLOYMENT.md, ARCHITECTURE.md, AUDIT_PREDEPLOIEMENT.md)
 - **NEW (v1.2.0) :** Refonte complète du design/UX (identité visuelle RME Voyage, typographie Boska/General Sans, animations framer-motion) — voir section Version History pour le détail
+- **NEW (v1.3.0) :** CI GitHub Actions (lint/tests/build), rate limiting in-memory documente sur les routes API sensibles, durcissement CORS/CSP dans `middleware.ts` — voir section Version History pour le détail
 
 ## ✅ Production-Ready
 - [x] Code compile (TypeScript strict)
@@ -39,9 +40,15 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - PWA/offline robuste (Service Worker)
 - Authentification/anti-spam/modération
 - Analytics + tracking conformité
-- **CI GitHub et tests automatisés** ← HIGH PRIORITY
-- **Rate limiting sur API** ← HIGH PRIORITY
-- **CORS/CSP headers** ← HIGH PRIORITY
+- ~~CI GitHub et tests automatisés~~ ✅ fait (v1.3.0, voir changelog) — vérifier que la CI est bien verte sur GitHub après merge de la PR
+- ~~Rate limiting sur API~~ ✅ fait en v1 in-memory (v1.3.0) — **non distribué**, évolution Upstash/Vercel KV recommandée avant scale multi-instances
+- ~~CORS/CSP headers~~ ✅ durci (v1.3.0)
+
+## 🆕 Nouveau suivi (post v1.3.0)
+- Rate limiting actuel = Map JS en mémoire par instance : à migrer vers un
+  store durable (Upstash Redis / Vercel KV) avant un trafic de production
+  significatif sur Vercel serverless (voir commentaire détaillé dans
+  `middleware.ts`).
 
 ## 🚀 Prochaines étapes immédiates
 1. Merger branch `production-ready` en `main`
@@ -64,6 +71,7 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - **v0.1.0** (2026-09-08) — Initial consolidation
 - **v1.0.0** (2026-09-09) — Production-ready + audit complet
 - **v1.2.0** (2026-09-11) — Refonte design/UX pour le concours (voir détail ci-dessous)
+- **v1.3.0** (2026-09-11) — CI GitHub Actions + rate limiting + durcissement CORS/CSP (voir détail ci-dessous)
 - **v1.1.0** (TBD) — Real APIs + mobile + testing
 
 ### v1.2.0 (2026-09-11) — Refonte design/UX "identité RME Voyage"
@@ -97,3 +105,68 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - Aucune régression visuelle détectée après corrections ; RTL arabe/darija vérifié dans HadakAI.
 
 **Rappel de conformité :** aucune intégration externe n'est présentée comme active sans preuve (JuryPack précise que les liens de démo dépendent de la disponibilité de l'hébergement), aucun secret commité, un commit clair par modification (voir historique git).
+
+### v1.3.0 (2026-09-11) — CI GitHub Actions + rate limiting + durcissement CORS/CSP
+
+**Objectif :** traiter les 3 items HIGH PRIORITY listés ci-dessus, sans changer la logique métier ni le design v1.2.0.
+
+**Contexte / branche `ci-github-actions` :** une branche distante existait déjà
+(`origin/ci-github-actions`), issue d'un essai antérieur basé sur le commit
+juste avant le merge du design v1.2.0. Son `.github/workflows/ci.yml` et son
+`.eslintrc.json` étaient réutilisables tels quels ; en revanche son commit
+appliquait aussi un reformatage Prettier complet du dépôt (`format:check`),
+qui aurait écrasé/entré en conflit massif avec le design v1.2.0 fraichement
+fusionné sur `main`. Cette partie a été sciemment écartée : le travail ci-dessous
+repart de `main` (post v1.2.0) et ne reprend que le workflow CI + la config
+ESLint.
+
+**1. CI GitHub Actions (`.github/workflows/ci.yml`)**
+- Nouveau workflow sur `push`/`pull_request` vers `main` : `npm ci`, puis
+  `npm run lint`, `npm run test`, `npm run build`.
+- Ajout `.eslintrc.json` (`next/core-web-vitals`) : `main` n'avait aucune
+  config ESLint, ce qui rendait `next lint` interactif (bloquant en CI).
+- Ajout `eslint@8` + `eslint-config-next` en devDependencies (requis par
+  `next lint` avec Next 15 ; leur absence provoquait une erreur
+  "Unknown options" avec une version d'ESLint résolue globalement).
+
+**2. Rate limiting (`middleware.ts`, `app/api/affiliates`, `app/api/prayer`)**
+- Implémentation in-memory (fenêtre glissante simple, `Map` JS par IP +
+  chemin), appliquée spécifiquement aux deux routes API listées (au lieu de
+  toutes les routes `/api/*` précédemment).
+- **Limite explicitement documentée en commentaire dans le code :** ce
+  stockage est local à l'instance du process. Ce n'est **pas** une solution
+  distribuée : sur Vercel serverless, des instances différentes ne partagent
+  pas cette `Map`, donc la limite globale peut être dépassée si le trafic est
+  réparti sur plusieurs instances. Suffisant pour une v1 (anti-abus basique),
+  mais **évolution recommandée vers un store durable partagé** (Upstash Redis
+  via `@upstash/ratelimit`, ou Vercel KV) avant un trafic de production
+  significatif.
+
+**3. CORS / CSP (`middleware.ts`)**
+- CORS : ajout d'une whitelist explicite d'origines pour les routes `/api/*`
+  (domaines connus de l'app + `NEXT_PUBLIC_APP_URL` optionnel, `localhost`
+  uniquement hors production). Toute origine non listée ne reçoit aucun
+  header `Access-Control-Allow-Origin` (vérifié manuellement). Gestion de la
+  requête preflight `OPTIONS` directement dans le middleware.
+- CSP : retrait de `unsafe-eval` (non utilisé par le code de l'app), ajout de
+  `frame-ancestors 'none'` et `object-src 'none'`. `X-Frame-Options: DENY`
+  et les autres en-têtes (`X-Content-Type-Options`, HSTS, `Referrer-Policy`,
+  `Permissions-Policy`) sont conservés.
+
+**Vérifications effectuées avant la PR :**
+- `npm install`, `npm run lint`, `npm run test` (29/29, dont un nouveau
+  fichier `__tests__/middleware.test.ts`), `npm run build` : tous passants.
+- Test manuel avec le serveur de prod local (`npm run build && npm run
+  start`) : origine autorisée → CORS + CSP durcie présents ; origine non
+  autorisée → pas de header CORS ; `OPTIONS` → 204 ; 31e requête/minute sur
+  `/api/prayer` depuis la même IP → 429 avec `Retry-After`.
+- Correction incidente découverte pendant la stabilisation des tests : un
+  test (`homeBranding.test.tsx`) attendait un ancien texte remplacé par le
+  design v1.2.0, et `IntersectionObserver` (utilisé par `framer-motion` dans
+  `JuryPack`) n'était pas mocké dans l'environnement jsdom — les deux ont été
+  corrigés pour que `npm run test` passe sans erreur.
+
+**Rappel de conformité :** le rate limiting n'est à aucun moment présenté
+comme une solution distribuée/robuste multi-instances ; aucun secret commité ;
+commits incrémentaux et ciblés (voir historique git de la branche
+`opt/ci-et-securite`).
