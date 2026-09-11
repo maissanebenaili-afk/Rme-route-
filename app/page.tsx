@@ -66,16 +66,16 @@ export default function Home() {
         <div className="absolute right-1/4 top-1/3 -z-10 h-64 w-64 rounded-full bg-[#d9824b]/10 blur-3xl" />
 
         {/* Navigation */}
-        <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-6 sm:px-8">
-          <Link href="/" className="flex items-center gap-2 text-lg font-black tracking-tight">
-            <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#e6a44e] text-sm text-[#103d37]">R</span>
-            RME <span className="font-medium text-[#f5cd93]">Voyage</span>
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-5 sm:px-8 sm:py-6">
+          <Link href="/" className="flex shrink-0 items-center gap-2 text-base font-black tracking-tight sm:text-lg">
+            <span className="grid h-9 w-9 shrink-0 place-items-center rounded-2xl bg-[#e6a44e] text-sm text-[#103d37] sm:h-10 sm:w-10">R</span>
+            <span className="whitespace-nowrap">RME <span className="font-medium text-[#f5cd93]">Voyage</span></span>
           </Link>
-          <div className="flex items-center gap-3">
+          <div className="flex shrink-0 items-center gap-1.5 sm:gap-3">
             <LanguageSwitcher />
             <Link href="/guide" className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline">Le guide</Link>
             <Link href="/decouvrir" className="hidden text-sm font-bold text-white/80 hover:text-white sm:inline">Découvrir</Link>
-            <a href="#planifier" className="rounded-full bg-white px-4 py-2 text-sm font-extrabold text-[#0d3f38] transition hover:bg-[#f5cd93]">Planifier</a>
+            <a href="#planifier" className="shrink-0 whitespace-nowrap rounded-full bg-white px-3 py-2 text-xs font-extrabold text-[#0d3f38] transition hover:bg-[#f5cd93] sm:px-4 sm:text-sm">Planifier</a>
           </div>
         </nav>
 
