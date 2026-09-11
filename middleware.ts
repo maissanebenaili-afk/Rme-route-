@@ -159,7 +159,7 @@ export function middleware(request: NextRequest) {
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://api.fontshare.com https://cdn.fontshare.com",
     "font-src 'self' https://fonts.gstatic.com https://cdn.fontshare.com",
     "img-src 'self' data: https: blob:",
-    "connect-src 'self' https://api.aladhan.com https://*.tile.openstreetmap.org https://router.project-osrm.org https://api.open-meteo.com https://nominatim.openstreetmap.org",
+    "connect-src 'self' https://api.aladhan.com https://*.tile.openstreetmap.org https://router.project-osrm.org https://api.open-meteo.com",
     "frame-src 'self' https://www.openstreetmap.org",
     "frame-ancestors 'none'",
     "object-src 'none'",
