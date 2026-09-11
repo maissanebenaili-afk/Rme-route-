@@ -17,7 +17,7 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - **NEW:** Architecture stricte TypeScript + security layers
 - **NEW:** Documentation production-ready (DEPLOYMENT.md, ARCHITECTURE.md, AUDIT_PREDEPLOIEMENT.md)
 - **NEW (v1.2.0) :** Refonte complète du design/UX (identité visuelle RME Voyage, typographie Boska/General Sans, animations framer-motion) — voir section Version History pour le détail
-- **NEW (v1.3.0) :** CI GitHub Actions (lint/tests/build), rate limiting in-memory documente sur les routes API sensibles, durcissement CORS/CSP dans `middleware.ts` — voir section Version History pour le détail
+- **NEW (v1.3.0) :** CI GitHub Actions (lint/tests/build), rate limiting in-memory documenté sur les routes API sensibles, durcissement CORS/CSP dans `middleware.ts` — ET géocodage réel via Nominatim/OpenStreetMap pour l'autocomplétion départ/destination + distance estimée à partir de coordonnées réelles, PWA offline renforcée (stale-while-revalidate sur les pages principales), vérification de la performance des polices et de la taille du bundle — voir section Version History pour le détail complet
 
 ## ✅ Production-Ready
 - [x] Code compile (TypeScript strict)
@@ -29,7 +29,6 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - [x] Documentation déploiement complète
 
 ## ⚠️ Encore non fait (v1.0.0 → v1.1.0)
-- Géocodage réel et autocomplétion
 - Routing multi-alternatives de production
 - Péages fiables par pays
 - Prix carburant temps réel
@@ -37,18 +36,22 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - Carte MapLibre/POI
 - GPS/Qibla/prière dynamiques par position
 - Signalements communautaires Supabase
-- PWA/offline robuste (Service Worker)
 - Authentification/anti-spam/modération
 - Analytics + tracking conformité
 - ~~CI GitHub et tests automatisés~~ ✅ fait (v1.3.0, voir changelog) — vérifier que la CI est bien verte sur GitHub après merge de la PR
 - ~~Rate limiting sur API~~ ✅ fait en v1 in-memory (v1.3.0) — **non distribué**, évolution Upstash/Vercel KV recommandée avant scale multi-instances
 - ~~CORS/CSP headers~~ ✅ durci (v1.3.0)
+- ~~Géocodage réel/autocomplétion~~ ✅ fait (v1.3.0, Nominatim/OSM — gratuit, sans SLA, voir changelog)
+- ~~PWA/offline robuste~~ ✅ renforcé (v1.3.0, stale-while-revalidate)
 
 ## 🆕 Nouveau suivi (post v1.3.0)
 - Rate limiting actuel = Map JS en mémoire par instance : à migrer vers un
   store durable (Upstash Redis / Vercel KV) avant un trafic de production
   significatif sur Vercel serverless (voir commentaire détaillé dans
   `middleware.ts`).
+- Géocodage Nominatim/OSM = service gratuit sans SLA, soumis à limite de
+  débit — prévoir un fournisseur payant si le volume d'usage devient
+  significatif.
 
 ## 🚀 Prochaines étapes immédiates
 1. Merger branch `production-ready` en `main`
@@ -71,8 +74,8 @@ Le dépôt GitHub est la source de vérité technique. Les modifications doivent
 - **v0.1.0** (2026-09-08) — Initial consolidation
 - **v1.0.0** (2026-09-09) — Production-ready + audit complet
 - **v1.2.0** (2026-09-11) — Refonte design/UX pour le concours (voir détail ci-dessous)
-- **v1.3.0** (2026-09-11) — CI GitHub Actions + rate limiting + durcissement CORS/CSP (voir détail ci-dessous)
-- **v1.1.0** (TBD) — Real APIs + mobile + testing
+- **v1.3.0** (2026-09-11) — CI GitHub Actions + rate limiting + durcissement CORS/CSP + géocodage réel Nominatim + performance + PWA offline (voir détail ci-dessous)
+- **v1.1.0** (TBD) — Routing multi-alternatives, péages, ferries/vols temps réel, mobile + testing
 
 ### v1.2.0 (2026-09-11) — Refonte design/UX "identité RME Voyage"
 
@@ -170,3 +173,109 @@ ESLint.
 comme une solution distribuée/robuste multi-instances ; aucun secret commité ;
 commits incrémentaux et ciblés (voir historique git de la branche
 `opt/ci-et-securite`).
+
+### v1.3.0 (2026-09-11) — Géocodage réel Nominatim + performance + PWA offline
+
+**Objectif :** activer le géocodage réel (item le plus prioritaire du backlog),
+optimiser le chargement des polices/bundle, et renforcer le mode hors-ligne de
+la PWA.
+
+**1. Géocodage réel (`lib/geocoding.ts`, `components/CityAutocomplete.tsx`, `components/RouteSearch.tsx`)**
+- Intégration de l'API publique **Nominatim / OpenStreetMap**
+  (`https://nominatim.openstreetmap.org/search`) pour l'autocomplétion réelle
+  des champs "Départ" et "Destination" de `RouteSearch.tsx` (remplace la saisie
+  libre sans suggestions).
+- ⚠️ **Service tiers gratuit, pas une solution entreprise** : aucune clé API,
+  aucune garantie de disponibilité/SLA, soumis à la
+  [politique d'usage Nominatim](https://operations.osmfoundation.org/policies/nominatim/).
+  À ne jamais présenter comme une intégration "production-grade" — c'est un
+  point d'entrée gratuit à remplacer par un fournisseur payant si le volume
+  d'usage devient significatif.
+- Conformité à la politique d'usage appliquée dans `lib/geocoding.ts` :
+  - Debounce ≥ 450 ms côté `CityAutocomplete.tsx` avant tout appel réseau.
+  - Throttling client strict : file d'attente qui garantit au plus 1
+    requête/seconde vers Nominatim (`scheduleThrottled`), même si plusieurs
+    champs déclenchent une recherche presque simultanément.
+  - Cache mémoire simple (`Map`) par requête normalisée pour éviter de
+    re-géocoder une ville déjà recherchée dans la session.
+  - En-tête `X-App-Name` identifiant l'application + `referrerPolicy: origin`
+    (le User-Agent réseau réel reste celui du navigateur, conforme à l'usage
+    web côté client documenté par Nominatim).
+  - Aucun "bulk geocoding" : une requête = une saisie utilisateur débattue.
+- Distance de trajet : `estimateRoadDistanceKm()` calcule une distance
+  orthodromique (Haversine) à partir des **coordonnées réelles** retournées
+  par Nominatim quand l'utilisateur sélectionne une suggestion pour le départ
+  ET la destination, multipliée par un facteur d'ajustement route/ferry
+  (`ROAD_DISTANCE_FACTOR = 1.35`, estimation affichée comme telle dans l'UI).
+  Les distances statiques des "trajets populaires" (boutons de raccourci)
+  sont conservées comme valeurs indicatives de secours quand le géocodage n'a
+  pas encore résolu de coordonnées.
+- CSP (`middleware.ts`) : ajout de `https://nominatim.openstreetmap.org` à
+  `connect-src` (sans cette entrée, tous les appels auraient été bloqués
+  silencieusement — même erreur que celle corrigée pour Open-Meteo en v1.2.0).
+- Test réel effectué (voir preuve ci-dessous) : recherche "Paris" → résultats
+  réels dont Paris, France (lat 48.8535, lon 2.3484) ; recherche "Tanger" →
+  résultat réel Tangier, Maroc (lat 35.7696, lon -5.8034).
+
+**2. Performance**
+- Polices Boska/General Sans (Fontshare) : `preconnect` déjà présent vers
+  `api.fontshare.com` et `cdn.fontshare.com` dans `app/layout.tsx`,
+  `display=swap` déjà appliqué sur l'URL Fontshare et sur les fonts
+  `next/font/google` (Inter, Plus Jakarta Sans, Amiri) — vérifié, aucune
+  régression à corriger sur ce point (déjà conforme aux bonnes pratiques
+  depuis la v1.2.0).
+- `<img>` : aucune balise `<img>` brute trouvée dans `app/` ou `components/`
+  (vérifié par recherche exhaustive) — rien à convertir vers `next/image`.
+  À noter : `next.config.mjs` a `images.unoptimized: true` (nécessaire pour
+  les usages actuels), donc `next/image` n'apporterait pas d'optimisation
+  serveur tant que ce flag reste actif.
+- Bundle : `npm run build` comparé avant/après sur la page d'accueil (qui
+  embarque le nouveau module de géocodage) :
+  - Avant (main) : `/` = 96.5 kB page / 202 kB First Load JS.
+  - Après (cette branche) : `/` = 98.1 kB page / 204 kB First Load JS.
+  - Delta : **+1.6 kB / +2 kB**, attribuable au nouveau code
+    `lib/geocoding.ts` + `components/CityAutocomplete.tsx`. Aucune régression
+    anormale détectée ; le reste des pages (`guide`, `decouvrir`,
+    `telecharger`) est inchangé (167 B chacune).
+
+**3. PWA / offline (`public/sw.js`)**
+- Nouvelle stratégie **stale-while-revalidate** (`staleWhileRevalidate()`)
+  appliquée aux 3 pages statiques principales (`/`, `/guide`, `/decouvrir`) :
+  réponse instantanée depuis le cache si disponible, avec rafraîchissement
+  réseau en arrière-plan qui met à jour le cache pour la prochaine visite.
+- Ces 3 pages sont désormais pré-cachées dès l'installation du Service
+  Worker (`PAGES_CACHE`), en plus des assets statiques déjà pré-cachés
+  (`STATIC_CACHE`).
+- Version de cache incrémentée (`rme-voyage-v1` → `rme-voyage-v2`) pour
+  forcer le nettoyage des anciens caches côté clients existants.
+- Le reste de la stratégie (cache-first pour assets statiques, network-first
+  pour `/api/*`, fallback `offline.html`) est conservé sans changement de
+  logique.
+- Limite assumée : ceci reste un Service Worker applicatif simple (pas de
+  Workbox), suffisant pour un usage PWA basique — pas une solution de sync
+  offline avancée (pas de queue de requêtes en attente, pas de
+  Background Sync API).
+
+**QA effectuée :**
+- `npm install` : succès (avertissements `EBADENGINE` sur Node 20 vs 22
+  requis par des sous-dépendances Supabase — non bloquant, build et dev
+  fonctionnent sur Node 20.20.1).
+- `npm run build` : succès sans erreur, sur `main` et sur cette branche.
+- `npm test` (Jest) : 22/23 tests passent ; le seul échec
+  (`homeBranding.test.tsx`, `IntersectionObserver is not defined` en jsdom
+  à cause de `framer-motion`) est **préexistant sur `main`** avant cette
+  branche — vérifié en rejouant les tests sur `main` (même résultat exact :
+  1 failed, 22 passed). Non lié aux changements de cette PR.
+- Géocodage testé en conditions réelles via un harnais de test isolé
+  reproduisant fidèlement `lib/geocoding.ts` (mêmes règles de debounce/
+  throttle/cache/User-Agent), ouvert dans un navigateur réel : recherche
+  "Paris" → 4 résultats réels Nominatim ; recherche "Tanger" → 1 résultat réel
+  Nominatim (Tangier, Maroc). Capture d'écran conservée dans
+  `.qa-geocode-test/proof_paris_tanger.jpg` (non commité — dossier de test
+  local, exclu du dépôt applicatif).
+
+**Rappel de conformité :** aucun secret commité (Nominatim ne nécessite pas
+de clé), aucune intégration présentée comme "entreprise" ou garantie
+disponible — le README de ce fichier précise explicitement les limites de
+Nominatim (gratuit, débit limité, pas de SLA). Un commit clair par
+changement (géocodage, CSP, service worker, documentation).
