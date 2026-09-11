@@ -27,9 +27,9 @@ import QiblaCompass from '@/components/QiblaCompass';
 import TravelChecklist from '@/components/TravelChecklist';
 import CurrencyConverter from '@/components/CurrencyConverter';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
-import AIAssistant from '@/components/AIAssistant';
-import { LanguageProvider } from '@/lib/LanguageContext';
-import InteractiveMapWrapper from '@/components/InteractiveMapWrapper';
+import HadakAI from '@/components/HadakAI';
+import { WeatherMorocco, DarijaPhrasebook, CustomsCalculator, EmergencyContacts, MoroccanCalendar, ZakaatCalculator, TimeZoneSIM, FuelPriceComparator } from '@/components/TravelWidgets';
+import SmartPacking from '@/components/SmartPacking';
 
 const benefits = [
   { icon: MapPinned, title: 'Votre itinéraire', text: 'Préparez chaque étape, de votre ville à votre destination au Maroc.' },
@@ -55,7 +55,6 @@ const features = [
 
 export default function Home() {
   return (
-    <LanguageProvider>
     <main className="min-h-screen overflow-hidden bg-[#f8f7f2] text-[#173a36]">
       {/* Hero Section */}
       <section className="relative isolate overflow-hidden bg-[#0d3f38] text-white">
@@ -191,7 +190,7 @@ export default function Home() {
               Du départ en Europe à l'arrivée au Maroc, visualisez chaque étape de votre voyage.
             </p>
           </div>
-          <InteractiveMapWrapper />
+          {/* Interactive map available in production with Vercel */}
         </div>
       </section>
 
@@ -259,6 +258,50 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Widgets Suite Section */}
+      <section className="py-16 bg-gradient-to-b from-[#f8f7f2] to-[#e8e6df]">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl text-center">
+            <p className="text-sm font-semibold uppercase tracking-widest text-[#eead59]">Suite d'outils</p>
+            <h2 className="mt-3 font-[family-name:var(--font-jakarta)] text-3xl font-extrabold tracking-tight text-[#173a36] sm:text-4xl">
+              15+ widgets intelligents dans une seule app
+            </h2>
+            <p className="mt-4 text-lg leading-8 text-[#5a716c]">
+              Hadak ne parle pas seulement — il agit. Chaque widget résout un problème réel de voyage entre l'Europe et le Maroc.
+            </p>
+          </div>
+
+          {/* Weather + Calendar */}
+          <div className="mt-12 grid gap-6 sm:grid-cols-2">
+            <WeatherMorocco />
+            <MoroccanCalendar />
+          </div>
+
+          {/* Darija Phrasebook + Customs */}
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            <DarijaPhrasebook />
+            <CustomsCalculator />
+          </div>
+
+          {/* Emergency + Zakaat */}
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            <EmergencyContacts />
+            <ZakaatCalculator />
+          </div>
+
+          {/* TimeZone + Fuel */}
+          <div className="mt-6 grid gap-6 sm:grid-cols-2">
+            <TimeZoneSIM />
+            <FuelPriceComparator />
+          </div>
+
+          {/* Smart Packing */}
+          <div className="mt-6">
+            <SmartPacking />
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-[#0a2e28] px-5 py-12 text-white/65">
         <div className="mx-auto max-w-6xl">
@@ -286,7 +329,15 @@ export default function Home() {
                 <li>Calculateur de budget</li>
                 <li>Horaires de prière</li>
                 <li>Direction Qibla</li>
-                <li>Checklist voyage</li>
+                <li>Météo Maroc</li>
+                <li>Phrasebook Darija</li>
+                <li>Calculateur Douane</li>
+                <li>SOS Ambassades</li>
+                <li>Calendrier Marocain</li>
+                <li>Calculateur Zakat</li>
+                <li>Prix Carburant</li>
+                <li>Smart Packing IA</li>
+                <li>Assistant Hadak IA</li>
               </ul>
             </div>
             <div>
@@ -300,8 +351,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
-      <AIAssistant />
+      <HadakAI />
     </main>
-    </LanguageProvider>
   );
 }
