@@ -144,7 +144,7 @@ export function WeatherMorocco() {
           Météo du Maroc
         </h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Températures actuelles dans 6 villes — données Open-Meteo
       </p>
 
@@ -179,7 +179,7 @@ export function WeatherMorocco() {
                   <span className="text-2xl font-black text-[#0d3f38]">
                     {city.temp}°C
                   </span>
-                  <span className="text-xs text-[#0d3f38]/60">{info.label}</span>
+                  <span className="text-xs text-[#0d3f38]/70">{info.label}</span>
                 </>
               )}
             </div>
@@ -333,7 +333,7 @@ export function DarijaPhrasebook() {
         <span className="text-xl">📚</span>
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Darija — Guide de conversation</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Apprenez le darija marocain. Cliquez pour écouter la prononciation.
       </p>
 
@@ -341,7 +341,7 @@ export function DarijaPhrasebook() {
       <div className="mt-4 relative">
         <Search
           size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0d3f38]/40"
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#0d3f38]/70"
         />
         <input
           type="text"
@@ -364,7 +364,7 @@ export function DarijaPhrasebook() {
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition-all duration-200 ${
               activeCategory === idx
                 ? greenBg + " shadow-sm"
-                : "bg-white text-[#0d3f38]/60 hover:bg-[#0d3f38]/5"
+                : "bg-white text-[#0d3f38]/70 hover:bg-[#0d3f38]/5"
             }`}
           >
             {cat.emoji} {cat.name}
@@ -375,7 +375,7 @@ export function DarijaPhrasebook() {
       {/* Phrases */}
       <div className="mt-4 space-y-2">
         {filteredPhrases.length === 0 ? (
-          <p className="py-6 text-center text-sm text-[#0d3f38]/40">
+          <p className="py-6 text-center text-sm text-[#0d3f38]/70">
             Aucune phrase trouvée
           </p>
         ) : (
@@ -404,7 +404,7 @@ export function DarijaPhrasebook() {
                     {phrase.arabic}
                   </span>
                 </div>
-                <p className="text-sm text-[#0d3f38]/60">{phrase.french}</p>
+                <p className="text-sm text-[#0d3f38]/70">{phrase.french}</p>
               </div>
             </div>
           ))
@@ -450,7 +450,7 @@ export function CustomsCalculator() {
         <Calculator className="text-[#0d3f38]" size={22} />
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Calculateur douane</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Estimez les droits de douane à l'entrée au Maroc.
       </p>
 
@@ -479,7 +479,7 @@ export function CustomsCalculator() {
             placeholder="0"
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none transition focus:border-[#eead59]"
           />
-          <p className="mt-1 text-xs text-[#0d3f38]/40">
+          <p className="mt-1 text-xs text-[#0d3f38]/70">
             Franchise: {currency(DUTY_FREE_GIFTS)}
           </p>
         </div>
@@ -494,7 +494,7 @@ export function CustomsCalculator() {
             placeholder="0"
             className="mt-1 w-full rounded-xl border border-[#0d3f38]/15 bg-white p-3 text-sm font-bold text-[#0d3f38] outline-none transition focus:border-[#eead59]"
           />
-          <p className="mt-1 text-xs text-[#0d3f38]/40">
+          <p className="mt-1 text-xs text-[#0d3f38]/70">
             Franchise: {currency(DUTY_FREE_PERSONAL)}
           </p>
         </div>
@@ -633,14 +633,14 @@ export function EmergencyContacts() {
         <Phone className="text-red-500" size={22} />
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Contacts d'urgence</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Numéros utiles au Maroc — appelez en un tap.
       </p>
 
       {/* Tabs */}
       <div className="mt-4 flex gap-2">
         {[
-          { key: "emergency", label: "🚨 Urgence", color: "bg-red-500 text-white" },
+          { key: "emergency", label: "🚨 Urgence", color: "bg-red-600 text-white" },
           { key: "embassies", label: "🏛️ Ambassades", color: greenBg },
           { key: "consulates", label: "📋 Consulates", color: greenBg },
         ].map((t) => (
@@ -650,7 +650,7 @@ export function EmergencyContacts() {
             className={`flex-1 rounded-lg px-3 py-2 text-xs font-bold transition-all duration-200 ${
               tab === t.key
                 ? t.color
-                : "bg-white text-[#0d3f38]/50 hover:bg-[#0d3f38]/5"
+                : "bg-white text-[#0d3f38]/70 hover:bg-[#0d3f38]/5"
             }`}
           >
             {t.label}
@@ -688,9 +688,9 @@ export function EmergencyContacts() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <h3 className="text-sm font-bold text-[#0d3f38]">{emb.name}</h3>
-                  <p className="text-xs text-[#0d3f38]/60">{emb.city}</p>
-                  <p className="mt-1 text-xs text-[#0d3f38]/50">{emb.address}</p>
-                  <p className="text-xs text-[#0d3f38]/50">🕒 {emb.hours}</p>
+                  <p className="text-xs text-[#0d3f38]/70">{emb.city}</p>
+                  <p className="mt-1 text-xs text-[#0d3f38]/70">{emb.address}</p>
+                  <p className="text-xs text-[#0d3f38]/70">🕒 {emb.hours}</p>
                 </div>
                 <a
                   href={`tel:${emb.phone}`}
@@ -716,7 +716,7 @@ export function EmergencyContacts() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0 flex-1">
                   <h3 className="text-sm font-bold text-[#0d3f38]">{con.name}</h3>
-                  <p className="mt-1 text-xs text-[#0d3f38]/50">{con.address}</p>
+                  <p className="mt-1 text-xs text-[#0d3f38]/70">{con.address}</p>
                 </div>
                 <a
                   href={`tel:${con.phone}`}
@@ -785,7 +785,7 @@ export function MoroccanCalendar() {
         <Calendar className="text-[#0d3f38]" size={22} />
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Calendrier marocain</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Fêtes religieuses et nationales du Maroc
       </p>
 
@@ -828,7 +828,7 @@ export function MoroccanCalendar() {
               <span className="text-2xl">{holiday.emoji}</span>
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-bold text-[#0d3f38]">{holiday.name}</p>
-                <p className="text-xs text-[#0d3f38]/60">
+                <p className="text-xs text-[#0d3f38]/70">
                   {eventDate.toLocaleDateString("fr-FR", {
                     day: "numeric",
                     month: "long",
@@ -879,7 +879,7 @@ export function ZakaatCalculator() {
         <Star className="text-[#eead59]" size={22} />
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Calculateur de Zakat</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Calculez votre zakat — 2.5% du capital / زكاة
       </p>
 
@@ -917,13 +917,13 @@ export function ZakaatCalculator() {
         className={`mt-4 flex items-center gap-2 rounded-xl p-3 text-sm font-semibold ${
           aboveNisab
             ? "bg-[#eead59]/10 text-[#0d3f38]"
-            : "bg-[#0d3f38]/5 text-[#0d3f38]/60"
+            : "bg-[#0d3f38]/5 text-[#0d3f38]/70"
         }`}
       >
         {aboveNisab ? (
           <Check size={18} className="text-[#eead59]" />
         ) : (
-          <X size={18} className="text-[#0d3f38]/40" />
+          <X size={18} className="text-[#0d3f38]/70" />
         )}
         {aboveNisab
           ? `Au-dessus du nisab (${fmt(nisabMAD)} MAD)`
@@ -940,13 +940,13 @@ export function ZakaatCalculator() {
         </p>
         <p className="text-sm font-bold text-[#0d3f38]/70">MAD</p>
         {currency === "EUR" && amount > 0 && (
-          <p className="mt-2 text-xs text-[#0d3f38]/60">
+          <p className="mt-2 text-xs text-[#0d3f38]/70">
             ≈ {fmt(Math.round((zakaat / EUR_TO_MAD) * 100) / 100)} EUR
           </p>
         )}
       </div>
 
-      <p className="mt-3 text-xs text-[#0d3f38]/40">
+      <p className="mt-3 text-xs text-[#0d3f38]/70">
         Le nisab correspond à l'équivalent de 85g d'or (≈ {fmt(nisabMAD)} MAD).
         La zakat est obligatoire si votre capital dépasse ce seuil pendant une
         année lunaire.
@@ -1036,7 +1036,7 @@ export function TimeZoneSIM() {
         <Clock className="text-[#0d3f38]" size={22} />
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Fuseau horaire & SIM</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Comparez les horaires et les cartes SIM marocaines
       </p>
 
@@ -1044,14 +1044,14 @@ export function TimeZoneSIM() {
       <div className="mt-4 grid grid-cols-2 gap-3">
         <div className="rounded-xl border border-[#0d3f38]/10 bg-white p-4 text-center">
           <p className="text-2xl">🇫🇷</p>
-          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/60">
+          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/70">
             France (UTC+1)
           </p>
           <p className="mt-1 text-xl font-black text-[#0d3f38]">{frTime}</p>
         </div>
         <div className="rounded-xl border border-[#0d3f38]/10 bg-white p-4 text-center">
           <p className="text-2xl">🇲🇦</p>
-          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/60">
+          <p className="mt-1 text-xs font-semibold text-[#0d3f38]/70">
             Maroc (UTC+1)
           </p>
           <p className="mt-1 text-xl font-black text-[#0d3f38]">{maTime}</p>
@@ -1079,7 +1079,7 @@ export function TimeZoneSIM() {
                 <span className="text-lg font-black text-[#0d3f38]">
                   {sim.price}
                 </span>
-                <span className="ml-1 text-xs text-[#0d3f38]/50">
+                <span className="ml-1 text-xs text-[#0d3f38]/70">
                   {sim.priceEur}
                 </span>
               </div>
@@ -1097,17 +1097,17 @@ export function TimeZoneSIM() {
             </div>
             <div className="mt-2 flex gap-3 text-xs">
               <div className="flex-1">
-                <p className="text-[#0d3f38]/40">Avantages:</p>
+                <p className="text-[#0d3f38]/70">Avantages:</p>
                 {sim.pros.map((p) => (
-                  <p key={p} className="flex items-center gap-1 text-emerald-600">
+                  <p key={p} className="flex items-center gap-1 text-emerald-700">
                     <Check size={12} /> {p}
                   </p>
                 ))}
               </div>
               <div className="flex-1">
-                <p className="text-[#0d3f38]/40">Inconvénients:</p>
+                <p className="text-[#0d3f38]/70">Inconvénients:</p>
                 {sim.cons.map((c) => (
-                  <p key={c} className="flex items-center gap-1 text-red-500">
+                  <p key={c} className="flex items-center gap-1 text-red-700">
                     <X size={12} /> {c}
                   </p>
                 ))}
@@ -1197,7 +1197,7 @@ export function FuelPriceComparator() {
         <Fuel className="text-[#0d3f38]" size={22} />
         <h2 className="font-display text-lg font-semibold text-[#0d3f38]">Prix du carburant</h2>
       </div>
-      <p className="mt-1 text-sm text-[#0d3f38]/60">
+      <p className="mt-1 text-sm text-[#0d3f38]/70">
         Comparaison FR / ES / MA — prix approximatifs 2026
       </p>
 
@@ -1218,7 +1218,7 @@ export function FuelPriceComparator() {
                   key={fuel.name}
                   className="rounded-lg bg-[#0d3f38]/5 p-2 text-center"
                 >
-                  <p className="text-xs text-[#0d3f38]/60">{fuel.name}</p>
+                  <p className="text-xs text-[#0d3f38]/70">{fuel.name}</p>
                   <p className="text-base font-black text-[#0d3f38]">
                     {fuel.price}
                     <span className="text-xs"> {fuel.unit}</span>
@@ -1256,7 +1256,7 @@ export function FuelPriceComparator() {
         </div>
       </div>
 
-      <p className="mt-3 text-xs text-[#0d3f38]/40">
+      <p className="mt-3 text-xs text-[#0d3f38]/70">
         Prix indicatifs 2026 — susceptibles de varier. Le carburant marocain
         reste subventionné par l'État.
       </p>

@@ -17,7 +17,7 @@
 
 set -e
 
-REPO_URL="https://github.com/maissanebenaili-afk/Rme-route-"
+REPO_URL="https://github.com/maissanebenaili-afk/rme-voyage"
 PROJECT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 echo "🚀 RME Voyage - Déploiement Complet"
@@ -38,12 +38,12 @@ git push origin main || {
     echo "   ⚠️  Push échoué. Essayez:"
     echo "   - gh auth login (GitHub CLI)"
     echo "   - Ou configurez: git config --global user.email votre@email.com"
-    echo "   - Puis: git remote set-url origin https://USERNAME:TOKEN@github.com/maissanebenaili-afk/Rme-route-.git"
+    echo "   - Puis: git remote set-url origin https://USERNAME:TOKEN@github.com/maissanebenaili-afk/rme-voyage.git"
     echo ""
     echo "   Pour un Personal Access Token (PAT):"
     echo "   1. Allez sur https://github.com/settings/tokens"
     echo "   2. Créez un token avec scope 'repo'"
-    echo "   3. Utilisez: git remote set-url origin https://maissanebenaili-afk:VOTRE_TOKEN@github.com/maissanebenaili-afk/Rme-route-.git"
+    echo "   3. Utilisez: git remote set-url origin https://maissanebenaili-afk:VOTRE_TOKEN@github.com/maissanebenaili-afk/rme-voyage.git"
     echo "   4. Relancez: git push origin main"
 }
 echo ""

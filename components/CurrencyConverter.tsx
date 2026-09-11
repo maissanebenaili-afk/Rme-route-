@@ -106,7 +106,7 @@ export default function CurrencyConverter() {
             onClick={() => setAmount(a)}
             className={`rounded-lg px-3 py-1.5 text-xs font-bold transition ${
               amount === a
-                ? "bg-emerald-600 text-white"
+                ? "bg-emerald-700 text-white"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
             }`}
           >

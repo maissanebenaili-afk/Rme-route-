@@ -1,5 +1,121 @@
 # RME Route — état maître
 
+## Harmonisation nom + accessibilité renforcée (2026-09-11, branche `chore/harmonisation-nom-et-accessibilite`)
+
+Deux chantiers menés en parallèle sur demande explicite du propriétaire produit
+(malvoyant — l'accessibilité de cette section n'est pas cosmétique). Chaque
+point ci-dessous a été vérifié par exécution réelle (Playwright direct contre
+`localhost:3000`, pas de simulation ni de lecture de code seule) ; voir le
+détail des méthodes et scripts dans les commits de la branche.
+
+### Tâche 1 — Harmonisation du nom "RME Voyage"
+
+Toutes les occurrences de "MRE Route"/"mre-route"/"Rme-route-" dans la
+documentation, `package.json` et le contenu applicatif ont été remplacées par
+"RME Voyage". Fichiers touchés : `ARCHITECTURE.md`, `AUDIT_PREDEPLOIEMENT.md`,
+`DEPLOYMENT.md`, `MONETISATION.md`, `QUICK_START.md`, `ROADMAP-V1.md`,
+`config.ts`, `deploy-all.sh`, `package.json`.
+
+**Volontairement non modifiés (identifiants techniques déjà potentiellement
+publiés, changement risqué et hors périmètre) :**
+- `capacitor.config.ts` → `appId: "com.mreroute.app"` inchangé.
+- `play-store-listing/listing.md` → `Package ID: com.mreroute.app` inchangé.
+- Toute URL de déploiement Vercel (`rme-route.vercel.app`) — protégée
+  explicitement par la consigne de la tâche, aucune modification.
+
+### Tâche 2 — Accessibilité renforcée
+
+**Bug racine trouvé et corrigé (`middleware.ts`) :** le CSP
+(`Content-Security-Policy`) n'autorisait jamais `'unsafe-eval'`, y compris en
+mode développement (`next dev`). Or React Refresh / les source maps webpack de
+`next dev` en ont besoin. Conséquence réelle mesurée : en développement, le CSP
+bloquait silencieusement TOUTE l'hydratation React côté client (HTML serveur
+affiché, mais aucun `useEffect`/handler ne s'exécutait jamais — panneau
+d'accessibilité, skip-link, focus trap inertes, sans erreur visible à l'écran).
+Corrigé en autorisant `'unsafe-eval'` uniquement quand
+`process.env.NODE_ENV === 'development'` (gate strict, pas `!== 'production'`,
+pour ne pas relâcher la garantie testée par `__tests__/middleware.test.ts` en
+environnement Jest `test`). Le build de production (`next build`) ne génère pas
+ce code eval-based et n'a jamais reçu cette autorisation.
+
+**Vérifications/améliorations, toutes confirmées par Playwright réel :**
+- **Mode contraste élevé** (`components/Accessibility.tsx`) : l'ancienne règle
+  CSS ne ciblait qu'une liste fermée de 3-5 couleurs hexadécimales codées en
+  dur, donc ne couvrait pas l'ensemble du contenu réel des 4 pages. Remplacée
+  par une règle CSS universelle (`.rme-high-contrast *`) : fond noir, texte
+  jaune (`#ffeb3b`), liens en or souligné, boutons/champs/`role="switch"`/
+  `role="radio"` avec bordure or et état "actif" inversé, images en niveaux de
+  gris contrastés. Mesuré sur les 4 pages (accueil, guide, découvrir,
+  télécharger) : ratio de contraste réel **17.2:1** (bien au-delà du minimum
+  AA 4.5:1).
+- **Focus trap réel dans le panneau d'accessibilité** : le panneau
+  (`role="dialog"`) piège désormais le focus clavier — Tab/Shift+Tab en
+  bordure du panneau boucle vers le premier/dernier élément focusable au lieu
+  de sortir vers la page. Vérifié : après 15 pressions de Tab consécutives, le
+  focus reste dans le panneau. `aria-modal="true"` ajouté. Fermeture par
+  Échap vérifiée : ferme le panneau ET rend le focus au bouton déclencheur.
+- **Focus visible par défaut** : une règle globale `:focus-visible` existait
+  déjà dans `app/globals.css` (contour `#0d6255`, indépendante de tout
+  réglage) et couvre tout le site par défaut. L'option "focus visible"
+  du panneau d'accessibilité est un renfort optionnel au-dessus de cette
+  base ; son contour simple (or, `#eead59`) était invisible sur fond clair
+  (1.82:1). Remplacé par un double contour simultané — `outline` foncé
+  (`#0a2e28`, 13.6–14.6:1 sur fond clair) + `box-shadow` or (`#eead59`,
+  7.5:1 sur fond sombre) — garantissant qu'au moins un anneau reste visible
+  quel que soit le fond.
+- **Contrastes de texte WCAG AA (4.5:1)** : audit systématique de toutes les
+  couleurs de texte arbitraires du code contre leurs fonds réellement rendus
+  (calcul + vérification Playwright sur DOM réel, pas seulement le code
+  source). Échecs réels trouvés et corrigés :
+  - `text-[#b45b34]` sur fond crème (`app/page.tsx`, `app/guide/page.tsx`,
+    `app/decouvrir/page.tsx`) : 4.36:1 → remplacé par `#a84f2b` (5.13:1).
+  - `text-[#b07a1f]` sur popup carte blanche (`components/InteractiveMap.tsx`,
+    label "Port de ferry") : 3.72:1 → remplacé par `#9c6b0e` (4.64:1).
+  - `text-slate-400`/`text-slate-500` (Tailwind), utilisés comme texte
+    secondaire dans une dizaine de composants sur fonds blancs/pastel :
+    2.34–4.48:1 → forcés vers l'équivalent `slate-600` (`#475569`,
+    6.9–7.6:1) via une règle globale dans `app/globals.css`.
+  - Badges de catégorie (`components/TravelChecklist.tsx`) :
+    `text-emerald-600`/`text-amber-600`/`text-red-600`/`text-blue-600` sur
+    fonds `-50` : 3.07–3.58:1 → remontés vers `-700` (4.84–6.16:1).
+  - Boutons pleins (`components/CurrencyConverter.tsx`,
+    `components/TravelWidgets.tsx`) : texte blanc sur `bg-emerald-600`
+    (3.77:1) et `bg-red-500`"🚨 Urgence" (3.76:1) → `-700`/`-600` (4.83–6.47:1).
+  - Texte à opacité réduite `text-[#0d3f38]/40` et `/50`/`/60`
+    (`components/TravelWidgets.tsx`, 32 occurrences réelles) : le mélange
+    alpha réel sur fond blanc tombait à 2.22–3.64:1 → remonté uniformément à
+    `/70` (4.79:1).
+  - Libellé "Suite d'outils" (`app/page.tsx`) sur fond dégradé clair :
+    1.82:1 → `#8f5b08` (5.34:1).
+  - `text-sable-500` (`components/CostCalculator.tsx`, suffixe "km", icônes) :
+    1.90:1 → `text-sable-700` (5.07:1).
+  Audit final (script Playwright mesurant les styles calculés réels sur les 4
+  pages) : **zéro échec de contraste restant**.
+- **ARIA du panneau et des boutons ajoutés récemment** ("Ouvrir l'itinéraire",
+  "Partager mon trajet", "Comparer les ferries/vols") : vérifiés déjà corrects
+  (`components/CityAutocomplete.tsx`, `components/RouteSearch.tsx`,
+  `components/BookingCards.tsx` — texte accessible visible, icônes
+  `aria-hidden`, `aria-labelledby` corrects). Aucune modification nécessaire.
+- **Skip-link "Aller au contenu principal"** : vérifié fonctionnel sur les 4
+  pages — premier Tab révèle le lien, Entrée déplace le focus vers
+  `#main-content` (`id="main-content" tabIndex={-1}` sur le `<main>` de
+  chaque page : accueil, guide, découvrir, télécharger).
+- **Non-régression "Vue+" (taille de texte très grande)** : passage de 16px à
+  21px racine vérifié, aucun débordement de texte détecté sur boutons/liens/
+  titres de la page d'accueil.
+
+### Point investigué, non-problème confirmé
+
+Un signalement antérieur suggérait une lacune CSP (`connect-src` manquant pour
+`nominatim.openstreetmap.org`). Vérification du code (`lib/geocoding.ts`) :
+aucun appel réseau vers Nominatim n'existe dans le code — le module utilise une
+liste statique de villes filtrée côté client, conformément à la politique
+Nominatim contre l'autocomplétion côté client. Aucune correction nécessaire.
+
+### Vérifications obligatoires — toutes passées
+`npm run lint` ✅ · `npm run test` (80/80) ✅ · `npm run typecheck` ✅ ·
+`npm run build` ✅.
+
 ## Correctif parcours v1.3.1 (2026-09-11, état de travail)
 
 Cette section remplace les affirmations de conformité Nominatim et de cache

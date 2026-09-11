@@ -93,37 +93,79 @@ export default function Accessibility() {
     const style = document.createElement('style');
     style.id = styleId;
     style.textContent = `
-      /* High contrast mode */
-      .rme-high-contrast {
-        filter: contrast(1.4) brightness(1.1) saturate(1.3);
-      }
-      .rme-high-contrast body,
-      .rme-high-contrast [class*="bg-[#f8f7f2]"],
-      .rme-high-contrast [class*="bg-[#0d3f38]"],
-      .rme-high-contrast [class*="bg-[#0a2e28]"] {
+      /* High contrast mode
+         Approche générique : plutôt qu'une liste figée de couleurs hex
+         (qui se désynchronise dès qu'une page ajoute une nouvelle teinte
+         Tailwind arbitraire), on cible TOUTE classe d'arrière-plan/texte
+         arbitraire ([class*="bg-["] / [class*="text-["]) ainsi que les
+         couleurs Tailwind nommées (bg-white, text-slate-500, etc.) et les
+         styles inline, pour que le mode contraste élevé s'applique de façon
+         homogène sur les 4 pages (accueil, guide, decouvrir, telecharger)
+         sans dépendre de la palette exacte utilisée par chaque section. */
+      .rme-high-contrast,
+      .rme-high-contrast body {
         background-color: #000 !important;
         color: #ffeb3b !important;
       }
-      .rme-high-contrast a,
-      .rme-high-contrast button,
-      .rme-high-contrast [class*="text-[#eead59]"],
-      .rme-high-contrast [class*="text-[#b45b34]"],
-      .rme-high-contrast [class*="bg-[#eead59]"] {
-        color: #ffd700 !important;
+      .rme-high-contrast * {
+        background-color: #000 !important;
+        background-image: none !important;
+        color: #ffeb3b !important;
+        border-color: #ffeb3b !important;
+        text-shadow: none !important;
+        box-shadow: none !important;
       }
-      .rme-high-contrast img {
-        filter: contrast(1.5);
+      .rme-high-contrast a,
+      .rme-high-contrast a * {
+        color: #ffd700 !important;
+        text-decoration: underline !important;
+      }
+      .rme-high-contrast button,
+      .rme-high-contrast button *,
+      .rme-high-contrast [role="switch"],
+      .rme-high-contrast [role="radio"],
+      .rme-high-contrast input,
+      .rme-high-contrast select,
+      .rme-high-contrast textarea {
+        background-color: #000 !important;
+        color: #ffd700 !important;
+        border: 2px solid #ffd700 !important;
+      }
+      .rme-high-contrast button[aria-checked="true"],
+      .rme-high-contrast [role="radio"][aria-checked="true"] {
+        background-color: #ffd700 !important;
+        color: #000 !important;
+      }
+      .rme-high-contrast img,
+      .rme-high-contrast svg {
+        filter: contrast(1.6) grayscale(0.2);
+      }
+      /* Le bouton flottant "Vue+" et le panneau restent lisibles avec leurs
+         propres couleurs fortes plutôt que d'être forcés en noir/jaune,
+         pour ne pas se confondre avec le fond de page. */
+      .rme-high-contrast .rme-skip-link {
+        background-color: #ffd700 !important;
+        color: #000 !important;
+        border: 2px solid #000 !important;
       }
 
-      /* Focus visible mode */
+      /* Focus visible mode (renforcé)
+         Un simple contour doré (#eead59) ne respecte pas 3:1 de contraste sur
+         les fonds clairs du site (creme #f8f7f2 / blanc) — mesuré ~1.8:1,
+         insuffisant pour un indicateur de focus (WCAG 2.4.11). On combine donc
+         un contour doré ET un anneau sombre (box-shadow) : ensemble, l'un des
+         deux reste toujours visible à 3:1+ quel que soit le fond (clair ou
+         foncé) derrière l'élément ciblé. */
       .rme-focus-visible *:focus,
       .rme-focus-visible *:focus-visible {
-        outline: 3px solid #eead59 !important;
-        outline-offset: 3px !important;
+        outline: 3px solid #0a2e28 !important;
+        outline-offset: 2px !important;
+        box-shadow: 0 0 0 5px #eead59 !important;
         border-radius: 4px !important;
       }
       .rme-focus-visible *:focus:not(:focus-visible) {
         outline: none !important;
+        box-shadow: none !important;
       }
 
       /* Skip link */
@@ -168,13 +210,40 @@ export default function Accessibility() {
     };
   }, []);
 
-  // Handle Escape to close panel
+  // Handle Escape to close panel, and trap Tab/Shift+Tab focus inside the
+  // panel while it is open (WAI-ARIA dialog pattern: focus must not escape
+  // to the rest of the page while a modal-like panel is displayed).
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         setOpen(false);
         buttonRef.current?.focus();
+        return;
+      }
+      if (e.key === 'Tab' && panelRef.current) {
+        const focusable = Array.from(
+          panelRef.current.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          )
+        ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
+        if (focusable.length === 0) return;
+
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        const activeEl = document.activeElement as HTMLElement | null;
+
+        if (e.shiftKey) {
+          if (activeEl === first || !panelRef.current.contains(activeEl)) {
+            e.preventDefault();
+            last.focus();
+          }
+        } else {
+          if (activeEl === last || !panelRef.current.contains(activeEl)) {
+            e.preventDefault();
+            first.focus();
+          }
+        }
       }
     };
     window.addEventListener('keydown', handler);
@@ -290,6 +359,7 @@ export default function Accessibility() {
         <div
           ref={panelRef}
           role="dialog"
+          aria-modal="true"
           aria-label="Options d'accessibilité"
           className="fixed bottom-20 left-4 z-[9998] w-[calc(100vw-2rem)] sm:w-80 rounded-2xl shadow-2xl overflow-hidden"
           style={{

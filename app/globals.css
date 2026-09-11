@@ -202,6 +202,23 @@ input:focus {
   border-radius: 4px;
 }
 
+/* Contraste WCAG AA (4.5:1) pour le texte secondaire
+   Tailwind slate-400 (#94a3b8, ~2.4-2.6:1) et slate-500 (#64748b,
+   ~4.3-4.5:1) sont utilisés partout dans l'app comme texte secondaire
+   (légendes, sous-titres, aide) sur fonds clairs (blanc, teintes pastel) et
+   échouent le seuil AA de 4.5:1 mesuré sur le rendu réel (Playwright) —
+   voir RME_ROUTE_ETAT.md. On remonte ces deux utilitaires vers l'équivalent
+   slate-600 (#475569, 6.9–7.6:1 mesuré sur blanc et sur les teintes pastel
+   utilisées dans les cartes d'info), qui passe AA partout dans l'app sans
+   changement visuel radical (même teinte, juste plus foncée).
+   À corriger à la source (remplacer les classes) lors d'un prochain passage
+   design ; ce correctif CSS global garantit la conformité immédiate sans
+   modifier chaque composant un par un. */
+.text-slate-400,
+.text-slate-500 {
+  color: #475569 !important;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

@@ -23,11 +23,15 @@ const defaultItems: ChecklistItem[] = [
   { id: "cte", label: "Contrôle technique (si véhicule)", category: "vehicule", icon: Car },
 ];
 
+// Couleurs -700 (plutôt que -600) : mesuré via rendu réel (Playwright) que
+// text-emerald-600/text-amber-600 sur bg-emerald-50/bg-amber-50 tombent à
+// 3.07-3.58:1, sous le seuil AA 4.5:1 pour ce texte de badge en gras 10px.
+// Les teintes -700 mesurent 4.84-6.16:1 sur leurs fonds -50 respectifs.
 const categoryLabels: Record<string, { label: string; color: string }> = {
-  documents: { label: "Documents", color: "text-blue-600 bg-blue-50" },
-  vehicule: { label: "Véhicule", color: "text-emerald-600 bg-emerald-50" },
-  sante: { label: "Santé", color: "text-red-600 bg-red-50" },
-  logistique: { label: "Logistique", color: "text-amber-600 bg-amber-50" },
+  documents: { label: "Documents", color: "text-blue-700 bg-blue-50" },
+  vehicule: { label: "Véhicule", color: "text-emerald-700 bg-emerald-50" },
+  sante: { label: "Santé", color: "text-red-700 bg-red-50" },
+  logistique: { label: "Logistique", color: "text-amber-700 bg-amber-50" },
 };
 
 export default function TravelChecklist() {
