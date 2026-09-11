@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 :root {
+  /* Identity typefaces — Fontshare CDN, loaded in app/layout.tsx <head> */
+  --font-boska: 'Boska', Georgia, serif;
+  --font-gensans: 'General Sans', 'Plus Jakarta Sans', sans-serif;
   --font-inter: 'Inter', sans-serif;
   --font-jakarta: 'Plus Jakarta Sans', sans-serif;
   --font-amiri: 'Amiri', serif;
@@ -14,11 +17,12 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  hanging-punctuation: first last;
 }
 
 body {
   margin: 0;
-  font-family: var(--font-jakarta), var(--font-inter), sans-serif;
+  font-family: var(--font-gensans), var(--font-jakarta), var(--font-inter), sans-serif;
   background: #f8f7f2;
   color: #173a36;
   min-height: 100dvh;
@@ -26,9 +30,18 @@ body {
 
 * { box-sizing: border-box; }
 
+h1, h2, h3, h4 {
+  font-family: var(--font-boska), Georgia, serif;
+  text-wrap: balance;
+}
+
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4 {
+  font-family: var(--font-amiri), var(--font-boska), serif;
+}
+
 ::selection {
-  background: #d9824b;
-  color: white;
+  background: #eead59;
+  color: #0a2e28;
 }
 
 input, button, textarea, select {
@@ -97,6 +110,13 @@ input:focus {
 .delay-400 { animation-delay: 0.4s; }
 .delay-500 { animation-delay: 0.5s; }
 .delay-600 { animation-delay: 0.6s; }
+
+/* Zellige decorative pattern (subtle geometric motif for hero/section backgrounds) */
+.pattern-zellige {
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(238, 173, 89, 0.18) 1px, transparent 0);
+  background-size: 22px 22px;
+}
 
 /* Glass morphism */
 .glass {
