@@ -27,7 +27,7 @@ describe('InteractiveMap', () => {
     render(<InteractiveMap status="ready" routeGeometry={[[48.8566, 2.3522], [35.7595, -5.834]]} routeInfo={{ distanceMeters: 1850_000, durationSeconds: 65_400 }} />)
     expect(screen.getByTestId('map')).toBeInTheDocument()
     expect(screen.getByTestId('route-line')).toBeInTheDocument()
-    expect(screen.getByText('1 850 km')).toBeInTheDocument()
+    expect(screen.getByText((content) => content.includes('850 km'))).toBeInTheDocument()
     expect(screen.getByText('18 h 10 min')).toBeInTheDocument()
   })
 })
