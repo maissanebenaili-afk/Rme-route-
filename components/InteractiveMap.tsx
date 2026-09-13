@@ -1,166 +1,101 @@
 "use client";
 
-import { MapContainer, TileLayer, Marker, Popup, Polyline } from "react-leaflet";
+import { MapContainer, Marker, Polyline, TileLayer } from "react-leaflet";
 import L from "leaflet";
-import { useState, useEffect } from "react";
-import { Fuel, Ship, Plane, Navigation } from "lucide-react";
+import { AlertCircle, LoaderCircle, MapPinned } from "lucide-react";
 
-// Fix default icon for Leaflet
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
-  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-});
+export type RoutePoint = [number, number];
 
-// Key cities on the Europe-Morocco route
-const cities = [
-  { name: "Paris", coords: [48.8566, 2.3522] as [number, number], country: "France", type: "origin" },
-  { name: "Lyon", coords: [45.764, 4.8357] as [number, number], country: "France", type: "stop" },
-  { name: "Marseille", coords: [43.2965, 5.3698] as [number, number], country: "France", type: "ferry" },
-  { name: "Barcelone", coords: [41.3851, 2.1734] as [number, number], country: "Espagne", type: "stop" },
-  { name: "Valence", coords: [39.4699, -0.3763] as [number, number], country: "Espagne", type: "stop" },
-  { name: "Almería", coords: [36.8340, -2.4637] as [number, number], country: "Espagne", type: "ferry" },
-  { name: "Malaga", coords: [36.7213, -4.4214] as [number, number], country: "Espagne", type: "stop" },
-  { name: "Algésiras", coords: [36.1416, -5.4540] as [number, number], country: "Espagne", type: "ferry" },
-  { name: "Tarifa", coords: [36.0143, -5.6043] as [number, number], country: "Espagne", type: "ferry" },
-  { name: "Tanger", coords: [35.7595, 5.8340] as [number, number], country: "Maroc", type: "destination" },
-  { name: "Fès", coords: [34.0331, -5.0003] as [number, number], country: "Maroc", type: "stop" },
-  { name: "Meknès", coords: [33.8935, -5.5473] as [number, number], country: "Maroc", type: "stop" },
-  { name: "Rabat", coords: [34.0209, -6.8416] as [number, number], country: "Maroc", type: "stop" },
-  { name: "Casablanca", coords: [33.5731, -7.5898] as [number, number], country: "Maroc", type: "stop" },
-  { name: "Marrakech", coords: [31.6295, -7.9811] as [number, number], country: "Maroc", type: "stop" },
-];
+export type RouteInfo = {
+  distanceMeters?: number;
+  durationSeconds?: number;
+};
 
-// Main route: Paris → Marseille → Algésiras → Tanger → Marrakech
-const mainRoute: [number, number][] = [
-  [48.8566, 2.3522],
-  [45.764, 4.8357],
-  [43.2965, 5.3698],
-  [41.3851, 2.1734],
-  [39.4699, -0.3763],
-  [36.7213, -4.4214],
-  [36.1416, -5.4540],
-  [35.7595, 5.8340],
-  [33.5731, -7.5898],
-  [31.6295, -7.9811],
-];
+type InteractiveMapProps = {
+  routeGeometry?: RoutePoint[];
+  routeInfo?: RouteInfo;
+  status?: "idle" | "loading" | "error" | "ready";
+  errorMessage?: string;
+};
 
-const ferryRoute: [number, number][] = [
-  [36.1416, -5.4540],
-  [35.7595, 5.8340],
-];
-
-function getIcon(type: string) {
-  const colors: Record<string, string> = {
-    origin: "#0d6255",
-    destination: "#d9824b",
-    ferry: "#eead59",
-    stop: "#7a6d54",
-  };
-  const color = colors[type] || "#7a6d54";
+function markerIcon(color: string) {
   return L.divIcon({
-    html: `<div style="background:${color};width:14px;height:14px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
+    html: `<span style="display:block;background:${color};width:14px;height:14px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,.3)"></span>`,
     className: "",
     iconSize: [20, 20],
     iconAnchor: [10, 10],
   });
 }
 
-export default function InteractiveMap() {
-  const [mounted, setMounted] = useState(false);
+function formatDistance(distanceMeters?: number) {
+  return typeof distanceMeters === "number"
+    ? `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 1 }).format(distanceMeters / 1000)} km`
+    : null;
+}
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+function formatDuration(durationSeconds?: number) {
+  if (typeof durationSeconds !== "number") return null;
+  const hours = Math.floor(durationSeconds / 3600);
+  const minutes = Math.round((durationSeconds % 3600) / 60);
+  return hours > 0 ? `${hours} h ${minutes} min` : `${minutes} min`;
+}
 
-  if (!mounted) {
-    return (
-      <section className="rounded-3xl border border-sable-300 bg-white p-6 shadow-sm">
-        <h2 className="font-display text-lg font-semibold text-zellige-800">🗺️ Carte du trajet Europe ↔ Maroc</h2>
-        <div className="mt-4 flex h-64 items-center justify-center rounded-2xl bg-sable-100 text-sm text-sable-600">
-          Chargement de la carte...
-        </div>
-      </section>
-    );
-  }
+export default function InteractiveMap({
+  routeGeometry,
+  routeInfo,
+  status = "idle",
+  errorMessage,
+}: InteractiveMapProps) {
+  const hasRoute = status === "ready" && Boolean(routeGeometry && routeGeometry.length >= 2);
+  const distance = formatDistance(routeInfo?.distanceMeters);
+  const duration = formatDuration(routeInfo?.durationSeconds);
 
   return (
-    <section className="rounded-3xl border border-sable-300 bg-white p-6 shadow-sm">
-      <div className="flex items-center justify-between gap-3">
-        <h2 className="font-display text-lg font-semibold text-zellige-800">🗺️ Carte du trajet Europe ↔ Maroc</h2>
-        <div className="flex flex-wrap gap-2 text-xs">
-          <span className="flex items-center gap-1 rounded-full bg-zellige-50 px-2 py-1 text-zellige-700">
-            <span className="h-2 w-2 rounded-full bg-zellige-600" /> Départ
-          </span>
-          <span className="flex items-center gap-1 rounded-full bg-safran-100 px-2 py-1 text-safran-800">
-            <span className="h-2 w-2 rounded-full bg-safran-500" /> Ferry
-          </span>
-          <span className="flex items-center gap-1 rounded-full bg-terracotta-100 px-2 py-1 text-terracotta-700">
-            <span className="h-2 w-2 rounded-full bg-terracotta-500" /> Arrivée
-          </span>
-        </div>
+    <section className="rounded-3xl border border-sable-300 bg-white p-6 shadow-sm" aria-labelledby="route-map-title">
+      <div className="flex items-center gap-2">
+        <MapPinned size={20} className="text-zellige-600" aria-hidden="true" />
+        <h2 id="route-map-title" className="font-display text-lg font-semibold text-zellige-800">
+          Carte de l’itinéraire
+        </h2>
       </div>
 
-      <div className="mt-4 h-80 overflow-hidden rounded-xl">
-        <MapContainer
-          center={[42.0, 0.0]}
-          zoom={5}
-          scrollWheelZoom={false}
-          style={{ height: "100%", width: "100%" }}
-        >
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          />
-
-          {/* Main road route */}
-          <Polyline positions={mainRoute} color="#0d6255" weight={3} opacity={0.7} dashArray="10, 8" />
-
-          {/* Ferry route */}
-          <Polyline positions={ferryRoute} color="#eead59" weight={2} opacity={0.8} dashArray="5, 10" />
-
-          {/* City markers */}
-          {cities.map((city) => (
-            <Marker key={city.name} position={city.coords} icon={getIcon(city.type)}>
-              <Popup>
-                <div className="text-center">
-                  <p className="font-bold">{city.name}</p>
-                  <p className="text-xs text-slate-500">{city.country}</p>
-                  {city.type === "ferry" && (
-                    <p className="mt-1 text-xs font-bold text-[#9c6b0e]">⛴️ Port de ferry</p>
-                  )}
-                  {city.type === "origin" && (
-                    <p className="mt-1 text-xs font-bold text-[#0d6255]">🏁 Départ</p>
-                  )}
-                  {city.type === "destination" && (
-                    <p className="mt-1 text-xs font-bold text-[#b4562f]">🎯 Arrivée</p>
-                  )}
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-        </MapContainer>
-      </div>
-
-      {/* Route info */}
-      <div className="mt-4 grid grid-cols-3 gap-3">
-        <div className="rounded-2xl bg-sable-100 p-3 text-center">
-          <Navigation size={18} className="mx-auto text-zellige-600" />
-          <div className="mt-1 text-xs text-sable-600">Distance</div>
-          <div className="font-bold text-zellige-800">~2 100 km</div>
+      {status === "loading" && (
+        <div className="mt-4 flex h-64 items-center justify-center gap-2 rounded-2xl bg-sable-100 text-sm text-sable-700" role="status">
+          <LoaderCircle size={18} className="animate-spin" aria-hidden="true" /> Calcul de l’itinéraire…
         </div>
-        <div className="rounded-2xl bg-sable-100 p-3 text-center">
-          <Ship size={18} className="mx-auto text-safran-700" />
-          <div className="mt-1 text-xs text-sable-600">Ferry</div>
-          <div className="font-bold text-zellige-800">~1h30</div>
+      )}
+
+      {status === "error" && (
+        <div className="mt-4 flex min-h-40 items-center gap-3 rounded-2xl bg-terracotta-50 p-5 text-sm text-terracotta-700" role="alert">
+          <AlertCircle size={20} className="shrink-0" aria-hidden="true" />
+          {errorMessage || "L’itinéraire est indisponible. Réessayez plus tard."}
         </div>
-        <div className="rounded-2xl bg-sable-100 p-3 text-center">
-          <Fuel size={18} className="mx-auto text-terracotta-600" />
-          <div className="mt-1 text-xs text-sable-600">Carburant</div>
-          <div className="font-bold text-zellige-800">~140 L</div>
+      )}
+
+      {!hasRoute && status !== "loading" && status !== "error" && (
+        <div className="mt-4 flex min-h-40 items-center rounded-2xl bg-sable-100 p-5 text-sm text-sable-700">
+          Renseignez un départ et une destination pour afficher un itinéraire vérifié.
         </div>
-      </div>
+      )}
+
+      {hasRoute && routeGeometry && (
+        <>
+          <div className="mt-4 h-80 overflow-hidden rounded-xl" aria-label="Carte de l’itinéraire calculé">
+            <MapContainer center={routeGeometry[0]} zoom={6} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
+              <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution='&copy; OpenStreetMap contributors' />
+              <Polyline positions={routeGeometry} color="#0d6255" weight={4} opacity={0.8} />
+              <Marker position={routeGeometry[0]} icon={markerIcon("#0d6255")} />
+              <Marker position={routeGeometry[routeGeometry.length - 1]} icon={markerIcon("#d9824b")} />
+            </MapContainer>
+          </div>
+          {(distance || duration) && (
+            <dl className="mt-4 grid gap-3 sm:grid-cols-2">
+              {distance && <div className="rounded-2xl bg-sable-100 p-3"><dt className="text-xs text-sable-700">Distance</dt><dd className="font-bold text-zellige-800">{distance}</dd></div>}
+              {duration && <div className="rounded-2xl bg-sable-100 p-3"><dt className="text-xs text-sable-700">Durée</dt><dd className="font-bold text-zellige-800">{duration}</dd></div>}
+            </dl>
+          )}
+        </>
+      )}
     </section>
   );
 }
