@@ -17,6 +17,7 @@ export default function RouteSearch() {
   const [origin, setOrigin] = useState("Paris, France");
   const [destination, setDestination] = useState("Tanger, Maroc");
   const [date, setDate] = useState("");
+  const [transportMode, setTransportMode] = useState("car");
   // Conservées pour un usage futur (ex. affichage du pays sélectionné) ;
   // aucune distance/estimation n'est calculée à partir de ces valeurs.
   const [, setOriginCity] = useState<CitySuggestion | null>(null);
@@ -90,7 +91,7 @@ export default function RouteSearch() {
           RME Voyage centralise les informations essentielles pour préparer un départ serein.
         </p>
 
-        <div className="mt-4 grid gap-3 sm:grid-cols-3">
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <CityAutocomplete
             label="Départ"
             value={origin}
@@ -122,6 +123,19 @@ export default function RouteSearch() {
               className="mt-1 w-full min-h-[44px] rounded-xl border p-3"
               aria-label="Date"
             />
+          </label>
+          <label className="text-sm font-medium">
+            <span className="text-xs text-slate-500">Mode de transport</span>
+            <select
+              value={transportMode}
+              onChange={(e) => setTransportMode(e.target.value)}
+              className="mt-1 w-full min-h-[44px] rounded-xl border bg-white p-3"
+              aria-label="Mode de transport"
+            >
+              <option value="car">Voiture</option>
+              <option value="flight">Avion</option>
+              <option value="car-ferry">Voiture + ferry</option>
+            </select>
           </label>
         </div>
 
