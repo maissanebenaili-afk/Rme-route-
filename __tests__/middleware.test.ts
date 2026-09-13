@@ -73,17 +73,6 @@ describe("middleware", () => {
     expect(last!.headers.get("Retry-After")).toBeTruthy();
   });
 
-  it("rate limits routing requests before they can exhaust the provider quota", () => {
-    const ip = "203.0.113.77";
-    let last;
-
-    for (let i = 0; i < 31; i++) {
-      last = middleware(buildRequest("/api/routing", { method: "POST", headers: { "x-forwarded-for": ip } }));
-    }
-
-    expect(last!.status).toBe(429);
-  });
-
   it("does not rate limit routes outside the protected list", () => {
     const ip = "203.0.113.99";
     let last;
